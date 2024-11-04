@@ -14,7 +14,7 @@ Enhance the existing meeting application by adding new features and improving th
 
 ### Pagination
 
-Ooooops, the meeting list in the client application is loading quite a bit. Looks like our user has quite a lot of conversation. Let's improve the user experience by integrating pagination to the system. 
+Ooooops, the meeting list in the client application is loading quite a bit. Looks like our user has quite a lot of conversations. Let's improve the user experience by integrating pagination to the system. 
 
 Your CTO spends quite some time on instagram and really loves the endless scroll feature there. He asks you whether we could have the same for the meeting list. 
 
@@ -37,9 +37,9 @@ The CTO is desperate. He fears that he looses his endless scroll feature which h
 
 Meeting List yet looks a bit raw. While you were integrating the search capabilities, the CTO pulled out his figma skills and redesigned the meeting list. 
 
-(Figma Link)[https://www.figma.com/design/eh9Btn0jfpNjVw1qQxxeXJ/Bliro-Senior-Full-Stack-Engineer-Challenge?node-id=0-1&m=dev&t=GZ8ybK8y6rS8s7wU-1]
+[Figma Link](https://www.figma.com/design/eh9Btn0jfpNjVw1qQxxeXJ/Bliro-Senior-Full-Stack-Engineer-Challenge?node-id=0-1&m=dev&t=GZ8ybK8y6rS8s7wU-1)
 
-Please create customized Material UI compoents. Create and structure them in a way that they are reusable. Please create a theme and define fonts as well as colors there so that your designs can easily be reused by your team mates. 
+Please create customized Material UI components. Create and structure them in a way that they are reusable. Please create a theme and define fonts as well as colors there so that your designs can easily be reused by your team mates. 
 
 ## Deliverables:
 
