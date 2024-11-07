@@ -1,53 +1,29 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { listMeetings } from '../services/meetingService';
-import { Meeting } from '../models/Meeting';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
+import React from 'react';
+import InfiniteScroll from "react-infinite-scroll-component";
+import MeetingItem from "@/app/components/MeetingItem";
+import { Meeting } from "@/app/models/Meeting";
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const formatter = new Intl.DateTimeFormat('default', {
-    dateStyle: 'long',
-    timeStyle: 'short',
-  });
-  return formatter.format(date);
-};
+type Props = {
+  meetings: Meeting[];
+  hasMore: boolean;
+  onNext: () => void;
+}
 
-const MeetingList: React.FC = () => {
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
-
-  useEffect(() => {
-    listMeetings().then(setMeetings);
-  }, []);
-
+const MeetingList: React.FC<Props> = ({ meetings, hasMore, onNext }) => {
   return (
-    <Paper elevation={3}>
-      <List>
-        {meetings.map((meeting, index) => (
-          <React.Fragment key={meeting.id}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                primary={meeting.title}
-                secondary={
-                  <>
-                    <div>Start: {formatDate(meeting.startTime)}</div>
-                    <div>End: {formatDate(meeting.endTime)}</div>
-                  </>
-                }
-              />
-            </ListItem>
-            {index < meetings.length - 1 && (
-              <Divider variant="inset" component="li" />
-            )}
-          </React.Fragment>
-        ))}
-      </List>
-    </Paper>
+    <InfiniteScroll
+      dataLength={meetings.length}
+      next={onNext}
+      hasMore={hasMore}
+      loader={<h4>Loading...</h4>}
+      scrollThreshold={1}
+    >
+      {meetings.map((meeting) => (
+        <MeetingItem key={meeting.id} meeting={meeting} />
+      ))}
+    </InfiniteScroll>
   );
 };
 

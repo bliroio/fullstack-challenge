@@ -1,0 +1,42 @@
+.header {
+    border-bottom: 1px solid var(--border);
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+    gap: 20px;
+}
+
+.logo {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 1200px) {
+    .logo {
+        position: relative;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 120px;
+    }
+}
+
+
+.searchInputWrapper {
+    max-width: 780px;
+    width: 100%;
+}
+
+.searchInput {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+}
