@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import meetingRoutes from './routes/meetingRoutes';
 import cors from 'cors';
 import express from 'express';
 import connectDB from './db';
@@ -17,7 +18,9 @@ app.use(cors());
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use(express.json());
+app.use('/api/meetings', meetingRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
