@@ -11,8 +11,7 @@ import swaggerOptions from './config/swaggerConfig';
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Connect to MongoDB
-connectDB();
+console.log('Starting server...');
 
 app.use(cors());
 
@@ -25,3 +24,8 @@ app.use('/api/meetings', meetingRoutes);
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+(async () => {
+  await connectDB();
+  console.log('Server setup completed');
+})();
