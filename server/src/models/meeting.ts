@@ -1,5 +1,4 @@
 import mongoose, { Document } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 
 export interface IMeeting extends Document {
   title: string;
@@ -13,10 +12,5 @@ const meetingSchema = new mongoose.Schema({
   endTime: { type: Date, required: true },
 });
 
-meetingSchema.plugin(paginate);
-
-const Meeting = mongoose.model<IMeeting, mongoose.PaginateModel<IMeeting>>(
-  'Meeting',
-  meetingSchema
-);
+const Meeting = mongoose.model<IMeeting>('Meeting', meetingSchema);
 export default Meeting;
