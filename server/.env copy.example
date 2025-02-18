@@ -1,2 +1,2 @@
 PORT=3000
-MONGODB_URI=mongodb+srv://tmp_applicant_raphael:ls3oaeZNccvTduIk@publicdonotuse.6e49khc.mongodb.net/tmp_applicant_raphael?retryWrites=true&w=majority
+MONGODB_URI=[YOUR ACCESS TOKEN]
