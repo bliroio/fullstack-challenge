@@ -1,7 +1,22 @@
-import express from 'express';
-import meetingController from '../controllers/meetingController';
+import express from "express";
+import meetingController from "../controllers/meetingController";
 
 const router = express.Router();
+
+/**
+ * @swagger
+ * /ws:
+ *   get:
+ *     summary: WebSocket connection
+ *     description: |
+ *       Connect to the WebSocket server at `ws://localhost:3000`.
+ *       This allows real-time updates for meeting changes.
+ *     tags:
+ *       - WebSockets
+ *     responses:
+ *       101:
+ *         description: Switching Protocols - WebSocket connection established.
+ */
 
 /**
  * @swagger
@@ -25,7 +40,7 @@ const router = express.Router();
  *       500:
  *         description: Some server error
  */
-router.post('/', meetingController.createMeeting);
+router.post("/", meetingController.createMeeting);
 
 /**
  * @swagger
@@ -52,7 +67,7 @@ router.post('/', meetingController.createMeeting);
  *       500:
  *         description: Some server error
  */
-router.get('/:id', meetingController.getMeeting);
+router.get("/:id", meetingController.getMeeting);
 
 /**
  * @swagger
@@ -85,7 +100,7 @@ router.get('/:id', meetingController.getMeeting);
  *       500:
  *         description: Some server error
  */
-router.put('/:id', meetingController.updateMeeting);
+router.put("/:id", meetingController.updateMeeting);
 
 /**
  * @swagger
@@ -108,7 +123,7 @@ router.put('/:id', meetingController.updateMeeting);
  *       500:
  *         description: Some server error
  */
-router.delete('/:id', meetingController.deleteMeeting);
+router.delete("/:id", meetingController.deleteMeeting);
 
 /**
  * @openapi
@@ -118,16 +133,41 @@ router.delete('/:id', meetingController.deleteMeeting);
  *     tags: [Meetings]
  *     responses:
  *       200:
- *         description: A list of meetings
+ *         description: A paginated list of meetings
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Meeting'
+ *               type: object
+ *               properties:
+ *                 docs:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Meeting'
+ *                 totalDocs:
+ *                   type: number
+ *                 limit:
+ *                   type: number
+ *                 hasPrevPage:
+ *                   type: boolean
+ *                 hasNextPage:
+ *                   type: boolean
+ *                 page:
+ *                   type: number
+ *                 totalPages:
+ *                   type: number
+ *                 offset:
+ *                   type: number
+ *                 prevPage:
+ *                   type: number
+ *                   nullable: true
+ *                 nextPage:
+ *                   type: number
+ *                   nullable: true
+ *                 pagingCounter:
+ *                   type: number
  *       500:
  *         description: Server error
  */
-router.get('/', meetingController.listMeetings);
+router.get("/", meetingController.listMeetings);
 
 export default router;
