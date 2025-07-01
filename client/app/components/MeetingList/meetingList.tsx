@@ -9,6 +9,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
+import Pagination from '@mui/material/Pagination';
 import React from 'react';
 
 const formatDate = (dateString: string) => {
@@ -21,7 +22,10 @@ const formatDate = (dateString: string) => {
 };
 
 const MeetingList: React.FC = () => {
-  const { meetings, loading, error } = useMeeting();
+  const {
+    meetings,
+    loadingState: { loading, error },
+  } = useMeeting();
 
   if (loading) {
     return (

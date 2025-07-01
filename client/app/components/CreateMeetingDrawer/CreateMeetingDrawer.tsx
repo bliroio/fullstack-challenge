@@ -5,6 +5,7 @@ import { CreateMeeting } from '@/app/models/Meeting';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -34,7 +35,10 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
   const [description, setDescription] = React.useState('');
   const [startTime, setStartTime] = React.useState<Date | null>(new Date());
   const [endTime, setEndTime] = React.useState<Date | null>(new Date());
-  const { error, loading, addMeeting } = useMeeting();
+  const {
+    addMeeting,
+    creationState: { error, loading },
+  } = useMeeting();
 
   const handleClose = () => {
     if (onClose) {
@@ -67,10 +71,10 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
 
     console.log('Creating meeting:', meetingData);
 
-    addMeeting(meetingData);
+    await addMeeting(meetingData);
+
     // After creating the meeting, refresh the list
-    await refreshMeetings();
-    handleClose();
+    // handleClose();
   };
 
   return (
@@ -236,6 +240,8 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
               },
             }}
           />
+          {loading && <CircularProgress />}
+          {error && <Typography color='error'>{error}</Typography>}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', gap: 1, p: 3, borderTop: '1px solid lightgrey' }}>

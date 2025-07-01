@@ -12,10 +12,15 @@ import React, {
 import { Meeting, CreateMeeting } from '../models/Meeting';
 import { createMeeting, listMeetings } from '../services/meetingService';
 
-interface MeetingContextType {
-  meetings: Meeting[];
+interface LoadingState {
   loading: boolean;
   error: string | null;
+}
+
+interface MeetingContextType {
+  meetings: Meeting[];
+  loadingState: LoadingState;
+  creationState: LoadingState;
   refreshMeetings: () => Promise<void>;
   addMeeting: (meeting: CreateMeeting) => Promise<void>;
 }
@@ -28,55 +33,52 @@ interface CreateMeetingProviderProps {
 
 export const MeetingProvider: React.FC<CreateMeetingProviderProps> = ({ children }) => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const [loadingState, setLoadingState] = useState<LoadingState>({ loading: true, error: null });
+  const [creationState, setCreationState] = useState<LoadingState>({ loading: false, error: null });
 
-  const fetchMeetings = useCallback(async () => {
-    // Don't fetch if we already have data
-    if (hasLoaded && meetings.length > 0) {
-      return;
-    }
+  const fetchMeetings = useCallback(
+    async (forceRefresh = false) => {
+      // Don't fetch if we already have data and not forcing refresh
+      if (!forceRefresh && !loadingState.loading && meetings.length > 0) {
+        return;
+      }
 
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await listMeetings();
-      setMeetings(response.docs);
-      setHasLoaded(true);
-    } catch (err) {
-      console.error('Error fetching meetings:', err);
-      setError('Failed to load meetings');
-    } finally {
-      setLoading(false);
-    }
-  }, [meetings, hasLoaded]);
+      try {
+        setLoadingState((prev) => ({ ...prev, loading: true }));
+        const response = await listMeetings();
+        setMeetings(response.docs);
+        setLoadingState({ loading: false, error: null });
+      } catch (err) {
+        console.error('Error fetching meetings:', err);
+        const errorMessage = 'Failed to fetch meetings: ' + JSON.stringify(err);
+        setLoadingState({ loading: false, error: errorMessage });
+        throw new Error(errorMessage);
+      }
+    },
+    [meetings, loadingState.loading]
+  );
 
-  const addMeeting = useCallback(async (meeting: CreateMeeting) => {
-    try {
-      const response = await createMeeting(meeting);
-
-      // TODO EVTL SERIALIZATION
-      setMeetings((prev) => [...prev, response]);
-    } catch (err) {
-      console.error('Error creating meeting:', err);
-      setError('Failed to create meeting');
-    }
-  }, []);
+  const addMeeting = useCallback(
+    async (meeting: CreateMeeting) => {
+      try {
+        setCreationState((prev) => ({ ...prev, loading: true }));
+        await createMeeting(meeting);
+        await fetchMeetings(true); // Force refresh after creating
+        setCreationState({ loading: false, error: null });
+      } catch (err) {
+        console.error('Error creating meeting:', err);
+        setCreationState({
+          loading: false,
+          error: 'Failed to create meeting: ' + JSON.stringify(err),
+        });
+      }
+    },
+    [fetchMeetings]
+  );
 
   const refreshMeetings = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await listMeetings();
-      setMeetings(response.docs);
-    } catch (err) {
-      console.error('Error refreshing meetings:', err);
-      setError('Failed to refresh meetings');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    await fetchMeetings(true); // Force refresh
+  }, [fetchMeetings]);
 
   useEffect(() => {
     // Fetch meetings only once when the app starts
@@ -85,8 +87,8 @@ export const MeetingProvider: React.FC<CreateMeetingProviderProps> = ({ children
 
   const value: MeetingContextType = {
     meetings,
-    loading,
-    error,
+    loadingState,
+    creationState,
     refreshMeetings,
     addMeeting,
   };
