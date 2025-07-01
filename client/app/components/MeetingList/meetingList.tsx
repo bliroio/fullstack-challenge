@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { listMeetings } from '../../services/meetingService';
-import { Meeting } from '../../models/Meeting';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { useCreateMeeting } from '../../context/CreateMeetingContext';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -12,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -23,16 +23,22 @@ const formatDate = (dateString: string) => {
 };
 
 const MeetingList: React.FC = () => {
-  const navigate = useNavigate();
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
-
-  useEffect(() => {
-    listMeetings().then((response) => setMeetings(response.docs));
-  }, []);
+  const { meetings, loading } = useCreateMeeting();
+  const router = useRouter();
 
   const handleCreateMeeting = () => {
-    navigate('/create-meeting');
+    router.push('/create-meeting');
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

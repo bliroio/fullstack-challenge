@@ -1,10 +1,3 @@
-'use client';
-
-import React from 'react';
-import AppRouter from './components/AppRouter/AppRouter';
-
-const Home: React.FC = () => {
-  return <AppRouter />;
-};
+import Home from './pages/home/page';
 
 export default Home;

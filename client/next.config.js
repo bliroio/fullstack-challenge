@@ -1,10 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disable Next.js routing to use React Router
+  // Configure Next.js to handle client-side routing
   trailingSlash: false,
-  // This allows React Router to handle client-side routing
+  // Enable experimental features
   experimental: {
     appDir: true,
+  },
+  // Handle client-side routing
+  async rewrites() {
+    return [
+      {
+        source: '/create-meeting',
+        destination: '/',
+      },
+    ];
   },
 };
 

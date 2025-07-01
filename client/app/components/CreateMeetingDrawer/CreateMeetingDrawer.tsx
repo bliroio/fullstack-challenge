@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import { useCreateMeeting } from '../../context/CreateMeetingContext';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -20,7 +21,8 @@ interface CreateMeetingDrawerProps {
 }
 
 const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { refreshMeetings } = useCreateMeeting();
   const [title, setTitle] = React.useState('');
   const [startTime, setStartTime] = React.useState<Date | null>(new Date());
   const [endTime, setEndTime] = React.useState<Date | null>(new Date());
@@ -29,14 +31,17 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
     if (onClose) {
       onClose();
     } else {
-      navigate('/');
+      router.push('/');
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     // TODO: Implement meeting creation logic
     console.log('Creating meeting:', { title, startTime, endTime });
+
+    // After creating the meeting, refresh the list
+    await refreshMeetings();
     handleClose();
   };
 
