@@ -22,7 +22,7 @@ const MeetingList: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
 
   useEffect(() => {
-    listMeetings().then(setMeetings);
+    listMeetings().then((response) => setMeetings(response.docs));
   }, []);
 
   return (
@@ -30,7 +30,7 @@ const MeetingList: React.FC = () => {
       <List>
         {meetings.map((meeting, index) => (
           <React.Fragment key={meeting.id}>
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems='flex-start'>
               <ListItemText
                 primary={meeting.title}
                 secondary={
@@ -41,9 +41,7 @@ const MeetingList: React.FC = () => {
                 }
               />
             </ListItem>
-            {index < meetings.length - 1 && (
-              <Divider variant="inset" component="li" />
-            )}
+            {index < meetings.length - 1 && <Divider variant='inset' component='li' />}
           </React.Fragment>
         ))}
       </List>
