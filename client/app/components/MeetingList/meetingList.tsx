@@ -1,18 +1,15 @@
 'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { useCreateMeeting } from '../../context/CreateMeetingContext';
+import { useMeeting } from '@/app/context/MeetingContext';
+import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Typography } from '@mui/material';
+import React from 'react';
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -24,7 +21,7 @@ const formatDate = (dateString: string) => {
 };
 
 const MeetingList: React.FC = () => {
-  const { meetings, loading, error } = useCreateMeeting();
+  const { meetings, loading, error } = useMeeting();
 
   if (loading) {
     return (

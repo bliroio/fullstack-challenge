@@ -1,21 +1,21 @@
 'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { useCreateMeeting } from '../../context/CreateMeetingContext';
-import Drawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import { useMeeting } from '@/app/context/MeetingContext';
+import { CreateMeeting } from '@/app/models/Meeting';
 import CloseIcon from '@mui/icons-material/Close';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { de } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface CreateMeetingDrawerProps {
   open: boolean;
@@ -29,11 +29,12 @@ const datePickerSlots = {
 
 const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose }) => {
   const router = useRouter();
-  const { refreshMeetings } = useCreateMeeting();
+  const { refreshMeetings } = useMeeting();
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [startTime, setStartTime] = React.useState<Date | null>(new Date());
   const [endTime, setEndTime] = React.useState<Date | null>(new Date());
+  const { error, loading, addMeeting } = useMeeting();
 
   const handleClose = () => {
     if (onClose) {
@@ -45,9 +46,28 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // TODO: Implement meeting creation logic
-    console.log('Creating meeting:', { title, description, startTime, endTime });
 
+    //TODO Input validation
+    console.log('startTime', startTime);
+    console.log('endTime', endTime);
+
+    // Validate that startTime and endTime are not null
+    if (!startTime || !endTime) {
+      console.error('Start time and end time are required');
+      return;
+    }
+
+    // Convert Date objects to ISO strings for the API
+    const meetingData: CreateMeeting = {
+      title,
+      description,
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
+    };
+
+    console.log('Creating meeting:', meetingData);
+
+    addMeeting(meetingData);
     // After creating the meeting, refresh the list
     await refreshMeetings();
     handleClose();
@@ -84,11 +104,7 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
           Complete the information below in order to create a new meeting
         </Typography>
 
-        <Box
-          component='form'
-          onSubmit={handleSubmit}
-          sx={{ flexGrow: 1, marginTop: '16px', overflow: 'auto' }}
-        >
+        <Box sx={{ flexGrow: 1, marginTop: '16px', overflow: 'auto' }}>
           <TextField
             fullWidth
             label='Meeting title'
@@ -216,7 +232,7 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
                 margin: 0,
               },
               '& .MuiInputBase-root': {
-                padding: 1,
+                padding: 2,
               },
             }}
           />
@@ -226,7 +242,7 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
         <Button variant='outlined' onClick={handleClose} sx={{ flex: 1 }}>
           Cancel
         </Button>
-        <Button type='submit' variant='contained' sx={{ flex: 1 }}>
+        <Button type='submit' variant='contained' sx={{ flex: 1 }} onClick={handleSubmit}>
           Save
         </Button>
       </Box>

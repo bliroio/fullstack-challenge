@@ -9,7 +9,7 @@ import React, {
   useCallback,
 } from 'react';
 // import { createMeeting, listMeetings } from '../services/meetingService';x
-import { Meeting } from '../models/Meeting';
+import { Meeting, CreateMeeting } from '../models/Meeting';
 import { createMeeting, listMeetings } from '../services/meetingService';
 
 interface MeetingContextType {
@@ -17,6 +17,7 @@ interface MeetingContextType {
   loading: boolean;
   error: string | null;
   refreshMeetings: () => Promise<void>;
+  addMeeting: (meeting: CreateMeeting) => Promise<void>;
 }
 
 const MeetingContext = createContext<MeetingContextType | undefined>(undefined);
@@ -25,7 +26,7 @@ interface CreateMeetingProviderProps {
   children: ReactNode;
 }
 
-export const CreateMeetingProvider: React.FC<CreateMeetingProviderProps> = ({ children }) => {
+export const MeetingProvider: React.FC<CreateMeetingProviderProps> = ({ children }) => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,9 +52,11 @@ export const CreateMeetingProvider: React.FC<CreateMeetingProviderProps> = ({ ch
     }
   }, [meetings, hasLoaded]);
 
-  const addMeeting = useCallback(async (meeting: Meeting) => {
+  const addMeeting = useCallback(async (meeting: CreateMeeting) => {
     try {
       const response = await createMeeting(meeting);
+
+      // TODO EVTL SERIALIZATION
       setMeetings((prev) => [...prev, response]);
     } catch (err) {
       console.error('Error creating meeting:', err);
@@ -85,6 +88,7 @@ export const CreateMeetingProvider: React.FC<CreateMeetingProviderProps> = ({ ch
     loading,
     error,
     refreshMeetings,
+    addMeeting,
   };
 
   return <MeetingContext.Provider value={value}>{children}</MeetingContext.Provider>;
