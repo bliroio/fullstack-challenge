@@ -52,7 +52,7 @@ const MeetingList: React.FC = () => {
   return (
     <Box>
       <Paper elevation={3}>
-        <List sx={{ rowGap: 2, display: 'flex', flexDirection: 'column' }}>
+        <List sx={{ display: 'flex', flexDirection: 'column' }}>
           {meetings.map((meeting, index) => (
             <React.Fragment key={meeting.id}>
               <ListItem alignItems='flex-start'>
