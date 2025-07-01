@@ -188,7 +188,13 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
       onClose={handleClose}
       sx={{
         '& .MuiDrawer-paper': {
-          width: 400,
+          width: {
+            xs: '100%', // Mobile: Vollbreite
+            sm: '100%', // Small: Vollbreite
+            md: 400, // Medium: 400px
+            lg: 500, // Large: 400px
+            xl: 900, // Extra Large: 400px
+          },
         },
       }}
     >
@@ -204,7 +210,11 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          padding: '0px 32px 0px 32px',
+          padding: {
+            xs: '0px 16px 0px 16px', // Mobile: weniger Padding
+            sm: '0px 24px 0px 24px', // Small: mittleres Padding
+            md: '0px 32px 0px 32px', // Medium und größer: normales Padding
+          },
         }}
       >
         <Typography variant='h5'>Create a new meeting</Typography>
@@ -274,7 +284,14 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
           )}
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', gap: 1, p: 3, borderTop: '1px solid lightgrey' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          p: { xs: 2, sm: 2.5, md: 3 },
+          borderTop: '1px solid lightgrey',
+        }}
+      >
         <Button variant='outlined' onClick={handleClose} sx={{ flex: 1 }}>
           Cancel
         </Button>

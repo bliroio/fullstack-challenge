@@ -56,7 +56,7 @@ const MeetingList: React.FC = () => {
         <List sx={{ display: 'flex', flexDirection: 'column' }}>
           {meetings.map((meeting, index) => (
             <React.Fragment key={meeting.id}>
-              <ListItem alignItems='flex-start'>
+              <ListItem key={meeting.id} alignItems='flex-start'>
                 <ListItemText
                   primary={meeting.title}
                   secondary={
