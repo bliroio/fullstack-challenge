@@ -76,7 +76,7 @@ const theme = createTheme({
           fontSize: '0.85rem',
           position: 'relative',
           transform: 'none',
-          marginBottom: '4px',
+          marginBottom: 1,
 
           // Stil für das Label, wenn es sich im "shrink"-Zustand befindet (wird global über defaultProps gesetzt)
           '&.MuiInputLabel-shrink': {
@@ -102,6 +102,7 @@ const theme = createTheme({
         disableAnimation: true,
       },
     },
+
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
