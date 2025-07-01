@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Typography } from '@mui/material';
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -23,12 +24,7 @@ const formatDate = (dateString: string) => {
 };
 
 const MeetingList: React.FC = () => {
-  const { meetings, loading } = useCreateMeeting();
-  const router = useRouter();
-
-  const handleCreateMeeting = () => {
-    router.push('/create-meeting');
-  };
+  const { meetings, loading, error } = useCreateMeeting();
 
   if (loading) {
     return (
@@ -40,16 +36,23 @@ const MeetingList: React.FC = () => {
     );
   }
 
+  if (error) {
+    return (
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}
+      >
+        {/* todo testen */}
+        <Typography color='error' variant='body1'>
+          {error}
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant='contained' startIcon={<AddIcon />} onClick={handleCreateMeeting}>
-          Neues Meeting
-        </Button>
-      </Box>
-
       <Paper elevation={3}>
-        <List>
+        <List sx={{ rowGap: 2, display: 'flex', flexDirection: 'column' }}>
           {meetings.map((meeting, index) => (
             <React.Fragment key={meeting.id}>
               <ListItem alignItems='flex-start'>

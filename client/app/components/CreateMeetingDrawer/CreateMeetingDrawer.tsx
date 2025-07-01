@@ -12,7 +12,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { de } from 'date-fns/locale';
 
 interface CreateMeetingDrawerProps {
@@ -53,24 +54,33 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
       sx={{
         '& .MuiDrawer-paper': {
           width: 400,
-          padding: 3,
         },
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <IconButton onClick={handleClose} size='large' sx={{ alignSelf: 'flex-end' }}>
-          <CloseIcon />
-        </IconButton>
-
+      <IconButton
+        onClick={handleClose}
+        size='large'
+        sx={{ alignSelf: 'flex-end', color: 'lightgrey' }}
+      >
+        <CloseIcon />
+      </IconButton>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          padding: '0px 32px 0px 32px',
+        }}
+      >
         <Typography variant='h5'>Create a new meeting</Typography>
         <Typography variant='subtitle1'>
           Complete the information below in order to create a new meeting
         </Typography>
 
-        <Box component='form' onSubmit={handleSubmit} sx={{ flexGrow: 1 }}>
+        <Box component='form' onSubmit={handleSubmit} sx={{ flexGrow: 1, marginTop: '16px' }}>
           <TextField
             fullWidth
-            label='Meeting Titel'
+            label='Meeting title'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             margin='normal'
@@ -78,42 +88,80 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
           />
 
           <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
-            <DateTimePicker
-              label='Startzeit'
-              value={startTime}
-              onChange={(newValue: Date | null) => setStartTime(newValue)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  margin: 'normal',
-                  required: true,
-                },
-              }}
-            />
+            {/* Start time row */}
 
-            <DateTimePicker
-              label='Endzeit'
-              value={endTime}
-              onChange={(newValue: Date | null) => setEndTime(newValue)}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  margin: 'normal',
-                  required: true,
-                },
-              }}
-            />
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+              <DatePicker
+                label='Start time'
+                value={startTime}
+                onChange={(newValue: Date | null) => setStartTime(newValue)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small',
+                    required: true,
+                  },
+                }}
+              />
+              <TimePicker
+                sx={{ alignSelf: 'flex-end' }}
+                label=' '
+                value={startTime}
+                onChange={(newValue: Date | null) => setStartTime(newValue)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small',
+                    required: true,
+                    InputLabelProps: {
+                      required: false,
+                    },
+                  },
+                }}
+              />
+            </Box>
+
+            {/* End time row */}
+
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+              <DatePicker
+                label='End time'
+                value={endTime}
+                onChange={(newValue: Date | null) => setEndTime(newValue)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small',
+                    required: true,
+                  },
+                }}
+              />
+              <TimePicker
+                label='Time'
+                value={endTime}
+                onChange={(newValue: Date | null) => setEndTime(newValue)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: 'small',
+                    required: true,
+                    InputLabelProps: {
+                      required: false,
+                    },
+                  },
+                }}
+              />
+            </Box>
           </LocalizationProvider>
-
-          <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
-            <Button variant='outlined' onClick={handleClose} sx={{ flex: 1 }}>
-              Cancel
-            </Button>
-            <Button type='submit' variant='contained' sx={{ flex: 1 }}>
-              Save
-            </Button>
-          </Box>
         </Box>
+      </Box>
+      <Box sx={{ display: 'flex', gap: 1, p: 3, borderTop: '1px solid lightgrey' }}>
+        <Button variant='outlined' onClick={handleClose} sx={{ flex: 1 }}>
+          Cancel
+        </Button>
+        <Button type='submit' variant='contained' sx={{ flex: 1 }}>
+          Save
+        </Button>
       </Box>
     </Drawer>
   );

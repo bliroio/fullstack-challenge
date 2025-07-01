@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
 import { CreateMeetingProvider } from './context/CreateMeetingContext';
+import ClientThemeProvider from './components/ClientThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,8 +13,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
-        <CreateMeetingProvider>{children}</CreateMeetingProvider>
+      <body>
+        <ClientThemeProvider>
+          <CreateMeetingProvider>{children}</CreateMeetingProvider>
+        </ClientThemeProvider>
       </body>
     </html>
   );
