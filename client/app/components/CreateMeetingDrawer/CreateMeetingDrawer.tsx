@@ -93,6 +93,7 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
             fullWidth
             label='Meeting title'
             value={title}
+            placeholder='Write your meeting title'
             onChange={(e) => setTitle(e.target.value)}
             margin='normal'
             required
@@ -146,7 +147,7 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
 
             {/* End time row */}
 
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
+            <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-end' }}>
               <Box sx={{ flex: 2 }}>
                 <DatePicker
                   label='End time'
@@ -158,6 +159,19 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
                       fullWidth: true,
                       size: 'small',
                       required: true,
+                      sx: {
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: 'blue', // normaler Zustand
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'green', // beim Hover
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'blue !important', // beim Fokus - wichtig!
+                          },
+                        },
+                      },
                     },
                   }}
                 />
@@ -192,11 +206,19 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
             label='Description'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            margin='normal'
             multiline
             minRows={3}
             placeholder='Write any notes regarding the meeting'
             required
+            sx={{
+              '& .MuiOutlinedInput-input': {
+                padding: 0,
+                margin: 0,
+              },
+              '& .MuiInputBase-root': {
+                padding: 1,
+              },
+            }}
           />
         </Box>
       </Box>
