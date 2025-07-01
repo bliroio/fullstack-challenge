@@ -10,23 +10,14 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { de } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import DateTimeRow from './DateTimeRow';
 
 interface CreateMeetingDrawerProps {
   open: boolean;
   onClose?: () => void;
 }
-
-// Global slots configuration to remove icons from date/time pickers
-const datePickerSlots = {
-  openPickerIcon: () => null,
-};
 
 const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose }) => {
   const router = useRouter();
@@ -119,108 +110,19 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({ open, onClose
             required
           />
 
-          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
-            {/* Start time row */}
+          <DateTimeRow
+            label='Start time'
+            value={startTime}
+            onChange={(newValue: Date | null) => setStartTime(newValue)}
+            required={true}
+          />
 
-            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-              <Box sx={{ flex: 2 }}>
-                <DatePicker
-                  label='Start time'
-                  value={startTime}
-                  onChange={(newValue: Date | null) => setStartTime(newValue)}
-                  slots={datePickerSlots}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: 'small',
-                      required: true,
-                    },
-                  }}
-                />
-              </Box>
-              <Box
-                sx={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  minWidth: 0,
-                }}
-              >
-                <TimePicker
-                  label=''
-                  value={startTime}
-                  onChange={(newValue: Date | null) => setStartTime(newValue)}
-                  slots={datePickerSlots}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: 'small',
-                      required: true,
-                      InputLabelProps: {
-                        required: false,
-                      },
-                    },
-                  }}
-                />
-              </Box>
-            </Box>
-
-            {/* End time row */}
-
-            <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-end' }}>
-              <Box sx={{ flex: 2 }}>
-                <DatePicker
-                  label='End time'
-                  value={endTime}
-                  onChange={(newValue: Date | null) => setEndTime(newValue)}
-                  slots={datePickerSlots}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: 'small',
-                      required: true,
-                      sx: {
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: 'blue', // normaler Zustand
-                          },
-                          '&:hover fieldset': {
-                            borderColor: 'green', // beim Hover
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: 'blue !important', // beim Fokus - wichtig!
-                          },
-                        },
-                      },
-                    },
-                  }}
-                />
-              </Box>
-              <Box
-                sx={{
-                  flex: 1,
-                  minWidth: 0,
-                }}
-              >
-                <TimePicker
-                  label=''
-                  value={endTime}
-                  onChange={(newValue: Date | null) => setEndTime(newValue)}
-                  slots={datePickerSlots}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: 'small',
-                      required: true,
-                      InputLabelProps: {
-                        required: false,
-                      },
-                    },
-                  }}
-                />
-              </Box>
-            </Box>
-          </LocalizationProvider>
+          <DateTimeRow
+            label='End time'
+            value={endTime}
+            onChange={(newValue: Date | null) => setEndTime(newValue)}
+            required={true}
+          />
           <TextField
             fullWidth
             label='Description'
