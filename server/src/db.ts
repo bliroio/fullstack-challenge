@@ -28,7 +28,7 @@ const resetDatabase = async () => {
   const meetings = [];
   const now = new Date().getTime();
   
-  for (let i = 0; i < 10000; i++) {
+  for (let i = 0; i < 100; i++) {
     const randomStartDate = new Date(
       // Random date between now and 24 hours later
       now + Math.floor(Math.random() * 1000 * 60 * 60 * 24)
