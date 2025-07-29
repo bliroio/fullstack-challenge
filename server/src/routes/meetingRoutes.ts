@@ -1,5 +1,5 @@
-import express from 'express';
-import meetingController from '../controllers/meetingController';
+import express from "express";
+import meetingController from "../controllers/meetingController";
 
 const router = express.Router();
 
@@ -46,6 +46,6 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.get('/', meetingController.listMeetings);
+router.get("/", meetingController.listMeetings);
 
 export default router;

@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import Meeting, { IMeeting } from '../models/meeting';
+import mongoose from "mongoose";
+import Meeting, { IMeeting } from "../models/meeting";
 
 const listMeetings = async (
-  query: any
+  query: any,
 ): Promise<mongoose.PaginateResult<IMeeting>> => {
   return Meeting.paginate(query);
 };

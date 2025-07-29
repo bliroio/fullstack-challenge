@@ -1,4 +1,4 @@
-import meetingService from '../services/meetingService';
+import meetingService from "../services/meetingService";
 
 const listMeetings = async (req: any, res: any) => {
   try {

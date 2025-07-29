@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { listMeetings } from '../services/meetingService';
-import { Meeting } from '../models/Meeting';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
+import React, { useEffect, useState } from "react";
+import { listMeetings } from "../services/meetingService";
+import { Meeting } from "../models/Meeting";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  const formatter = new Intl.DateTimeFormat('default', {
-    dateStyle: 'long',
-    timeStyle: 'short',
+  const formatter = new Intl.DateTimeFormat("default", {
+    dateStyle: "long",
+    timeStyle: "short",
   });
   return formatter.format(date);
 };
