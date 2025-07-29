@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Meeting, { IMeeting } from '../models/meeting';
 
 const createMeeting = async (meetingData: IMeeting): Promise<IMeeting> => {
@@ -20,8 +21,10 @@ const deleteMeeting = async (id: string): Promise<IMeeting | null> => {
   return Meeting.findByIdAndDelete(id);
 };
 
-const listMeetings = async (): Promise<IMeeting[]> => {
-  return Meeting.find({});
+const listMeetings = async (
+  query: any
+): Promise<mongoose.PaginateResult<IMeeting>> => {
+  return Meeting.paginate(query);
 };
 
 export default {
