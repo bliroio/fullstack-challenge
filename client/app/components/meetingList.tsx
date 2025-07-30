@@ -7,10 +7,6 @@ import {
   Box,
   Typography,
   Paper,
-  Chip,
-  IconButton,
-  Avatar,
-  AvatarGroup,
 } from "@mui/material";
 import { format, differenceInMinutes } from "date-fns";
 
@@ -22,57 +18,8 @@ const formatDate = (dateString: string) => {
 const calculateDuration = (startTime: string, endTime: string) => {
   const start = new Date(startTime);
   const end = new Date(endTime);
-  const diffMins = differenceInMinutes(end, start);
-  return `${diffMins} min`;
-};
-
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "Delivered":
-      return "success";
-    case "Scheduled":
-      return "info";
-    case "In Progress":
-      return "warning";
-    case "Cancelled":
-      return "error";
-    default:
-      return "default";
-  }
-};
-
-const getCallTypeColor = (callType: string) => {
-  switch (callType) {
-    case "Sales calls":
-      return "#ff6b35";
-    case "Marketing calls":
-      return "#ff8a65";
-    case "Discovery calls":
-      return "#ffab40";
-    default:
-      return "#9e9e9e";
-  }
-};
-
-// Mock function to add missing data for demo purposes
-const enhanceMeetingData = (meeting: Meeting): Meeting => {
-  const mockStatuses = ["Delivered", "Scheduled", "In Progress"];
-  const mockCallTypes = ["Sales calls", "Marketing calls", "Discovery calls"];
-  const mockAttendees = [
-    ["Peter S.", "Martin T.", "Maurice S."],
-    ["John D.", "Sarah W.", "Mike R."],
-    ["Anna K.", "David L.", "Lisa M."],
-  ];
-
-  const randomIndex = Math.floor(Math.random() * 3);
-  
-  return {
-    ...meeting,
-    status: mockStatuses[randomIndex] as any,
-    callType: mockCallTypes[randomIndex] as any,
-    attendeeCount: Math.floor(Math.random() * 20) + 5,
-    attendees: mockAttendees[randomIndex],
-  };
+  const minutes = differenceInMinutes(end, start);
+  return `${minutes} min`;
 };
 
 const MeetingList: React.FC = () => {
@@ -80,8 +27,7 @@ const MeetingList: React.FC = () => {
 
   React.useEffect(() => {
     listMeetings().then((data) => {
-      const enhancedMeetings = data.map(enhanceMeetingData);
-      setMeetings(enhancedMeetings);
+      setMeetings(data);
     });
   }, []);
 
@@ -94,7 +40,7 @@ const MeetingList: React.FC = () => {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {meetings.map((meeting) => (
           <Paper
-            key={meeting.id}
+            key={meeting._id}
             elevation={0}
             sx={{
               p: 3,
@@ -146,30 +92,11 @@ const MeetingList: React.FC = () => {
                 </Typography>
               </Box>
               
-              {/* Status Chip */}
-              {meeting.status && (
-                <Chip
-                  label={meeting.status}
-                  size="small"
-                  sx={{
-                    height: "20px",
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    backgroundColor: meeting.status === "Delivered" ? "#e8f5e8" : "#f0f0f0",
-                    color: meeting.status === "Delivered" ? "#2e7d32" : "#666",
-                    border: "none",
-                    "& .MuiChip-label": {
-                      px: 1,
-                    },
-                  }}
-                />
-              )}
-              
               {/* Attendee Count */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                 <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>👥</Typography>
                 <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
-                  {meeting.attendeeCount}
+                  {meeting.attendees.length}
                 </Typography>
               </Box>
               
@@ -177,13 +104,8 @@ const MeetingList: React.FC = () => {
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                 <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>👤</Typography>
                 <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
-                  {meeting.attendees ? (
-                    <>
-                      {meeting.attendees.join(", ")}
-                      {meeting.attendeeCount && meeting.attendeeCount > meeting.attendees.length && 
-                        `, +${meeting.attendeeCount - meeting.attendees.length} others`
-                      }
-                    </>
+                  {meeting.attendees.length > 0 ? (
+                    meeting.attendees.map(attendee => attendee.name).join(", ")
                   ) : (
                     "No attendees listed"
                   )}

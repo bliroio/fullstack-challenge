@@ -27,17 +27,44 @@ const resetDatabase = async () => {
 
   const meetings = [];
   const now = new Date().getTime();
+  
+  // Sample attendee names
+  const attendeeNames = [
+    'John Smith', 'Sarah Johnson', 'Mike Wilson', 'Emily Davis', 'David Brown',
+    'Lisa Anderson', 'Chris Taylor', 'Amy Thompson', 'Kevin White', 'Jessica Miller',
+    'Ryan Garcia', 'Michelle Lee', 'Brian Clark', 'Ashley Martinez', 'Daniel Rodriguez'
+  ];
+  
+  const meetingTitles = [
+    'Weekly Team Standup', 'Product Review Meeting', 'Client Presentation',
+    'Budget Planning Session', 'Marketing Strategy Discussion', 'Engineering Sync',
+    'Sales Pipeline Review', 'Quarterly Business Review', 'Project Kickoff',
+    'Design System Review', 'User Research Findings', 'Sprint Planning'
+  ];
 
   for (let i = 0; i < 100; i++) {
+    // Random date between past 30 days and future 30 days
     const randomStartDate = new Date(
-      // Random date between now and 24 hours later
-      now + Math.floor(Math.random() * 1000 * 60 * 60 * 24),
+      now + Math.floor((Math.random() - 0.5) * 60 * 24 * 60 * 60 * 1000) // ±30 days
     );
+    
+    // Random meeting duration between 30min and 2 hours
+    const duration = (30 + Math.floor(Math.random() * 90)) * 60 * 1000;
+    
+    // Generate random attendees (2-6 people)
+    const numAttendees = 2 + Math.floor(Math.random() * 5);
+    const shuffledNames = [...attendeeNames].sort(() => 0.5 - Math.random());
+    const attendees = shuffledNames.slice(0, numAttendees).map((name, index) => ({
+      id: `user_${i}_${index}`,
+      name: name
+    }));
 
     meetings.push({
-      title: `Dummy Meeting ${i + 1}`,
+      title: meetingTitles[Math.floor(Math.random() * meetingTitles.length)],
       startTime: randomStartDate,
-      endTime: new Date(randomStartDate.getTime() + 60 * 60 * 1000), // 1 hour later
+      endTime: new Date(randomStartDate.getTime() + duration),
+      attendees: attendees,
+      userId: 'user_1' // Assuming current user is user_1
     });
   }
 
