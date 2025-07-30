@@ -3,6 +3,7 @@
 // Home.tsx
 import React from "react";
 import MeetingList from "./components/meetingList";
+import CreateMeetingDrawer from "./components/createMeetingDrawer";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -13,10 +14,19 @@ import Logo from "./assets/logo.png";
 
 const Home: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [refreshKey, setRefreshKey] = React.useState(0);
 
   const handleCreateMeeting = () => {
-    // TODO: Implement create meeting functionality
-    console.log("Create meeting clicked");
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+  const handleMeetingCreated = () => {
+    setRefreshKey(prev => prev + 1);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +111,14 @@ const Home: React.FC = () => {
       </Box>
 
       {/* Main content */}
-      <MeetingList />
+      <MeetingList key={refreshKey} />
+      
+      {/* Create Meeting Drawer */}
+      <CreateMeetingDrawer
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+        onMeetingCreated={handleMeetingCreated}
+      />
     </Container>
   );
 };

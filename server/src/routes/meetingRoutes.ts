@@ -45,7 +45,37 @@ const router = express.Router();
  *                   type: number
  *       500:
  *         description: Server error
+ *   post:
+ *     summary: Create a new meeting
+ *     tags: [Meetings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - startTime
+ *               - endTime
+ *             properties:
+ *               title:
+ *                 type: string
+ *               startTime:
+ *                 type: string
+ *                 format: date-time
+ *               endTime:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       201:
+ *         description: Meeting created successfully
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Server error
  */
 router.get("/", meetingController.listMeetings);
+router.post("/", meetingController.createMeeting);
 
 export default router;

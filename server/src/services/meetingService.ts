@@ -40,5 +40,16 @@ const listMeetings = async (
   };
 };
 
-export default { listMeetings };
+const createMeeting = async (meetingData: {
+  title: string;
+  startTime: Date;
+  endTime: Date;
+  userId: string;
+  attendees: { id: string; name: string }[];
+}): Promise<IMeeting> => {
+  const meeting = new Meeting(meetingData);
+  return await meeting.save();
+};
+
+export default { listMeetings, createMeeting };
 export type { MeetingWithStatus };
