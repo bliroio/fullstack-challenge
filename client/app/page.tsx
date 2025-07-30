@@ -9,6 +9,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import InputAdornment from "@mui/material/InputAdornment";
+import { Launch, Search } from "@mui/icons-material";
 
 import Logo from "./assets/logo.png";
 
@@ -35,14 +38,15 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 3 }}>
-      {/* Header with logo, search, and create button */}
+    <>
+      {/* Full-width Header */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          mb: 4,
+          px: 3,
+          py: 3,
           gap: 3,
         }}
       >
@@ -59,10 +63,10 @@ const Home: React.FC = () => {
         </Box>
 
         {/* Search Input */}
-        <Box sx={{ flex: 1, maxWidth: 400, mx: 3 }}>
+        <Box sx={{ flex: 1, maxWidth: 700, mx: 3 }}>
           <TextField
             fullWidth
-            placeholder="Search meetings..."
+            placeholder="Search..."
             value={searchQuery}
             onChange={handleSearchChange}
             variant="outlined"
@@ -70,14 +74,26 @@ const Home: React.FC = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 borderRadius: 2,
-                backgroundColor: "#f5f5f5",
+                backgroundColor: "white",
                 "&:hover": {
-                  backgroundColor: "#eeeeee",
+                  "& fieldset": {
+                    borderColor: "#c0c0c0",
+                  },
                 },
                 "&.Mui-focused": {
                   backgroundColor: "white",
                 },
+                "& fieldset": {
+                  borderColor: "#e0e0e0",
+                },
               },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search sx={{ color: "#9e9e9e" }} />
+                </InputAdornment>
+              ),
             }}
           />
         </Box>
@@ -106,12 +122,21 @@ const Home: React.FC = () => {
             transition: "all 0.2s ease-in-out",
           }}
         >
-          ✏️ Create meeting
+          <Launch sx={{ mr: 1 }} />
+          Create meeting
         </Button>
       </Box>
 
-      {/* Main content */}
-      <MeetingList key={refreshKey} />
+      {/* Full-width faint divider */}
+      <Divider sx={{ 
+        borderColor: 'rgba(0, 0, 0, 0.08)',
+        opacity: 0.6
+      }} />
+
+      {/* Main content with container */}
+      <Container maxWidth="xl" sx={{ py: 3 }}>
+        <MeetingList key={refreshKey} />
+      </Container>
       
       {/* Create Meeting Drawer */}
       <CreateMeetingDrawer
@@ -119,7 +144,7 @@ const Home: React.FC = () => {
         onClose={handleDrawerClose}
         onMeetingCreated={handleMeetingCreated}
       />
-    </Container>
+    </>
   );
 };
 
