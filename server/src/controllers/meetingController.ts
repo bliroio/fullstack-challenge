@@ -1,5 +1,6 @@
 import meetingService from "../services/meetingService";
 import Joi from "joi";
+import { meetingEvents } from "../events/meetingEvents";
 
 const listMeetings = async (req: any, res: any) => {
   try {
@@ -101,6 +102,22 @@ const cancelMeeting = async (req: any, res: any) => {
     }
     
     const updatedMeeting = await meetingService.cancelMeeting(id);
+    
+    // Collect all users to notify (organizer + attendees, but deduplicated)
+    const usersToNotify = new Set<string>();
+    usersToNotify.add(meeting.userId); // Add organizer
+    
+    // Add all attendees
+    meeting.attendees.forEach(attendee => {
+      usersToNotify.add(attendee.id);
+    });
+    
+    // Emit event for each unique user
+    usersToNotify.forEach(userId => {
+      console.log(`Emitting meeting cancelled event for meeting ${id}, user ${userId}`);
+      meetingEvents.emitMeetingCancelled(id, userId);
+    });
+    
     res.json(updatedMeeting);
   } catch (error: any) {
     res.status(500).json({ message: error.message });

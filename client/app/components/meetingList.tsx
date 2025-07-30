@@ -4,6 +4,8 @@ import React from "react";
 import { listMeetings, cancelMeeting } from "../services/meetingService";
 import { Meeting } from "../models/Meeting";
 import CountdownWidget from "./countdownWidget";
+import { useSocket } from "../hooks/useSocket";
+import { useSnackbar } from 'notistack';
 import {
   Box,
   Typography,
@@ -65,12 +67,50 @@ const MeetingList: React.FC = () => {
   
   // Mock current user ID (since we don't have auth)
   const currentUserId = 'user_1';
+  
+  // Initialize socket connection and notifications
+  const { onMeetingCancelled, offMeetingCancelled } = useSocket(currentUserId);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const fetchMeetings = React.useCallback(async () => {
+    try {
+      const data = await listMeetings();
+      setMeetings(data);
+    } catch (error) {
+      console.error('Error fetching meetings:', error);
+    }
+  }, []);
 
   React.useEffect(() => {
-    listMeetings().then((data) => {
-      setMeetings(data);
-    });
-  }, []);
+    fetchMeetings();
+  }, [fetchMeetings]);
+
+  // Listen for real-time meeting cancellations
+  React.useEffect(() => {
+    console.log('🎧 Setting up meeting cancelled listener...');
+    
+    const handleMeetingCancelled = (data: { meetingId: string; message: string }) => {
+      console.log('🔥 Received meeting cancelled notification:', data);
+      
+      // Show notification to user
+      console.log('📢 Showing toast notification...');
+      enqueueSnackbar('🚨 A meeting has been cancelled and removed from your list', {
+        variant: 'warning',
+        autoHideDuration: 6000,
+      });
+      
+      // Refresh meetings list to remove cancelled meeting
+      console.log('🔄 Refreshing meetings list...');
+      fetchMeetings();
+    };
+
+    onMeetingCancelled(handleMeetingCancelled);
+
+    return () => {
+      console.log('🧹 Cleaning up meeting cancelled listener...');
+      offMeetingCancelled();
+    };
+  }, [onMeetingCancelled, offMeetingCancelled, fetchMeetings, enqueueSnackbar]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, meetingId: string) => {
     setAnchorEl(event.currentTarget);
