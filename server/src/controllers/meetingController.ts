@@ -32,7 +32,14 @@ const createMeetingSchema = Joi.object({
     'date.base': 'End time must be a valid date',
     'date.greater': 'End time must be after start time',
     'any.required': 'End time is required'
-  })
+  }),
+  attendees: Joi.array().items(
+    Joi.string().trim().min(1).max(100).messages({
+      'string.empty': 'Attendee name cannot be empty',
+      'string.min': 'Attendee name cannot be empty',
+      'string.max': 'Attendee name cannot exceed 100 characters'
+    })
+  ).optional().default([])
 });
 
 const createMeeting = async (req: any, res: any) => {
@@ -52,10 +59,19 @@ const createMeeting = async (req: any, res: any) => {
       name: 'Alex Potapov'
     };
 
+    // Convert attendee names to attendee objects and add organizer
+    const attendeeObjects = value.attendees ? value.attendees.map((name: string, index: number) => ({
+      id: `attendee_${Date.now()}_${index}`,
+      name: name.trim()
+    })) : [];
+
+    // Add organizer as first attendee
+    const allAttendees = [currentUser, ...attendeeObjects];
+
     const meeting = await meetingService.createMeeting({
       ...value,
       userId: currentUser.id,
-      attendees: [currentUser] // Add organizer as first attendee
+      attendees: allAttendees
     });
     
     res.status(201).json(meeting);

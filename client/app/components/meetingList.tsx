@@ -155,7 +155,23 @@ const MeetingList: React.FC = () => {
                 <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>👤</Typography>
                 <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
                   {meeting.attendees.length > 0 ? (
-                    meeting.attendees.map(attendee => attendee.name).join(", ")
+                    (() => {
+                      const attendeeNames = meeting.attendees.map(attendee => {
+                        const nameParts = attendee.name.split(' ');
+                        if (nameParts.length >= 2) {
+                          return `${nameParts[0]} ${nameParts[1].charAt(0)}.`;
+                        }
+                        return attendee.name;
+                      });
+                      
+                      if (attendeeNames.length <= 3) {
+                        return attendeeNames.join(", ");
+                      } else {
+                        const firstThree = attendeeNames.slice(0, 3).join(", ");
+                        const remaining = attendeeNames.length - 3;
+                        return `${firstThree} + ${remaining} others`;
+                      }
+                    })()
                   ) : (
                     "No attendees listed"
                   )}

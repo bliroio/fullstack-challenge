@@ -17,6 +17,7 @@ export const createMeeting = async (meetingData: {
   title: string;
   startTime: string;
   endTime: string;
+  attendees: string[];
 }): Promise<Meeting> => {
   try {
     const response = await axios.post<Meeting>(API_BASE_URL, meetingData);
