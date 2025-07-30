@@ -19,6 +19,20 @@ interface TimeRemaining {
 const CountdownWidget: React.FC<CountdownWidgetProps> = ({ meetings }) => {
   const [timeRemaining, setTimeRemaining] = React.useState<TimeRemaining | null>(null);
   const [nextMeeting, setNextMeeting] = React.useState<Meeting | null>(null);
+  const [currentMeeting, setCurrentMeeting] = React.useState<Meeting | null>(null);
+
+  const findCurrentMeeting = React.useCallback(() => {
+    const now = new Date();
+    
+    // Find meeting that is currently in progress
+    const inProgressMeeting = meetings.find(meeting => {
+      const startTime = new Date(meeting.startTime);
+      const endTime = new Date(meeting.endTime);
+      return now >= startTime && now <= endTime;
+    });
+
+    return inProgressMeeting || null;
+  }, [meetings]);
 
   const findNextUpcomingMeeting = React.useCallback(() => {
     const now = new Date();
@@ -51,7 +65,10 @@ const CountdownWidget: React.FC<CountdownWidgetProps> = ({ meetings }) => {
   }, []);
 
   React.useEffect(() => {
+    const current = findCurrentMeeting();
     const next = findNextUpcomingMeeting();
+    
+    setCurrentMeeting(current);
     setNextMeeting(next);
 
     if (!next) {
@@ -60,6 +77,10 @@ const CountdownWidget: React.FC<CountdownWidgetProps> = ({ meetings }) => {
     }
 
     const updateCountdown = () => {
+      // Check if we're still in a current meeting or if it ended
+      const newCurrent = findCurrentMeeting();
+      setCurrentMeeting(newCurrent);
+      
       const targetDate = new Date(next.startTime);
       const remaining = calculateTimeRemaining(targetDate);
       setTimeRemaining(remaining);
@@ -78,7 +99,80 @@ const CountdownWidget: React.FC<CountdownWidgetProps> = ({ meetings }) => {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [meetings, findNextUpcomingMeeting, calculateTimeRemaining]);
+  }, [meetings, findCurrentMeeting, findNextUpcomingMeeting, calculateTimeRemaining]);
+
+  const formatTime = (value: number) => value.toString().padStart(2, '0');
+
+  // If user is currently in a meeting
+  if (currentMeeting) {
+    return (
+      <Paper
+        sx={{
+          p: 3,
+          mb: 3,
+          borderRadius: 2,
+          border: "2px solid #4caf50",
+          backgroundColor: "#f1f8e9",
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="h6" sx={{ color: "#4caf50", mb: 2, fontWeight: 600 }}>
+          🟢 You are now in a meeting
+        </Typography>
+        
+        <Typography variant="h5" sx={{ color: "#333", mb: 2, fontWeight: 500 }}>
+          {currentMeeting.title}
+        </Typography>
+        
+        <Typography variant="body2" sx={{ color: "#666", mb: 3 }}>
+          Until {format(new Date(currentMeeting.endTime), "HH:mm")}
+        </Typography>
+
+        {nextMeeting && timeRemaining ? (
+          <>
+            <Typography variant="h6" sx={{ color: "#FF6B35", mb: 2, fontWeight: 600 }}>
+              Next Meeting: {nextMeeting.title}
+            </Typography>
+            
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+              {timeRemaining.days > 0 && (
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography variant="h4" sx={{ color: "#FF6B35", fontWeight: 700, lineHeight: 1 }}>
+                    {formatTime(timeRemaining.days)}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: "#666", textTransform: "uppercase", letterSpacing: 1 }}>
+                    Days
+                  </Typography>
+                </Box>
+              )}
+              
+              <Box sx={{ textAlign: "center" }}>
+                <Typography variant="h4" sx={{ color: "#FF6B35", fontWeight: 700, lineHeight: 1 }}>
+                  {formatTime(timeRemaining.hours)}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "#666", textTransform: "uppercase", letterSpacing: 1 }}>
+                  Hours
+                </Typography>
+              </Box>
+              
+              <Box sx={{ textAlign: "center" }}>
+                <Typography variant="h4" sx={{ color: "#FF6B35", fontWeight: 700, lineHeight: 1 }}>
+                  {formatTime(timeRemaining.minutes)}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "#666", textTransform: "uppercase", letterSpacing: 1 }}>
+                  Minutes
+                </Typography>
+              </Box>
+            </Box>
+          </>
+        ) : (
+          <Typography variant="body2" sx={{ color: "#999" }}>
+            No upcoming meetings after this one
+          </Typography>
+        )}
+      </Paper>
+    );
+  }
 
   if (!nextMeeting || !timeRemaining) {
     return (
@@ -101,8 +195,6 @@ const CountdownWidget: React.FC<CountdownWidgetProps> = ({ meetings }) => {
       </Paper>
     );
   }
-
-  const formatTime = (value: number) => value.toString().padStart(2, '0');
 
   return (
     <Paper
