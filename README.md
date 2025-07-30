@@ -1,3 +1,64 @@
+# Notes from Alexander Potapov
+
+Stated requirements:
+- "provide a meeting booking functionality that is sufficiently designed for enterprise customers"
+- "there are only 180 minutes left until the follow up meeting where the lead check whether the system is sufficient to their needs"
+- "The CTO makes you the one responsible to pass the demo in the meeting."
+
+Given this goal and a strict time limit, I will focus on delivering the core functionality first and will allow myself to "fake" things like authentication.
+
+## Assumptions
+
+- The user is already logged in with user id 1
+- Timezone is UTC
+- No need to write migrations due to the DB being nuked on every startup
+
+## User stories:
+
+### User story 1:
+As a business user, I want to view a list of all my booked meetings so that I can see my upcoming schedule at a glance.
+- Display meetings in chronological order
+- Show meeting title, start datetime, end datetime, and duration
+- Show meeting status (upcoming, in progress, completed, cancelled)
+- Include attendee count or key attendees
+
+### User story 2:
+As a business user, I want to see the countdown until my next upcoming meeting prominently so that I don't miss important appointments.
+Note: "For each meeting a countdown that counts down the time until the next meeting starts" - This story is unclear. Is it meant that there should be a countdown for the user's next meeting or should we list the countdown for all meetings in the list? I think the former is more likely.
+
+### User story 3:
+As a business user, I want to create a new meeting so that I can schedule time with colleagues and clients.
+
+- Form with required fields: title, start datetime, end datetime
+- Date/time picker with validation
+- Display validation errors
+- Save meeting to backend successfully
+
+## More stories
+
+Following stories are not listed in the requirements but seem pretty obvious and are actually reflected in the overview page design.
+
+### User story 4:
+As a business user, I want to add attendees to my meeting so that all relevant people are notified.
+
+### User story 5:
+As a business user, I want to add tags to my meetings so that I can easily find them later.
+
+## Implementation details
+
+date-fns to format dates and times
+joi for input validation
+
+Low-prio:
+
+It would be cool to have meeting updates being displayed live in the frontend. E.g.
+if a meeting is moved or cancelled.
+
+There will be millions of meetings in the database and users will have 20 meetings a
+week booked through the portal. The app should be performant and also people
+will need to look up historic meetings.
+
+
 # Bliro's Engineer Challenge Repo
 
 ## Prerequisites:
