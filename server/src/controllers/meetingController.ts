@@ -2,7 +2,14 @@ import meetingService from "../services/meetingService";
 
 const listMeetings = async (req: any, res: any) => {
   try {
-    const meetings = await meetingService.listMeetings(req.query);
+    const query = {
+      endTime: { $gte: new Date() },
+      options: {
+        sort: { startTime: 1 }
+      }
+    };
+    
+    const meetings = await meetingService.listMeetings(query);
     res.json(meetings);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
