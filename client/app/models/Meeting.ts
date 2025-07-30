@@ -5,4 +5,5 @@ export interface Meeting {
   endTime: string;
   attendees: { id: string; name: string }[];
   userId: string;
+  status: 'upcoming' | 'in_progress' | 'completed' | 'cancelled';
 }

@@ -7,6 +7,7 @@ import {
   Box,
   Typography,
   Paper,
+  Chip,
 } from "@mui/material";
 import { format, differenceInMinutes } from "date-fns";
 
@@ -20,6 +21,36 @@ const calculateDuration = (startTime: string, endTime: string) => {
   const end = new Date(endTime);
   const minutes = differenceInMinutes(end, start);
   return `${minutes} min`;
+};
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "upcoming":
+      return "info";
+    case "in_progress":
+      return "warning";
+    case "completed":
+      return "success";
+    case "cancelled":
+      return "error";
+    default:
+      return "default";
+  }
+};
+
+const getStatusLabel = (status: string) => {
+  switch (status) {
+    case "upcoming":
+      return "Upcoming";
+    case "in_progress":
+      return "In Progress";
+    case "completed":
+      return "Delivered";
+    case "cancelled":
+      return "Cancelled";
+    default:
+      return status;
+  }
 };
 
 const MeetingList: React.FC = () => {
@@ -91,6 +122,21 @@ const MeetingList: React.FC = () => {
                   {calculateDuration(meeting.startTime, meeting.endTime)}
                 </Typography>
               </Box>
+              
+              {/* Status Chip */}
+              <Chip
+                label={getStatusLabel(meeting.status)}
+                size="small"
+                color={getStatusColor(meeting.status) as any}
+                sx={{
+                  height: "20px",
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  "& .MuiChip-label": {
+                    px: 1,
+                  },
+                }}
+              />
               
               {/* Attendee Count */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
