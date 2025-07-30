@@ -59,12 +59,14 @@ const resetDatabase = async () => {
       name: name
     }));
 
+    const ownerId = `user_${Math.floor(Math.random() * 10) + 2}`; // user_2 to user_11
+
     meetings.push({
       title: meetingTitles[Math.floor(Math.random() * meetingTitles.length)],
       startTime: randomStartDate,
       endTime: new Date(randomStartDate.getTime() + duration),
       attendees: attendees,
-      userId: 'user_1' // Assuming current user is user_1
+      userId: ownerId
     });
   }
 

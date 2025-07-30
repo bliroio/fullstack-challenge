@@ -51,5 +51,17 @@ const createMeeting = async (meetingData: {
   return await meeting.save();
 };
 
-export default { listMeetings, createMeeting };
+const getMeeting = async (id: string): Promise<IMeeting | null> => {
+  return await Meeting.findById(id);
+};
+
+const cancelMeeting = async (id: string): Promise<IMeeting | null> => {
+  return await Meeting.findByIdAndUpdate(
+    id,
+    { cancelled: true },
+    { new: true }
+  );
+};
+
+export default { listMeetings, createMeeting, getMeeting, cancelMeeting };
 export type { MeetingWithStatus };

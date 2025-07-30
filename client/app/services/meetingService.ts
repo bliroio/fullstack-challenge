@@ -27,3 +27,13 @@ export const createMeeting = async (meetingData: {
     throw error;
   }
 };
+
+export const cancelMeeting = async (meetingId: string): Promise<Meeting> => {
+  try {
+    const response = await axios.patch<Meeting>(`${API_BASE_URL}/${meetingId}/cancel`);
+    return response.data;
+  } catch (error) {
+    console.error("Error cancelling meeting:", error);
+    throw error;
+  }
+};

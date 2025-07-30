@@ -7,6 +7,7 @@ export interface IMeeting extends Document {
   endTime: Date;
   attendees: { id: string; name: string }[];
   userId: string;
+  cancelled: boolean;
 }
 
 const meetingSchema = new mongoose.Schema({
@@ -17,7 +18,8 @@ const meetingSchema = new mongoose.Schema({
     id: { type: String, required: true },
     name: { type: String, required: true }
   }],
-  userId: { type: String, required: true }
+  userId: { type: String, required: true },
+  cancelled: { type: Boolean, default: false }
 });
 
 meetingSchema.plugin(paginate);

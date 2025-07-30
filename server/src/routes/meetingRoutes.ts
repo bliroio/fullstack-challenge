@@ -75,7 +75,34 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
+/**
+ * @openapi
+ * /api/meetings/{id}/cancel:
+ *   patch:
+ *     summary: Cancel a meeting
+ *     tags: [Meetings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Meeting ID
+ *     responses:
+ *       200:
+ *         description: Meeting cancelled successfully
+ *       403:
+ *         description: Not authorized to cancel this meeting
+ *       404:
+ *         description: Meeting not found
+ *       400:
+ *         description: Meeting already cancelled
+ *       500:
+ *         description: Server error
+ */
+
 router.get("/", meetingController.listMeetings);
 router.post("/", meetingController.createMeeting);
+router.patch("/:id/cancel", meetingController.cancelMeeting);
 
 export default router;

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { listMeetings } from "../services/meetingService";
+import { listMeetings, cancelMeeting } from "../services/meetingService";
 import { Meeting } from "../models/Meeting";
 import CountdownWidget from "./countdownWidget";
 import {
@@ -9,7 +9,11 @@ import {
   Typography,
   Paper,
   Chip,
+  IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
+import { MoreVert } from "@mui/icons-material";
 import { format, differenceInMinutes } from "date-fns";
 
 const formatDate = (dateString: string) => {
@@ -56,12 +60,46 @@ const getStatusLabel = (status: string) => {
 
 const MeetingList: React.FC = () => {
   const [meetings, setMeetings] = React.useState<Meeting[]>([]);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [selectedMeetingId, setSelectedMeetingId] = React.useState<string | null>(null);
+  
+  // Mock current user ID (since we don't have auth)
+  const currentUserId = 'user_1';
 
   React.useEffect(() => {
     listMeetings().then((data) => {
       setMeetings(data);
     });
   }, []);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, meetingId: string) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedMeetingId(meetingId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedMeetingId(null);
+  };
+
+  const handleCancelMeeting = async () => {
+    if (!selectedMeetingId) return;
+    
+    try {
+      await cancelMeeting(selectedMeetingId);
+      // Refresh the meetings list
+      const updatedMeetings = await listMeetings();
+      setMeetings(updatedMeetings);
+      handleMenuClose();
+    } catch (error) {
+      console.error('Error cancelling meeting:', error);
+      // TODO: Show error message to user
+      handleMenuClose();
+    }
+  };
+
+  const selectedMeeting = meetings.find(m => m._id === selectedMeetingId);
+  const canCancelMeeting = selectedMeeting?.userId === currentUserId;
 
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: 3 }}>
@@ -82,26 +120,44 @@ const MeetingList: React.FC = () => {
               borderRadius: 2,
               border: "1px solid #e5e5e5",
               backgroundColor: "#fff",
-              cursor: "pointer",
+              position: "relative",
               "&:hover": {
                 boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                 borderColor: "#d0d0d0",
               },
             }}
           >
-            {/* Meeting Title */}
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                fontWeight: 500,
-                fontSize: "16px",
-                color: "#1a1a1a",
-                mb: 2,
-                lineHeight: 1.2,
-              }}
-            >
-              {meeting.title}
-            </Typography>
+            {/* Meeting Title and Menu */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  color: "#1a1a1a",
+                  lineHeight: 1.2,
+                  flex: 1,
+                  pr: 2,
+                }}
+              >
+                {meeting.title}
+              </Typography>
+              
+              {/* Three dot menu */}
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleMenuOpen(e, meeting._id);
+                }}
+                sx={{ 
+                  color: "#666",
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" }
+                }}
+              >
+                <MoreVert fontSize="small" />
+              </IconButton>
+            </Box>
             
             {/* Meeting Metadata Row */}
             <Box sx={{ 
@@ -181,6 +237,35 @@ const MeetingList: React.FC = () => {
           </Paper>
         ))}
       </Box>
+      
+      {/* Context Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        {canCancelMeeting && (
+          <MenuItem 
+            onClick={handleCancelMeeting}
+            sx={{ 
+              color: '#d32f2f',
+              '&:hover': { 
+                backgroundColor: 'rgba(211, 47, 47, 0.04)' 
+              }
+            }}
+          >
+            Cancel Meeting
+          </MenuItem>
+        )}
+      </Menu>
     </Box>
   );
 };

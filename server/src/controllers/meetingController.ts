@@ -5,6 +5,7 @@ const listMeetings = async (req: any, res: any) => {
   try {
     const query = {
       endTime: { $gte: new Date() },
+      cancelled: { $ne: true }, // Exclude cancelled meetings
       options: {
         sort: { startTime: 1 }
       }
@@ -80,4 +81,30 @@ const createMeeting = async (req: any, res: any) => {
   }
 };
 
-export default { listMeetings, createMeeting };
+const cancelMeeting = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const currentUserId = 'user_1'; // Mock current user
+    
+    // Find the meeting and check ownership
+    const meeting = await meetingService.getMeeting(id);
+    if (!meeting) {
+      return res.status(404).json({ message: 'Meeting not found' });
+    }
+    
+    if (meeting.userId !== currentUserId) {
+      return res.status(403).json({ message: 'You can only cancel your own meetings' });
+    }
+    
+    if (meeting.cancelled) {
+      return res.status(400).json({ message: 'Meeting is already cancelled' });
+    }
+    
+    const updatedMeeting = await meetingService.cancelMeeting(id);
+    res.json(updatedMeeting);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export default { listMeetings, createMeeting, cancelMeeting };

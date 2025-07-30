@@ -4,6 +4,7 @@ export interface Meeting {
   startTime: string;
   endTime: string;
   attendees: { id: string; name: string }[];
-  userId: string;
+  userId: string; // Meeting organizer/owner
   status: 'upcoming' | 'in_progress' | 'completed' | 'cancelled';
+  cancelled: boolean;
 }
