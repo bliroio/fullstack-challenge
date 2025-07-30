@@ -143,7 +143,7 @@ const MeetingList: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
+      <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: "rgb(var(--foreground-rgb))" }}>
         My meetings
       </Typography>
       
@@ -157,13 +157,13 @@ const MeetingList: React.FC = () => {
             elevation={0}
             sx={{
               p: 3,
-              borderRadius: 2,
-              border: "1px solid #e5e5e5",
-              backgroundColor: "#fff",
+              borderRadius: "var(--border-radius)",
+              border: "1px solid rgb(var(--callout-border-rgb))",
+              backgroundColor: "rgb(var(--background-start-rgb))",
               position: "relative",
               "&:hover": {
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                borderColor: "#d0d0d0",
+                boxShadow: "0 1px 3px rgba(var(--foreground-rgb), 0.1)",
+                borderColor: "rgb(var(--card-border-rgb))",
               },
             }}
           >
@@ -174,7 +174,7 @@ const MeetingList: React.FC = () => {
                 sx={{ 
                   fontWeight: 500,
                   fontSize: "16px",
-                  color: "#1a1a1a",
+                  color: "rgb(var(--foreground-rgb))",
                   lineHeight: 1.2,
                   flex: 1,
                   pr: 2,
@@ -191,8 +191,8 @@ const MeetingList: React.FC = () => {
                   handleMenuOpen(e, meeting._id);
                 }}
                 sx={{ 
-                  color: "#666",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" }
+                  color: "rgba(var(--foreground-rgb), 0.6)",
+                  "&:hover": { backgroundColor: "rgba(var(--foreground-rgb), 0.04)" }
                 }}
               >
                 <MoreVert fontSize="small" />
@@ -204,21 +204,21 @@ const MeetingList: React.FC = () => {
               display: "flex", 
               alignItems: "center", 
               gap: 3,
-              color: "#666",
+              color: "rgba(var(--foreground-rgb), 0.6)",
               fontSize: "14px",
             }}>
               {/* Date & Time */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>📅</Typography>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>📅</Typography>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>
                   {formatDate(meeting.startTime)}
                 </Typography>
               </Box>
               
               {/* Duration */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>⏰</Typography>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>⏰</Typography>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>
                   {calculateDuration(meeting.startTime, meeting.endTime)}
                 </Typography>
               </Box>
@@ -240,16 +240,16 @@ const MeetingList: React.FC = () => {
               
               {/* Attendee Count */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>👥</Typography>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>👥</Typography>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>
                   {meeting.attendees.length}
                 </Typography>
               </Box>
               
               {/* Attendees List */}
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>👤</Typography>
-                <Typography variant="body2" sx={{ color: "#666", fontSize: "14px" }}>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>👤</Typography>
+                <Typography variant="body2" sx={{ color: "rgba(var(--foreground-rgb), 0.6)", fontSize: "14px" }}>
                   {meeting.attendees.length > 0 ? (
                     (() => {
                       const attendeeNames = meeting.attendees.map(attendee => {
