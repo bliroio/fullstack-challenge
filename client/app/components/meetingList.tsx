@@ -3,6 +3,7 @@
 import React from "react";
 import { listMeetings } from "../services/meetingService";
 import { Meeting } from "../models/Meeting";
+import CountdownWidget from "./countdownWidget";
 import {
   Box,
   Typography,
@@ -67,6 +68,9 @@ const MeetingList: React.FC = () => {
       <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
         My meetings
       </Typography>
+      
+      {/* Countdown Widget */}
+      <CountdownWidget meetings={meetings} />
       
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {meetings.map((meeting) => (
