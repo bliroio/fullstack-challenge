@@ -41,11 +41,8 @@ export const CreateMeetingModal = ({
       onClose?.();
     } else {
       console.error("Failed to create meeting");
-      onClose?.();
     }
   };
-
-  console.log("Form Data:", formData); // Debugging line to check form data
 
   return (
     <ModalContainer>
