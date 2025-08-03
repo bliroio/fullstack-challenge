@@ -131,3 +131,7 @@ dist
 
 # mac files
 .DS_Store
+
+# package-lock files
+client/package-lock.json
+server/package-lock.json
