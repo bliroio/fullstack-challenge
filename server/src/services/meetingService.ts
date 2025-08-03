@@ -5,4 +5,9 @@ const listMeetings = async (query: any): Promise<PaginateResult<IMeeting>> => {
   return Meeting.paginate(query);
 };
 
-export default { listMeetings };
+const createMeeting = async (meetingData: IMeeting): Promise<IMeeting> => {
+  const meeting = new Meeting(meetingData);
+  return meeting.save();
+};
+
+export default { listMeetings, createMeeting };

@@ -7,6 +7,7 @@ const connectDB = async () => {
   try {
     await mongoose.connect(dbUri);
     console.log("MongoDB connected...");
+    console.log("database uri:", dbUri);
 
     // Optional: Clear existing data and insert dummy data
     await resetDatabase();
