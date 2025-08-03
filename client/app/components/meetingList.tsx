@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { listMeetings } from "../services/meetingService";
-import { Meeting } from "../models/Meeting";
+import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
+import React, { useEffect, useState } from "react";
+import { Meeting } from "../models/Meeting";
+import { listMeetings } from "../services/meetingService";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
