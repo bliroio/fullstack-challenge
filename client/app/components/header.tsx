@@ -1,10 +1,22 @@
 import { AppBar, Button, Drawer, Toolbar } from "@mui/material";
 import { useState } from "react";
+import { Meeting } from "../models/Meeting";
 import { CreateMeetingModal } from "./create-meeting-modal";
 import createMeetingIcon from "./icons/arrow-up-right-square.svg";
 
-export default function Header() {
+type Props = {
+    onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+}
+export default function Header({ onCreateMeeting }: Props) {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const handleCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
+        try {
+            await onCreateMeeting(meeting);
+            setDrawerOpen(false);
+        } catch (error) {
+            console.error("Error creating meeting:", error);
+        }
+    }
     return (
         <AppBar position="static">
             <Toolbar sx={{
@@ -23,7 +35,7 @@ export default function Header() {
                         Create Meeting
                     </Button>
                     <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-                        <CreateMeetingModal onClose={() => setDrawerOpen(false)} />
+                        <CreateMeetingModal onClose={() => setDrawerOpen(false)} onCreateMeeting={handleCreateMeeting} />
                     </Drawer>
                 </>
             </Toolbar>

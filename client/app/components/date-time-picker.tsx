@@ -22,6 +22,9 @@ export const DateTimePicker = ({ label, value, onChange, style }: Props) => {
                     format="dd MMM. yyyy"
                     sx={{
                         flex: 1,
+                        '& .MuiPickersInputBase-root': {
+                            height: '40px',
+                        },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
                                 borderColor: '#E0E0E0',
@@ -45,6 +48,9 @@ export const DateTimePicker = ({ label, value, onChange, style }: Props) => {
                     }}
                     sx={{
                         width: '100px',
+                        '& .MuiPickersInputBase-root': {
+                            height: '40px',
+                        },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
                                 borderColor: '#E0E0E0',

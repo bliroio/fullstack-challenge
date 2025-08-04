@@ -2,9 +2,9 @@
 
 import { Card, Typography } from "@mui/material";
 import { differenceInMinutes, formatDuration } from 'date-fns';
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Meeting } from "../models/Meeting";
-import { listMeetings } from "../services/meetingService";
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const formatter = new Intl.DateTimeFormat("default", {
@@ -14,13 +14,10 @@ const formatDate = (dateString: string) => {
   return formatter.format(date);
 };
 
-const MeetingList: React.FC = () => {
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
-
-  useEffect(() => {
-    listMeetings().then(setMeetings);
-  }, []);
-
+type Props = {
+  meetings: Meeting[];
+}
+const MeetingList: React.FC<Props> = ({ meetings }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
       {meetings.map((meeting, index) => (

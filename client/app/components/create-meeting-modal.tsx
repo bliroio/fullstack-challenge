@@ -1,13 +1,14 @@
 import { Button, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
-import { createMeeting } from "../services/meetingService";
+import { Meeting } from "../models/Meeting";
 import { DateTimePicker } from "./date-time-picker";
 import { TextInput } from "./text-input";
 
 type Props = {
     onClose: () => void;
+    onCreateMeeting: (meeting: Omit<Meeting, "id">) => void;
 }
-export const CreateMeetingModal = ({ onClose }: Props) => {
+export const CreateMeetingModal = ({ onClose, onCreateMeeting }: Props) => {
     const [title, setTitle] = useState('');
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
@@ -21,8 +22,9 @@ export const CreateMeetingModal = ({ onClose }: Props) => {
             console.log("Invalid meeting");
             return;
         }
-        createMeeting({ title, startTime: startTime.toISOString(), endTime: endTime.toISOString() }).then(() => {
-            onClose();
+        onCreateMeeting({
+            title,
+            startTime: startTime.toISOString(), endTime: endTime.toISOString()
         });
     }
 
