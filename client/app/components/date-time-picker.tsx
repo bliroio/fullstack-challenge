@@ -55,7 +55,6 @@ export const DateTimePicker = ({ label, value, onChange, style, required }: Prop
                             if (pickerValue) {
                                 onChange(pickerValue)
                             }
-                            setDateFieldOpen(false);
                         }}
                         sx={{
                             position: 'absolute',
