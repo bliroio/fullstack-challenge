@@ -61,6 +61,7 @@ export const DateTimePicker = ({ label, value, onChange, style, required }: Prop
                             position: 'absolute',
                             top: '100%',
                             left: 0,
+                            width: '100%',
                             zIndex: 1000,
                             backgroundColor: 'white',
                             boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
