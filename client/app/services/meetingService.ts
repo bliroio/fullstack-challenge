@@ -25,3 +25,13 @@ export const listMeetings = async (): Promise<Meeting[]> => {
     throw error;
   }
 };
+
+export const createMeeting = async (meeting: Omit<Meeting, "id">) => {
+  try {
+    const response = await axios.post(API_BASE_URL, meeting);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating meeting:", error);
+    throw error;
+  }
+};

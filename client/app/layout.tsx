@@ -2,6 +2,9 @@
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 
 const theme = createTheme({
   palette: {
@@ -12,7 +15,7 @@ const theme = createTheme({
       dark: '#F26835',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#000000',
     },
     background: {
       default: '#ffffff',
@@ -26,6 +29,12 @@ const theme = createTheme({
       fontSize: '24px',
       lineHeight: '36px',
       fontWeight: 600,
+    },
+    h5: {
+      color: '#424852',
+      fontSize: '16px',
+      lineHeight: '24px',
+      fontWeight: 400,
     },
     h6: {
       fontSize: '11px',
@@ -91,8 +100,10 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <CssBaseline />
+            {children as any}
+          </LocalizationProvider>
         </ThemeProvider>
       </body>
     </html>

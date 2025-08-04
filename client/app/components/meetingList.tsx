@@ -24,7 +24,7 @@ const MeetingList: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
       {meetings.map((meeting, index) => (
-        <Card sx={{ padding: '16px', borderRadius: '4px', border: '1px solid #E7E8E9', boxShadow: '0 1px 1px 0px #131A2614' }}>
+        <Card key={meeting.id} sx={{ padding: '16px', borderRadius: '4px', border: '1px solid #E7E8E9', boxShadow: '0 1px 1px 0px #131A2614' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Typography variant="h5" sx={{ fontWeight: 600, lineHeight: '24px', fontSize: '16px' }}>{meeting.title}</Typography>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
