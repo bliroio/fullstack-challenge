@@ -9,4 +9,12 @@ const listMeetings = async (req: any, res: any) => {
   }
 };
 
-export default { listMeetings };
+const createMeeting = async (req: any, res: any) => {
+  try {
+    const meeting = await meetingService.createMeeting(req.body);
+    res.status(201).json(meeting);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export default { listMeetings, createMeeting };

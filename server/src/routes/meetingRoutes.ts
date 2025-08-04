@@ -48,4 +48,27 @@ const router = express.Router();
  */
 router.get("/", meetingController.listMeetings);
 
+/**
+ * @openapi
+ * /api/meetings:
+ *   post:
+ *     summary: Creates a new meeting
+ *     tags: [Meetings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Meeting'
+ *     responses:
+ *       201:
+ *         description: Meeting created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Meeting'
+ *       500:
+ *         description: Server error
+ */
+router.post("/", meetingController.createMeeting);
 export default router;

@@ -5,7 +5,6 @@ const dbUri = process.env.MONGODB_URI || "fallback_default_mongodb_uri";
 
 const connectDB = async () => {
   try {
-    console.log({ dbUri })
     await mongoose.connect(dbUri);
     console.log("MongoDB connected...");
 
