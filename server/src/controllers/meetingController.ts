@@ -1,4 +1,5 @@
 import meetingService from "../services/meetingService";
+import { createMeetingSchema } from "../validators/meeting";
 
 const listMeetings = async (req: any, res: any) => {
   try {
@@ -11,7 +12,13 @@ const listMeetings = async (req: any, res: any) => {
 
 const createMeeting = async (req: any, res: any) => {
   try {
-    const meeting = await meetingService.createMeeting(req.body);
+    const validatedMeetingResult = await createMeetingSchema.safeParseAsync(req.body);
+
+    if (!validatedMeetingResult.success) {
+      return res.status(400).json({ message: "Invalid meeting data" });
+    }
+    const validatedMeeting = validatedMeetingResult.data;
+    const meeting = await meetingService.createMeeting(validatedMeeting);
     res.status(201).json(meeting);
   } catch (error: any) {
     res.status(500).json({ message: error.message });

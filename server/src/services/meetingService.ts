@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Meeting, { IMeeting } from "../models/meeting";
+import Meeting, { IMeeting, IMeetingCreate } from "../models/meeting";
 
 const listMeetings = async (
   query: any,
@@ -7,7 +7,7 @@ const listMeetings = async (
   return Meeting.paginate(query);
 };
 
-const createMeeting = async (meeting: IMeeting): Promise<IMeeting> => {
+const createMeeting = async (meeting: IMeetingCreate): Promise<IMeeting> => {
   return Meeting.create(meeting);
 }
 export default { listMeetings, createMeeting };
