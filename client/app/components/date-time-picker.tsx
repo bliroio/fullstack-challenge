@@ -39,6 +39,7 @@ export const DateTimePicker = ({ label, value, onChange, style, required }: Prop
             <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
                 <Box ref={dateContainerRef} sx={{ flex: 1, position: 'relative' }}>
                     <TextField
+                        color="secondary"
                         sx={{ width: '100%' }}
                         value={formatDate(value, 'dd MMM. yyyy')}
                         onFocus={() => setDateFieldOpen(true)}
@@ -84,6 +85,7 @@ export const DateTimePicker = ({ label, value, onChange, style, required }: Prop
                 </Box>
                 <Box ref={timeContainerRef} sx={{ width: '100px', position: 'relative' }}>
                     <TextField
+                        color="secondary"
                         value={formatDate(value, 'HH:mm')}
                         onFocus={() => setTimeFieldOpen(true)}
                     />
