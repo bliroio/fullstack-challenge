@@ -1,12 +1,13 @@
+import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-import meetingRoutes from "./routes/meetingRoutes";
-import cors from "cors";
+
 import express from "express";
-import connectDB from "./db";
-import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./config/swaggerConfig";
+import connectDB from "./db";
+import meetingRoutes from "./routes/meetingRoutes";
 
 const app = express();
 const port = process.env.PORT || 3000;
