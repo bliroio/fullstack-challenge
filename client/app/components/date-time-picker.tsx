@@ -6,11 +6,12 @@ type Props = {
     value: Date;
     onChange: (value: Date) => void;
     style?: React.CSSProperties;
+    required?: boolean;
 }
-export const DateTimePicker = ({ label, value, onChange, style }: Props) => {
+export const DateTimePicker = ({ label, value, onChange, style, required }: Props) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', ...style }}>
-            <Label>{label}</Label>
+            <Label required={required}>{label}</Label>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
                 <DesktopDatePicker
                     value={value}

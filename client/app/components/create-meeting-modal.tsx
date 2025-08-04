@@ -1,4 +1,5 @@
 import { Button, Typography } from "@mui/material";
+import { differenceInMinutes } from "date-fns";
 import { useMemo, useState } from "react";
 import { Meeting } from "../models/Meeting";
 import { DateTimePicker } from "./date-time-picker";
@@ -12,16 +13,35 @@ export const CreateMeetingModal = ({ onClose, onCreateMeeting }: Props) => {
     const [title, setTitle] = useState('');
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
+    const [error, setError] = useState('');
 
     const isValid = useMemo(() => {
         return title.length > 0 && startTime < endTime;
     }, [title, startTime, endTime]);
 
     const handleCreateMeeting = () => {
-        if (!isValid) {
-            console.log("Invalid meeting");
+        setError('');
+
+        if (!title.length) {
+            setError("Title is required");
             return;
         }
+        if (!startTime || !endTime) {
+            setError("Start and end time are required");
+            return;
+        }
+        if (startTime >= endTime) {
+            setError("Start time must be before end time");
+            return;
+        }
+
+        // meeting should be at most 8 hours long
+        const duration = differenceInMinutes(endTime, startTime);
+        if (duration > 8 * 60) {
+            setError("Meeting duration must be less than 8 hours");
+            return;
+        }
+
         onCreateMeeting({
             title,
             startTime: startTime.toISOString(), endTime: endTime.toISOString()
@@ -33,10 +53,11 @@ export const CreateMeetingModal = ({ onClose, onCreateMeeting }: Props) => {
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="h4">Create a new meeting</Typography>
                 <Typography variant="h5" style={{ marginTop: '8px', marginBottom: '32px' }}>Complete the information below in order to create a new meeting.</Typography>
-                <TextInput label="Meeting title" placeholder="Enter meeting title" value={title} onChange={setTitle} />
-                <DateTimePicker label="Start time" value={startTime} onChange={setStartTime} style={{ marginTop: '32px' }} />
-                <DateTimePicker label="End time" value={endTime} onChange={setEndTime} style={{ marginTop: '32px' }} />
+                <TextInput label="Meeting title" placeholder="Enter meeting title" value={title} onChange={setTitle} required />
+                <DateTimePicker label="Start time" value={startTime} onChange={setStartTime} style={{ marginTop: '32px' }} required />
+                <DateTimePicker label="End time" value={endTime} onChange={setEndTime} style={{ marginTop: '32px' }} required />
             </div>
+            {error && <Typography variant="h6" style={{ color: '#F43641' }}>{error}</Typography>}
             <div style={{
                 display: 'flex',
                 flexDirection: 'row',

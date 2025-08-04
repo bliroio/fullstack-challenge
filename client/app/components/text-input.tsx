@@ -6,11 +6,12 @@ type Props = {
     placeholder: string;
     value: string;
     onChange: (value: string) => void;
+    required?: boolean;
 }
-export const TextInput = ({ label, placeholder, value, onChange }: Props) => {
+export const TextInput = ({ label, placeholder, value, onChange, required }: Props) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <Label htmlFor={label}>{label}</Label>
+            <Label htmlFor={label} required={required}>{label}</Label>
             <TextField
                 style={{
                     height: '40px',
