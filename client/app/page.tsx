@@ -2,7 +2,7 @@
 
 // Home.tsx
 import React from "react";
-import MeetingList from "./components/meetingList";
+import MeetingList from "./components/MeetingList";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
