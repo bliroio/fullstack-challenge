@@ -1,14 +1,11 @@
-"use client";
-
-// Home.tsx
-import React from "react";
-import MeetingList from "./components/MeetingList";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import React from 'react';
+import Typography from '@mui/material/Typography';
+import MeetingList from '@/app/components/MeetingList';
+import {Container} from '@mui/material';
 
 const Home: React.FC = () => {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth={'md'}>
       <Typography variant="h2" gutterBottom>
         Meetings
       </Typography>
