@@ -23,22 +23,48 @@ Please ensure that you dont exceed the given timeframe. Good luck!
 
 ### 1. Display list of meetings
 - Basic list API is already provided
-- Frontend should be able to list meetings according to the mockups -> Almost
+- Frontend should be able to list meetings according to the mockups
+
+Submission Status: 
+- Users can view two meeting lists (upcoming and past) since this seems more intuitive. The list is choronologically ordered for both sections. The design is not pixel perfect. 
 
 ### 2. Users should be able to create new meetings
-- Develop a Create API that is able to create new meetings with input validation -> Done
-- Users are able to create new meeting via a form on the frontend -> Done
-- Form should have form validation -> Done
+- Develop a Create API that is able to create new meetings with input validation
+- Users are able to create new meeting via a form on the frontend
+- Form should have form validation
+
+Submission Status:
+- Users are able to create new meetings from the frontend form with validations in place. 
+- Create API also validates the input.
 
 ### 3. Show a count down for each upcoming meeting - Required
-- As users forget about meetings, a countdown timer should be shown for each meeting -> Done
+- As users forget about meetings, a countdown timer should be shown for each meeting
+
+Submission Status: 
+- Users are shown a count down timer for their upcoming meetings. Meetings are marked as in progress, expired or cancelled. Further improvements could be made to move meetings between sections automatically.
 
 ### 4. Users should be able to lookup meetings
-- Users are able to lookup meetings via search -> List API will need to be updated -> Done
-- Implement pagination for performance - nice to have
+- Users are able to lookup meetings via search -> List API will need to be updated
+- Implement pagination for performance - nice to have -> not implemented
+
+Submission Status:
+- User can search meetings by title
 
 ### 5. Resolve frontend bugs
-- All the existing frontend bugs need to be resolved -> Done
+- All the existing frontend bugs need to be resolved
+
+Submission Status:
+- All bugs resolved
 
 ### 6. Meeting updates are provided in real time - Nice to have
 - In case a meeting is cancelled or updated, these should be reflected in real time to other users -> will require sockets/server side events
+
+Submission Status: 
+- This wasn't completed in the allotted time
+
+### Additional Work:
+- Added an update endpoint and integrated it to cancel meetings
+- Swagger docs updated for endpoints
+
+### Testing
+- Manual end-to-end testing was performed for all major features. Automated test cases were not added due to time constraints.
