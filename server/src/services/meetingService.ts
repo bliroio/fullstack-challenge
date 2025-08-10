@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Meeting, { IMeeting } from "../models/meeting";
+import { Meeting as MeetingDTO } from "../utils/meeting.utils.schema";
 
 const listMeetings = async (
   query: any,
@@ -7,4 +8,8 @@ const listMeetings = async (
   return Meeting.paginate(query);
 };
 
-export default { listMeetings };
+const createMeeting = async (data: MeetingDTO) => {
+  return Meeting.create(data);
+}
+
+export default { createMeeting, listMeetings };

@@ -48,4 +48,39 @@ const router = express.Router();
  */
 router.get("/", meetingController.listMeetings);
 
+/**
+ * @openapi
+ * /api/meetings:
+ *   post:
+ *     summary: Create a new meeting
+ *     tags: [Meetings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Meeting'
+ *     responses:
+ *       201:
+ *         description: Meeting created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Meeting'
+ *       400:
+ *         description: Invalid input data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       500:
+ *         description: Server error
+ */
+router.post("/", meetingController.createMeeting);
+
 export default router;
