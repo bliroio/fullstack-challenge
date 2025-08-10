@@ -20,7 +20,8 @@
     "mongoose": "^8.0.1",
     "mongoose-paginate-v2": "^1.9.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

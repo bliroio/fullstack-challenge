@@ -5,14 +5,14 @@ import React from "react";
 import MeetingList from "./components/meetingList";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import styles from "@/app/page.module.css"
 
 const Home: React.FC = () => {
   return (
-    <Container maxWidth="md">
-      <Typography variant="h2" gutterBottom>
-        Meetings
-      </Typography>
-      <MeetingList />
+    <Container maxWidth={false}>
+      <div className={styles.main}>
+        <MeetingList />
+      </div>
     </Container>
   );
 };

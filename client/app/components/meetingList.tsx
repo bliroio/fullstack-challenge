@@ -6,17 +6,12 @@ import { Meeting } from "../models/Meeting";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import { ListItemDetail } from "./ListItemDetails";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
+import styles from "@/app/page.module.css";
+import { Typography } from "@mui/material";
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const formatter = new Intl.DateTimeFormat("default", {
-    dateStyle: "long",
-    timeStyle: "short",
-  });
-  return formatter.format(date);
-};
 
 const MeetingList: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -30,28 +25,28 @@ const MeetingList: React.FC = () => {
   }, []);
 
   return (
-    <Paper elevation={3}>
-      <List>
+    <>
+      <Typography variant="h4" gutterBottom>My Meetings</Typography>
+      <List >
         {meetings.map((meeting, index) => (
           <React.Fragment key={meeting._id}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                primary={meeting.title}
-                secondary={
-                  <>
-                    <span>Start: {formatDate(meeting.startTime)}</span>
-                    <span>End: {formatDate(meeting.endTime)}</span>
-                  </>
-                }
-              />
-            </ListItem>
-            {index < meetings.length - 1 && (
-              <Divider variant="inset" component="li" />
-            )}
+            <Paper variant="outlined" elevation={0} square={false} className={styles.card}>
+              <ListItem key={meeting._id} alignItems="flex-start">
+                <ListItemText
+                  primary={meeting.title}
+                  secondary={ 
+                  <ListItemDetail 
+                    startTime={meeting.startTime}
+                    endTime={meeting.endTime}
+                  />
+                  }
+                />
+              </ListItem>
+            </Paper>
           </React.Fragment>
         ))}
       </List>
-    </Paper>
+    </>
   );
 };
 

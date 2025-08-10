@@ -1,8 +1,8 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  /* justify-content: space-between; */
+  /* align-items: center; */
   padding: 6rem;
   min-height: 100vh;
 }
@@ -46,6 +46,21 @@
   width: var(--max-width);
 }
 
+.carddetails {
+  height: 16;
+  gap: 8px;
+  angle: 0 deg;
+  opacity: 1;
+  font-size: small;
+}
+
+.seperator {
+  /* margin: "0 0.5rem"; */
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  /* color: black */
+}
+
 .card {
   padding: 1rem 1.2rem;
   border-radius: var(--border-radius);
@@ -54,6 +69,7 @@
   transition:
     background 200ms,
     border 200ms;
+  margin-bottom: 0.625rem;
 }
 
 .card span {
@@ -71,7 +87,13 @@
   opacity: 0.6;
   font-size: 0.9rem;
   line-height: 1.5;
-  max-width: 30ch;
+  /* max-width: 30ch; */
+}
+
+.itemdetail {
+  display: "inline-flex";
+  align-items: "center";
+  margin-right: "0.3rem" 
 }
 
 .center {
