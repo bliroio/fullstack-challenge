@@ -39,6 +39,26 @@ const swaggerDefinition = {
           },
         },
       },
+      CreateMeeting: {
+        type: "object",
+        required: ["title", "startTime", "endTime"],
+        properties: {
+          title: {
+            type: "string",
+            description: "The title of the meeting",
+          },
+          startTime: {
+            type: "string",
+            format: "date-time",
+            description: "The start time of the meeting",
+          },
+          endTime: {
+            type: "string",
+            format: "date-time",
+            description: "The end time of the meeting",
+          },
+        },
+      },
     },
   },
 };
