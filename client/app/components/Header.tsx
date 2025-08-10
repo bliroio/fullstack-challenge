@@ -12,10 +12,15 @@ import Logo from "@/public/bliro logo.png"
 
 interface HeaderProps {
     onSearch: (value: string) => void;
+    setDrawerToggle: (value: boolean) => void;
+    drawerToggle: boolean;
 }
 
-export default function Header({onSearch}: HeaderProps) {    
+export default function Header({onSearch, setDrawerToggle, drawerToggle}: HeaderProps) {    
     
+    const handleCreateMeeting = () => {
+        setDrawerToggle(!drawerToggle);
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -46,7 +51,7 @@ export default function Header({onSearch}: HeaderProps) {
                 </Box>
                 {/* Right: Search and Button */}
                 <Box sx={{ display: "flex", alignItems: "center"}}>
-                    <Button variant="contained">Create Meeting</Button>
+                    <Button variant="contained" onClick={handleCreateMeeting}>Create Meeting</Button>
                 </Box>
                 
             </Toolbar>

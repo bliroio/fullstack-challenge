@@ -13,7 +13,8 @@ import styles from "@/app/page.module.css";
 import { Typography } from "@mui/material";
 
 interface ListProps {
-  search: string
+  search: string,
+  refresh: number
 };
 
 interface ListCompProps {
@@ -21,7 +22,7 @@ interface ListCompProps {
   list: Meeting[]
 }
 
-const MeetingList: React.FC<ListProps> = ({search}) => {
+const MeetingList: React.FC<ListProps> = ({search, refresh}) => {
   const [upcomingMeetings, setUpcomingMeetings] = useState<Meeting[]>([]);
   const [pastMeetings, setPastMeetings] = useState<Meeting[]>([]);
 
@@ -37,7 +38,7 @@ const MeetingList: React.FC<ListProps> = ({search}) => {
       }
     }
     list();
-  }, [search]);
+  }, [search, refresh]);
 
   const ListComp = ({heading, list}: ListCompProps) => {
     

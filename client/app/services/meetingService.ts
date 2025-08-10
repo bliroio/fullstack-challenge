@@ -16,7 +16,16 @@ export const listMeetings = async (params = {}): Promise<PaginatedMeetings> => {
     const response = await axios.get<PaginatedMeetings>(listURL);
     return response.data;
   } catch (error) {
-    // console.error("Error fetching meetings:", error);
     throw error;
   }
 };
+
+export const createMeeting = async (data = {}): Promise<Meeting> => {
+  try {
+    const createURL = `${API_BASE_URL}/meetings`;
+    const response = await axios.post<Meeting>(createURL, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
