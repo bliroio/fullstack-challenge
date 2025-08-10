@@ -4,8 +4,22 @@ import { createMeetingSchema} from "../utils/meeting.utils.schema";
 
 const listMeetings = async (req: any, res: any) => {
   try {
-    const meetings = await meetingService.listMeetings(req.query);
-    res.json(meetings);
+    // search title
+    const {title} = req.query;
+    let filters: any = {};
+    if (title) {
+      filters.title = { $regex: title, $options: "i" };
+    }
+    console.log("filters: ", filters)
+
+    const now = new Date();
+    const upcomingMeetingsFilter = {...filters, startTime: {$gte: now}};
+    const upcomingMeetings = await meetingService.listMeetings(upcomingMeetingsFilter, {sort: {startTime: 1}});
+
+    const pastMeetingsFilter = {...filters, startTime: {$lte: now}};
+    const pastMeetings = await meetingService.listMeetings(pastMeetingsFilter, {sort: {startTime: -1}});
+
+    return res.json({upcomingMeetings, pastMeetings});
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

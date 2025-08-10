@@ -2,6 +2,7 @@ import styles from "@/app/page.module.css";
 import {CalendarIcon} from "@/public/CalendarIcon";
 import { DurationIcon } from "@/public/DurationIcon";
 import { UserIcon } from "@/public/UsersIcon";
+import { CountdownTimer } from "./CountdownTimer";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -61,7 +62,10 @@ const DetailItem = ({
 );
 
 export const ListItemDetail = ({startTime, endTime, }: MeetingDetails) => {
-
+  const now = Date.now();
+  const isMeetingInProgress = (now > Date.parse(startTime) && now < Date.parse(endTime));
+  const isPastMeeting = (Date.parse(endTime) - now) < 0;
+  
     return (
         <>
            <span className={styles.carddetails}>
@@ -70,6 +74,13 @@ export const ListItemDetail = ({startTime, endTime, }: MeetingDetails) => {
                 <DetailItem icon={<DurationIcon />}>{meetingDuration(startTime, endTime)}</DetailItem>
                 <span className={styles.seperator}>|</span>
                 <DetailItem icon={<UserIcon/>}>{Math.floor(Math.random() * 20)}</DetailItem>
+
+                {isPastMeeting ? "" :  
+                    <>
+                    <span style={{ margin: "0 0.5rem", color: "#aaa" }}>|</span>
+                    <DetailItem icon={<DurationIcon/>}><CountdownTimer startTime={startTime} endTime={endTime}/></DetailItem>
+                    </>
+                }
             </span>
         </>
     );
