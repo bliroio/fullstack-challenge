@@ -83,4 +83,55 @@ router.get("/", meetingController.listMeetings);
  */
 router.post("/", meetingController.createMeeting);
 
+/**
+ * @openapi
+ * /api/meetings/{meetingId}:
+ *   put:
+ *     summary: Update an existing meeting
+ *     tags: [Meetings]
+ *     parameters:
+ *       - in: path
+ *         name: meetingId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The MongoDB ObjectId of the meeting to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Meeting'
+ *     responses:
+ *       200:
+ *         description: Meeting updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Meeting'
+ *       400:
+ *         description: Invalid input data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       404:
+ *         description: Meeting not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Server error
+ */
+router.put("/:meetingId", meetingController.updateMeeting);
+
 export default router;

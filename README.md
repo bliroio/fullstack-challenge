@@ -23,22 +23,22 @@ Please ensure that you dont exceed the given timeframe. Good luck!
 
 ### 1. Display list of meetings
 - Basic list API is already provided
-- Frontend should be able to list meetings according to the mockups
+- Frontend should be able to list meetings according to the mockups -> Almost
 
 ### 2. Users should be able to create new meetings
-- Develop a Create API that is able to create new meetings with input validation
-- Users are able to create new meeting via a form on the frontend
-- Form should have form validation
+- Develop a Create API that is able to create new meetings with input validation -> Done
+- Users are able to create new meeting via a form on the frontend -> Done
+- Form should have form validation -> Done
 
 ### 3. Show a count down for each upcoming meeting - Required
-- As users forget about meetings, a countdown timer should be shown for each meeting
+- As users forget about meetings, a countdown timer should be shown for each meeting -> Done
 
 ### 4. Users should be able to lookup meetings
-- Users are able to lookup meetings via search -> List API will need to be updated
+- Users are able to lookup meetings via search -> List API will need to be updated -> Done
 - Implement pagination for performance - nice to have
 
 ### 5. Resolve frontend bugs
-- All the existing frontend bugs need to be resolved
+- All the existing frontend bugs need to be resolved -> Done
 
 ### 6. Meeting updates are provided in real time - Nice to have
 - In case a meeting is cancelled or updated, these should be reflected in real time to other users -> will require sockets/server side events

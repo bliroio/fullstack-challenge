@@ -1,6 +1,6 @@
 import z from 'zod';
 import meetingService from "../services/meetingService";
-import { createMeetingSchema} from "../utils/meeting.utils.schema";
+import { createMeetingSchema, mongoIdSchema, updateMeetingSchema} from "../utils/meeting.utils.schema";
 
 const listMeetings = async (req: any, res: any) => {
   try {
@@ -42,4 +42,22 @@ const createMeeting = async (req: any, res: any) => {
   }
 }
 
-export default { listMeetings, createMeeting };
+const updateMeeting = async (req: any, res: any) => {
+  try {
+    const {meetingId} = req.params;
+    const validatedId = mongoIdSchema.parse(meetingId);
+    const validatedBody = updateMeetingSchema.parse(req.body);
+
+    const updatedMeeting = await meetingService.updateMeeting(validatedId, validatedBody);
+    if (!updatedMeeting) return res.status(404).json({message: "Meeting not found!"})
+
+    return res.status(200).json(updatedMeeting);
+  } catch (error: any) {
+    if(error instanceof z.ZodError){
+      return res.status(400).json({message: error.issues});
+    }
+    return res.status(500).json({message: error.message});
+  }
+ }
+
+export default { listMeetings, createMeeting, updateMeeting };

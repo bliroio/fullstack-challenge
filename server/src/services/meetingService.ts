@@ -13,4 +13,10 @@ const createMeeting = async (data: MeetingDTO) => {
   return Meeting.create(data);
 }
 
-export default { createMeeting, listMeetings };
+const updateMeeting = async (id: string, data: Partial<MeetingDTO>) => {
+  return Meeting.findByIdAndUpdate(id, data, {
+    returnOriginal: false
+  });
+}
+
+export default { createMeeting, listMeetings, updateMeeting };
