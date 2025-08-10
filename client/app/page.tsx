@@ -1,10 +1,11 @@
 "use client";
 
 // Home.tsx
-import React from "react";
-import MeetingList from "./components/meetingList";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import React from "react";
+import CreateMeeting from "./components/createMeeting";
+import MeetingList from "./components/meetingList";
 
 const Home: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const Home: React.FC = () => {
       <Typography variant="h2" gutterBottom>
         Meetings
       </Typography>
+      <CreateMeeting />
       <MeetingList />
     </Container>
   );

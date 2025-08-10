@@ -3,12 +3,26 @@ import { Meeting } from "../models/Meeting";
 
 const API_BASE_URL = "http://localhost:3000/api/meetings";
 
+type CreateMeeting = Omit<Meeting, "id">;
+
 export const listMeetings = async (): Promise<Meeting[]> => {
   try {
     const response = await axios.get<{ docs: Meeting[] }>(API_BASE_URL);
     return response.data.docs ?? [];
   } catch (error) {
     console.error("Error fetching meetings:", error);
+    throw error;
+  }
+};
+
+export const createMeeting = async (
+  meetingData: CreateMeeting
+): Promise<Meeting> => {
+  try {
+    const response = await axios.post<Meeting>(API_BASE_URL, meetingData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating meeting:", error);
     throw error;
   }
 };
