@@ -22,21 +22,25 @@ const MeetingList: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
 
   useEffect(() => {
-    listMeetings().then(setMeetings);
+    const list = async () => {
+      const meetings = await listMeetings();
+      setMeetings(meetings.docs);
+    }
+    list();
   }, []);
 
   return (
     <Paper elevation={3}>
       <List>
         {meetings.map((meeting, index) => (
-          <React.Fragment key={meeting.id}>
+          <React.Fragment key={meeting._id}>
             <ListItem alignItems="flex-start">
               <ListItemText
                 primary={meeting.title}
                 secondary={
                   <>
-                    <div>Start: {formatDate(meeting.startTime)}</div>
-                    <div>End: {formatDate(meeting.endTime)}</div>
+                    <span>Start: {formatDate(meeting.startTime)}</span>
+                    <span>End: {formatDate(meeting.endTime)}</span>
                   </>
                 }
               />
