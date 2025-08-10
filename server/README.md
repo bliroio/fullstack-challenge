@@ -38,7 +38,7 @@ To start the server, run:
 npm start
 ```
 
-Alternatively, if you're using nodemon for development:
+Alternatively, to start the server in development mode (it'll restart automatically when you make a change to a file):
 
 ```bash
 npm run dev

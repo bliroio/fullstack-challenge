@@ -45,7 +45,11 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [path.join(__dirname, "../routes/*.js")], // Path to the API docs in dist folder
+  // Support both .ts (dev) and .js (prod) files for API docs
+  apis: [
+    path.join(__dirname, "../routes/*.js"),
+    path.join(__dirname, "../routes/*.ts"),
+  ],
 };
 
 export default options;
