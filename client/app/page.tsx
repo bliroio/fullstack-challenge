@@ -4,7 +4,6 @@
 import React, {useState} from "react";
 import MeetingList from "./components/meetingList";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 import styles from "@/app/page.module.css"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from "@/app/components/Header";

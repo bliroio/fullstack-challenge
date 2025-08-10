@@ -10,7 +10,6 @@ const listMeetings = async (req: any, res: any) => {
     if (title) {
       filters.title = { $regex: title, $options: "i" };
     }
-    console.log("filters: ", filters)
 
     const now = new Date();
     const upcomingMeetingsFilter = {...filters, startTime: {$gte: now}};

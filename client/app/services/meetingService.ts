@@ -29,3 +29,13 @@ export const createMeeting = async (data = {}): Promise<Meeting> => {
     throw error;
   }
 }
+
+export const cancelMeeting = async (id: string) => {
+  try {
+    const cancelURL = `${API_BASE_URL}/meetings/${id}`;
+    const response = await axios.put<Meeting>(cancelURL, {status: "Cancelled"});
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

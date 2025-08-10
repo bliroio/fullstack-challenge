@@ -36,14 +36,14 @@ const meetingDuration = (startDate: string, endDate: string) => {
     // Getting the number of minutes left in one hour
     const remMinutes = totalMinutes % 60;
 
-    // console.log(`${totalHours}:${remMinutes}:${remSeconds}`);
     return `${totalHours}h ${remMinutes}m`;
 }
 
 
 interface MeetingDetails {
     startTime: string,
-    endTime: string
+    endTime: string,
+    status: string
 }
 
 interface DetailItems {
@@ -61,11 +61,11 @@ const DetailItem = ({
   </span>
 );
 
-export const ListItemDetail = ({startTime, endTime, }: MeetingDetails) => {
+export const ListItemDetail = ({startTime, endTime, status}: MeetingDetails) => {
   const now = Date.now();
   const isMeetingInProgress = (now > Date.parse(startTime) && now < Date.parse(endTime));
   const isPastMeeting = (Date.parse(endTime) - now) < 0;
-  
+  const showTimer = !isPastMeeting && status != "Cancelled";
     return (
         <>
            <span className={styles.carddetails}>
@@ -75,12 +75,17 @@ export const ListItemDetail = ({startTime, endTime, }: MeetingDetails) => {
                 <span className={styles.seperator}>|</span>
                 <DetailItem icon={<UserIcon/>}>{Math.floor(Math.random() * 20)}</DetailItem>
 
-                {isPastMeeting ? "" :  
+                {showTimer ? 
                     <>
                     <span className={styles.seperator}>|</span>
                     <DetailItem icon={<DurationIcon/>}><CountdownTimer startTime={startTime} endTime={endTime}/></DetailItem>
-                    </>
+                    </> : ""
                 }
+                {status === "Cancelled" ? 
+                <>
+                  <span className={styles.seperator}>|</span>
+                  <DetailItem icon={null}> 🚨 Cancelled</DetailItem>
+                </> : ""}
             </span>
         </>
     );

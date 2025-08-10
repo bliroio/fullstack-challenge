@@ -44,12 +44,6 @@ export const CreateMeeting = ({ setDrawerToggle, onCreated }: Props) => {
         const start = startDate && startTime ? new Date(`${startDate}T${startTime}`) : null;
         const end = endDate && endTime ? new Date(`${endDate}T${endTime}`) : null;
 
-        console.log({
-            title,
-            startTime: start ? start.toISOString() : "",
-            endTime: end ? end.toISOString() : "",
-            description,
-        });
         createMeeting({
             title,
             startTime: start, //? start.toISOString() : ""

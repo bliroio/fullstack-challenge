@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { listMeetings } from "../services/meetingService";
+import { listMeetings, cancelMeeting } from "../services/meetingService";
+import styles from "@/app/page.module.css";
 import { Meeting } from "../models/Meeting";
+import { ListItemDetail } from "./ListItemDetails";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { ListItemDetail } from "./ListItemDetails";
 import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
-import styles from "@/app/page.module.css";
 import { Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -37,7 +36,6 @@ const MeetingList: React.FC<ListProps> = ({search, refresh}) => {
         setUpcomingMeetings(upcomingMeetings.docs);
       }
       if (pastMeetings && Array.isArray(pastMeetings.docs)) {
-        console.log("setting past meeting")
         setPastMeetings(pastMeetings.docs);
       }
     }
@@ -60,7 +58,10 @@ const MeetingList: React.FC<ListProps> = ({search, refresh}) => {
 
     const handleCancel = (meetingId: string) => {
       // TODO: Implement cancel logic here
-      alert(`Cancel meeting with id: ${meetingId}`);
+      cancelMeeting(meetingId).then(() => {
+        alert(`Meeting cancelled with id: ${meetingId}`);
+      })
+      
       handleMenuClose();
     };
     
@@ -98,6 +99,7 @@ const MeetingList: React.FC<ListProps> = ({search, refresh}) => {
                     <ListItemDetail 
                       startTime={meeting.startTime}
                       endTime={meeting.endTime}
+                      status={meeting.status}
                     />
                     }
                   />
