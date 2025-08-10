@@ -15,7 +15,7 @@
   max-width: var(--max-width);
   width: 100%;
   z-index: 2;
-  font-family: var(--font-mono);
+  /* font-family: var(--font-mono); */
 }
 
 .description a {
@@ -62,7 +62,7 @@
 }
 
 .card {
-  padding: 1rem 1.2rem;
+  padding: 0rem 1.2rem;
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
@@ -139,7 +139,7 @@
   }
 
   .card:hover span {
-    transform: translateX(4px);
+    /* transform: translateX(4px); */
   }
 }
 

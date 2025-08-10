@@ -77,7 +77,7 @@ export const ListItemDetail = ({startTime, endTime, }: MeetingDetails) => {
 
                 {isPastMeeting ? "" :  
                     <>
-                    <span style={{ margin: "0 0.5rem", color: "#aaa" }}>|</span>
+                    <span className={styles.seperator}>|</span>
                     <DetailItem icon={<DurationIcon/>}><CountdownTimer startTime={startTime} endTime={endTime}/></DetailItem>
                     </>
                 }

@@ -11,6 +11,10 @@ import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import styles from "@/app/page.module.css";
 import { Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 interface ListProps {
   search: string,
@@ -41,15 +45,53 @@ const MeetingList: React.FC<ListProps> = ({search, refresh}) => {
   }, [search, refresh]);
 
   const ListComp = ({heading, list}: ListCompProps) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedMeetingId, setSelectedMeetingId] = useState<string | null>(null);
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, meetingId: string) => {
+      setAnchorEl(event.currentTarget);
+      setSelectedMeetingId(meetingId);
+    };
+
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+      setSelectedMeetingId(null);
+    };
+
+    const handleCancel = (meetingId: string) => {
+      // TODO: Implement cancel logic here
+      alert(`Cancel meeting with id: ${meetingId}`);
+      handleMenuClose();
+    };
     
     return (
        <>
-        <Typography variant="h4" gutterBottom>{heading}</Typography>
+        <Typography variant="h5" gutterBottom>{heading}</Typography>
         <List >
           {list.map((meeting, index) => (
             <React.Fragment key={meeting._id}>
               <Paper variant="outlined" elevation={0} square={false} className={styles.card}>
-                <ListItem key={meeting._id} alignItems="flex-start">
+                <ListItem key={meeting._id}
+                 alignItems="flex-start"
+                 secondaryAction={
+                    <>
+                      <IconButton
+                        edge="end"
+                        aria-label="actions"
+                        onClick={e => handleMenuOpen(e, meeting._id)}
+                      >
+                        <MoreHorizIcon />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && selectedMeetingId === meeting._id}
+                        onClose={handleMenuClose}
+                      >
+                        <MenuItem dense={true} onClick={() => handleCancel(meeting._id)}>Cancel</MenuItem>
+                      </Menu>
+                    </>
+                  }
+                 >
                   <ListItemText
                     primary={meeting.title}
                     secondary={ 
