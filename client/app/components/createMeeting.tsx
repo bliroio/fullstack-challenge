@@ -1,8 +1,13 @@
-import { Button, Paper, TextField } from "@mui/material";
-import { FormEvent } from "react";
+import { Box, Button, Drawer, TextField, Typography } from "@mui/material";
+import { FC, FormEvent } from "react";
 import { createMeeting } from "../services/meetingService";
 
-const CreateMeeting = () => {
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const CreateMeeting: FC<Props> = ({ isOpen, onClose }) => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -22,48 +27,64 @@ const CreateMeeting = () => {
     };
 
     createMeeting(data);
+
+    onClose();
   };
 
   return (
-    <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
-      <form onSubmit={onSubmit}>
-        <TextField
-          label="Title"
-          name="title"
-          required
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          label="Start Time"
-          name="startTime"
-          type="datetime-local"
-          required
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          label="End Time"
-          name="endTime"
-          type="datetime-local"
-          required
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Create Meeting
-        </Button>
-      </form>
-    </Paper>
+    <Drawer anchor="right" open={isOpen} variant="temporary">
+      <Box sx={{ padding: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h4" gutterBottom>
+            Create a new meeting
+          </Typography>
+          <Button onClick={onClose}>Close</Button>
+        </Box>
+
+        <form onSubmit={onSubmit}>
+          <TextField
+            label="Meeting title"
+            name="title"
+            required
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            label="Start time"
+            name="startTime"
+            type="datetime-local"
+            required
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            label="End time"
+            name="endTime"
+            type="datetime-local"
+            required
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: 2 }}
+          >
+            Create Meeting
+          </Button>
+        </form>
+      </Box>
+    </Drawer>
   );
 };
 
