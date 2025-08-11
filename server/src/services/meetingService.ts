@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
+import z from "zod";
 import Meeting, { IMeeting } from "../models/meeting";
 
-interface ICreateMeeting {
-  title: string;
-  startTime: Date;
-  endTime: Date;
-}
+const CreateMeeting = z
+  .object({
+    title: z.string(),
+    startTime: z.iso.datetime(),
+    endTime: z.iso.datetime(),
+  })
+  .refine((data) => new Date(data.startTime) < new Date(data.endTime), {
+    message: "startTime must be before endTime",
+    path: ["startTime"],
+  });
 
 const listMeetings = async (
   query: any
@@ -13,8 +19,13 @@ const listMeetings = async (
   return Meeting.paginate(query);
 };
 
-const createMeeting = async (data: ICreateMeeting): Promise<IMeeting> => {
-  const meeting = new Meeting(data);
+const createMeeting = async (data: any): Promise<IMeeting> => {
+  const parsed = CreateMeeting.safeParse(data);
+  if (!parsed.success) {
+    throw new Error(parsed.error.message);
+  }
+
+  const meeting = new Meeting(parsed.data);
   return meeting.save();
 };
 
