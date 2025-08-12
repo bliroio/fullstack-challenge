@@ -19,7 +19,10 @@ const listMeetings = async (
   const page = parseInt(query.page, 10) || 1;
   const limit = parseInt(query.limit, 10) || 10;
 
-  return Meeting.paginate({}, { page, limit });
+  return Meeting.paginate(
+    {},
+    { page, limit, sort: { startTime: "ascending" } }
+  );
 };
 
 const createMeeting = async (data: any): Promise<IMeeting> => {

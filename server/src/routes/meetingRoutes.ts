@@ -8,6 +8,7 @@ const router = express.Router();
  * /api/meetings:
  *   get:
  *     summary: Lists all the meetings
+ *     description: The meetings are returned sorted by start time in ascending order.
  *     tags: [Meetings]
  *     parameters:
  *       - in: query

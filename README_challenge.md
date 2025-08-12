@@ -7,3 +7,5 @@
 - Fixed `meetingService` on the client not returning meetings
 - Added backend route for creating a meeting
 - Added form for creating a meeting to frontend
+- Added pagination to meeting list shown in frontend and matching backend endpoint
+- Returning meetings sorted by start time from backend
