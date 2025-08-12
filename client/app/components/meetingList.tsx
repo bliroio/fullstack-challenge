@@ -6,9 +6,17 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Meeting } from "../models/Meeting";
-import { listMeetings } from "../services/meetingService";
+
+interface Props {
+  meetings: Meeting[];
+  totalMeetings: number;
+  page: number;
+  rowsPerPage: number;
+  onPageChange: (newPage: number) => void;
+  onRowsPerPageChange: (newRowsPerPage: number) => void;
+}
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -30,33 +38,27 @@ const formatDuration = (startTime: string, endTime: string) => {
   return `${hours}h ${minutes}m`;
 };
 
-const MeetingList: React.FC = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [total, setTotal] = useState(0);
-
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
-
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
+const MeetingList: React.FC<Props> = ({
+  meetings,
+  totalMeetings,
+  page,
+  rowsPerPage,
+  onPageChange,
+  onRowsPerPageChange,
+}) => {
+  const handlePageChange = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
-    setPage(newPage);
+    onPageChange(newPage);
   };
 
-  const handleChangeRowsPerPage = (
+  const handleRowsPerPageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    onRowsPerPageChange(newRowsPerPage);
   };
-
-  useEffect(() => {
-    listMeetings(page, rowsPerPage).then((data) => {
-      setMeetings(data.meetings);
-      setTotal(data.total);
-    });
-  }, [page, rowsPerPage]);
 
   return (
     <Paper elevation={3}>
@@ -86,11 +88,11 @@ const MeetingList: React.FC = () => {
       </List>
       <TablePagination
         component="div"
-        count={total}
+        count={totalMeetings}
         page={page}
-        onPageChange={handleChangePage}
+        onPageChange={handlePageChange}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={handleRowsPerPageChange}
       />
     </Paper>
   );

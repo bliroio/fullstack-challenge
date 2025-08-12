@@ -12,9 +12,10 @@ import { createMeeting } from "../services/meetingService";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  onMeetingCreated: () => void;
 }
 
-const CreateMeeting: FC<Props> = ({ isOpen, onClose }) => {
+const CreateMeeting: FC<Props> = ({ isOpen, onClose, onMeetingCreated }) => {
   const [formError, setFormError] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -44,10 +45,11 @@ const CreateMeeting: FC<Props> = ({ isOpen, onClose }) => {
       endTime: endTimeDate.toISOString(),
     };
 
-    createMeeting(data);
+    await createMeeting(data);
 
     onClose();
     setFormError(null);
+    onMeetingCreated();
   };
 
   return (
