@@ -9,6 +9,19 @@ const router = express.Router();
  *   get:
  *     summary: Lists all the meetings
  *     tags: [Meetings]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
  *     responses:
  *       200:
  *         description: A paginated list of meetings

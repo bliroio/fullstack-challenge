@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { listMeetings } from "../services/meetingService";
-import { Meeting } from "../models/Meeting";
+import { TablePagination } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
+import React, { useEffect, useState } from "react";
+import { Meeting } from "../models/Meeting";
+import { listMeetings } from "../services/meetingService";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -19,11 +20,32 @@ const formatDate = (dateString: string) => {
 };
 
 const MeetingList: React.FC = () => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [total, setTotal] = useState(0);
+
   const [meetings, setMeetings] = useState<Meeting[]>([]);
 
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   useEffect(() => {
-    listMeetings().then(setMeetings);
-  }, []);
+    listMeetings(page, rowsPerPage).then((data) => {
+      setMeetings(data.meetings);
+      setTotal(data.total);
+    });
+  }, [page, rowsPerPage]);
 
   return (
     <Paper elevation={3}>
@@ -47,6 +69,14 @@ const MeetingList: React.FC = () => {
           </React.Fragment>
         ))}
       </List>
+      <TablePagination
+        component="div"
+        count={total}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Paper>
   );
 };

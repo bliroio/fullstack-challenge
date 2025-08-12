@@ -5,10 +5,24 @@ const API_BASE_URL = "http://localhost:3000/api/meetings";
 
 type CreateMeeting = Omit<Meeting, "id">;
 
-export const listMeetings = async (): Promise<Meeting[]> => {
+export const listMeetings = async (
+  page: number,
+  rowsPerPage: number
+): Promise<{ meetings: Meeting[]; total: number }> => {
   try {
-    const response = await axios.get<{ docs: Meeting[] }>(API_BASE_URL);
-    return response.data.docs ?? [];
+    const response = await axios.get<{ docs: Meeting[]; totalDocs: number }>(
+      API_BASE_URL,
+      {
+        params: {
+          page: page + 1, // Backend expects 1-based page
+          limit: rowsPerPage,
+        },
+      }
+    );
+    return {
+      meetings: response.data.docs ?? [],
+      total: response.data.totalDocs ?? 0,
+    };
   } catch (error) {
     console.error("Error fetching meetings:", error);
     throw error;

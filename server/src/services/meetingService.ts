@@ -16,7 +16,10 @@ const CreateMeeting = z
 const listMeetings = async (
   query: any
 ): Promise<mongoose.PaginateResult<IMeeting>> => {
-  return Meeting.paginate(query);
+  const page = parseInt(query.page, 10) || 1;
+  const limit = parseInt(query.limit, 10) || 10;
+
+  return Meeting.paginate({}, { page, limit });
 };
 
 const createMeeting = async (data: any): Promise<IMeeting> => {
