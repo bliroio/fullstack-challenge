@@ -19,6 +19,17 @@ const formatDate = (dateString: string) => {
   return formatter.format(date);
 };
 
+const formatDuration = (startTime: string, endTime: string) => {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+  const duration = end.getTime() - start.getTime();
+
+  const hours = Math.floor(duration / (1000 * 60 * 60));
+  const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${hours}h ${minutes}m`;
+};
+
 const MeetingList: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -59,6 +70,10 @@ const MeetingList: React.FC = () => {
                   <>
                     <div>Start: {formatDate(meeting.startTime)}</div>
                     <div>End: {formatDate(meeting.endTime)}</div>
+                    <div>
+                      Duration:{" "}
+                      {formatDuration(meeting.startTime, meeting.endTime)}
+                    </div>
                   </>
                 }
               />

@@ -9,3 +9,4 @@
 - Added form for creating a meeting to frontend
 - Added pagination to meeting list shown in frontend and matching backend endpoint
 - Returning meetings sorted by start time from backend
+- Added meeting duration display for each meeting to frontend
