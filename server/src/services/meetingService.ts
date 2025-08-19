@@ -25,7 +25,7 @@ const listMeetings = async (
   );
 };
 
-const createMeeting = async (data: any): Promise<IMeeting> => {
+const createMeeting = async (data: unknown): Promise<IMeeting> => {
   const parsed = CreateMeeting.safeParse(data);
   if (!parsed.success) {
     throw new Error(parsed.error.message);

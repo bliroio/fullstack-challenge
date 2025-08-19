@@ -6,7 +6,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Meeting } from "../models/Meeting";
 
 interface Props {
@@ -38,6 +38,32 @@ const formatDuration = (startTime: string, endTime: string) => {
   return `${hours}h ${minutes}m`;
 };
 
+const formatTimeUntilMeeting = (startTime: string) => {
+  const startTimeDate = new Date(startTime);
+  const currentTimeDate = new Date();
+
+  // TODO: throw error if date order not correct
+  // TODO: What if meeting is in the past?
+
+  const msDifferenceToStart =
+    startTimeDate.getTime() - currentTimeDate.getTime();
+
+  const hours = Math.floor(msDifferenceToStart / (1000 * 60 * 60));
+  const minutes = Math.floor(
+    (msDifferenceToStart % (1000 * 60 * 60)) / (1000 * 60)
+  );
+  const seconds = Math.floor((msDifferenceToStart % (1000 * 60)) / 1000);
+
+  return `${hours}h ${minutes}m ${seconds}s`;
+};
+
+const addTimeUntilMeetingToMeetings = (meetings: Meeting[]) => {
+  return meetings.map((meeting) => ({
+    ...meeting,
+    timeUntilMeeting: formatTimeUntilMeeting(meeting.startTime),
+  }));
+};
+
 const MeetingList: React.FC<Props> = ({
   meetings,
   totalMeetings,
@@ -60,10 +86,22 @@ const MeetingList: React.FC<Props> = ({
     onRowsPerPageChange(newRowsPerPage);
   };
 
+  const [rerenderCounter, setRenderCounter] = useState(0);
+
+  const meetingsWithTimeUntilMeeting = addTimeUntilMeetingToMeetings(meetings);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRenderCounter(rerenderCounter + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  });
+
   return (
     <Paper elevation={3}>
       <List>
-        {meetings.map((meeting, index) => (
+        {meetingsWithTimeUntilMeeting.map((meeting, index) => (
           <React.Fragment key={meeting.id}>
             <ListItem alignItems="flex-start">
               <ListItemText
@@ -76,6 +114,7 @@ const MeetingList: React.FC<Props> = ({
                       Duration:{" "}
                       {formatDuration(meeting.startTime, meeting.endTime)}
                     </div>
+                    <div>Meeting in {meeting.timeUntilMeeting}</div>
                   </>
                 }
               />
