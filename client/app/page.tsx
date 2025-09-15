@@ -33,6 +33,7 @@ const Home: React.FC = () => {
       <Header 
         onCreateMeeting={onCreateMeeting}
         nextMeeting={nextMeeting}
+        countdown={countdown}
         meetings={meetings}
       />
       <Container maxWidth="md" sx={{ paddingTop: "24px" }}>
