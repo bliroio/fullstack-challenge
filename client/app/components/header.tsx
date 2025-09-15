@@ -51,7 +51,7 @@ export default function Header({ onCreateMeeting, nextMeeting, countdown, meetin
             }}
           >
             <Box>
-              <Typography variant="body2" sx={{ color: '#00000000', fontWeight: 600, fontSize: '14px' }}>
+              <Typography variant="body2" sx={{ color: '#000000', fontWeight: 600, fontSize: '14px' }}>
                 {shouldShowNextMeeting ? nextMeeting?.title : currentMeeting?.title}
               </Typography>
               <Typography variant="caption" sx={{ color: '#4b4a4aff', fontSize: '12px' }}>

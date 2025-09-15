@@ -21,9 +21,7 @@ type Props = {
 }
 const MeetingList: React.FC<Props> = ({ meetings }) => {
   const nextMeeting = getNextUpcomingMeeting(meetings);
-  console.log(nextMeeting);
   const countdown = useCountdown(nextMeeting ? new Date(nextMeeting.startTime) : null);
-  console.log(countdown);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -33,7 +31,7 @@ const MeetingList: React.FC<Props> = ({ meetings }) => {
         const shouldHighlight = isNextMeeting && countdown.isActive && countdown.minutesRemaining <= 4;
         const shouldShowJoinButton = shouldHighlight || isInProgress;
         console.log(meeting.id, isNextMeeting, isInProgress, shouldHighlight, shouldShowJoinButton)
-        
+
         return (
           <Card 
             key={meeting.id} 
@@ -41,7 +39,7 @@ const MeetingList: React.FC<Props> = ({ meetings }) => {
               padding: '16px', 
               borderRadius: '4px', 
               border: shouldHighlight ? '2px solid #FF6B35' : '1px solid #E7E8E9',
-              backgroundColor: '#FFF5F2',
+              backgroundColor: shouldHighlight ? '#FFF5F2' : 'white',
               boxShadow: shouldHighlight ? '0 2px 8px rgba(255, 107, 53, 0.15)' : '0 1px 1px 0px #131A2614'
             }}
           >
