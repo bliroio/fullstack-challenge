@@ -9,6 +9,8 @@ import MeetingList from "./components/meetingList";
 import { Meeting } from "./models/Meeting";
 import { createMeeting, listMeetings } from "./services/meetingService";
 import { getNextUpcomingMeeting } from "./utils/meetingUtils";
+import { useCountdown } from "./hooks/useCountdown";
+
 
 
 const Home: React.FC = () => {
@@ -21,13 +23,18 @@ const Home: React.FC = () => {
   useEffect(() => {
     listMeetings().then(setMeetings);
   }, []);
-  const nextMeeting = getNextUpcomingMeeting(meetings);
-  console.log(nextMeeting);
 
+  const nextMeeting = getNextUpcomingMeeting(meetings);
+  const countdown = useCountdown(nextMeeting ? new Date(nextMeeting.startTime) : null);
+  console.log(countdown);
 
   return (
     <>
-      <Header onCreateMeeting={onCreateMeeting} />
+      <Header 
+        onCreateMeeting={onCreateMeeting}
+        nextMeeting={nextMeeting}
+        meetings={meetings}
+      />
       <Container maxWidth="md" sx={{ paddingTop: "24px" }}>
         <Typography variant="h4" gutterBottom>
           My Meetings

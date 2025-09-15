@@ -3,10 +3,14 @@ import { useState } from "react";
 import { Meeting } from "../models/Meeting";
 import { CreateMeetingModal } from "./create-meeting-modal";
 import createMeetingIcon from "./icons/arrow-up-right-square.svg";
+import { CountdownState } from "../hooks/useCountdown";
 
 type Props = {
-    onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
-}
+  onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  nextMeeting?: Meeting | null;
+  meetings?: Meeting[];
+};
+
 export default function Header({ onCreateMeeting }: Props) {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const handleCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
