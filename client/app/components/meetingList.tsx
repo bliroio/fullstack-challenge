@@ -30,7 +30,7 @@ const MeetingList: React.FC<Props> = ({ meetings }) => {
         const isInProgress = isMeetingInProgress(meeting);
         const shouldHighlight = isNextMeeting && countdown.isActive && countdown.minutesRemaining <= 4;
         const shouldShowJoinButton = shouldHighlight || isInProgress;
-        console.log(meeting.id, isNextMeeting, isInProgress, shouldHighlight, shouldShowJoinButton)
+        // console.log(meeting.id, isNextMeeting, isInProgress, shouldHighlight, shouldShowJoinButton)
 
         return (
           <Card 

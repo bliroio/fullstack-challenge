@@ -26,7 +26,7 @@ const Home: React.FC = () => {
 
   const nextMeeting = getNextUpcomingMeeting(meetings);
   const countdown = useCountdown(nextMeeting ? new Date(nextMeeting.startTime) : null);
-  console.log(countdown);
+  // console.log(countdown);
 
   return (
     <>

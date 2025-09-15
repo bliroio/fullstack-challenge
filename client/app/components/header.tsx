@@ -24,8 +24,8 @@ export default function Header({ onCreateMeeting, nextMeeting, countdown, meetin
   
   const shouldShowCurrentMeeting = !shouldShowNextMeeting && currentMeeting;
   const shouldShowNotification = shouldShowNextMeeting || shouldShowCurrentMeeting;
-  console.log(shouldShowCurrentMeeting);
-  console.log(shouldShowNotification);
+  // console.log(shouldShowCurrentMeeting);
+  // console.log(shouldShowNotification);
 
   return (
     <AppBar position="static">
