@@ -4,6 +4,8 @@ import { Card, Typography } from "@mui/material";
 import { differenceInMinutes, formatDuration } from 'date-fns';
 import React from "react";
 import { Meeting } from "../models/Meeting";
+import { getNextUpcomingMeeting, isMeetingInProgress } from "../utils/meetingUtils";
+
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -18,9 +20,16 @@ type Props = {
   meetings: Meeting[];
 }
 const MeetingList: React.FC<Props> = ({ meetings }) => {
+  const nextMeeting = getNextUpcomingMeeting(meetings);
+  console.log(nextMeeting);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-      {meetings.map((meeting) => (
+      {meetings.map((meeting) => {
+        const isNextMeeting = nextMeeting?.id === meeting.id;
+        const isInProgress = isMeetingInProgress(meeting);
+        console.log(meeting.id, isNextMeeting, isInProgress);
+        return (
         <Card key={meeting.id} sx={{ padding: '16px', borderRadius: '4px', border: '1px solid #E7E8E9', boxShadow: '0 1px 1px 0px #131A2614' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Typography variant="h5" sx={{ fontWeight: 600, lineHeight: '24px', fontSize: '16px' }}>{meeting.title}</Typography>
@@ -46,7 +55,8 @@ const MeetingList: React.FC<Props> = ({ meetings }) => {
             </div>
           </div>
         </Card>
-      ))}
+      )
+      })}
     </div>
   );
 };

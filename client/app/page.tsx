@@ -8,6 +8,8 @@ import Header from "./components/header";
 import MeetingList from "./components/meetingList";
 import { Meeting } from "./models/Meeting";
 import { createMeeting, listMeetings } from "./services/meetingService";
+import { getNextUpcomingMeeting } from "./utils/meetingUtils";
+
 
 const Home: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -19,6 +21,9 @@ const Home: React.FC = () => {
   useEffect(() => {
     listMeetings().then(setMeetings);
   }, []);
+  const nextMeeting = getNextUpcomingMeeting(meetings);
+  console.log(nextMeeting);
+
 
   return (
     <>

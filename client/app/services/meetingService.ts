@@ -1,10 +1,17 @@
 import axios from "axios";
 import { Meeting } from "../models/Meeting";
 
-const API_BASE_URL = "http://localhost:3000/api/meetings";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/meetings";
+
+type MeetingResponse = {
+  _id: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+}
 
 type PaginatedResponse = {
-  docs: Meeting[];
+  docs: MeetingResponse[];
   totalDocs: number,
   limit: number,
   hasPrevPage: boolean,
@@ -19,7 +26,13 @@ type PaginatedResponse = {
 export const listMeetings = async (): Promise<Meeting[]> => {
   try {
     const response = await axios.get<PaginatedResponse>(API_BASE_URL + '?limit=100');
-    return response.data.docs;
+    
+    return response.data.docs.map(meeting => ({
+      id: meeting._id,
+      title: meeting.title,
+      startTime: meeting.startTime,
+      endTime: meeting.endTime
+    }));
   } catch (error) {
     console.error("Error fetching meetings:", error);
     throw error;
