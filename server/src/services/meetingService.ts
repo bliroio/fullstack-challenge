@@ -14,7 +14,7 @@ const listMeetings = async (
   const options = {
     page: pageNum,
     limit: limitNum,
-    sort: { startTime: -1 }
+    sort: { startTime: 1 }
   };
 
   if (filters.title) {
