@@ -11,8 +11,12 @@ const listMeetings = async (req: any, res: any) => {
 };
 
 const createMeeting = async (req: any, res: any) => {
+  console.log("req.body", req.body);
+
   try {
-    const validatedMeetingResult = await createMeetingSchema.safeParseAsync(req.body);
+    const validatedMeetingResult = await createMeetingSchema.safeParseAsync(
+      req.body,
+    );
 
     if (!validatedMeetingResult.success) {
       return res.status(400).json({ message: "Invalid meeting data" });

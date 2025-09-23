@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
   const onCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
     return createMeeting(meeting).then(listMeetings).then(setMeetings);
-  }
+  };
 
   useEffect(() => {
     listMeetings().then(setMeetings);

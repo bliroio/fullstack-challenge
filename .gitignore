@@ -131,3 +131,6 @@ dist
 
 # mac files
 .DS_Store
+
+# IDE settings
+.idea
