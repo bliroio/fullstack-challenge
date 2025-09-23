@@ -1,10 +1,10 @@
 "use client";
 
 import { Meeting } from "@/app/models/Meeting";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import * as Yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
-import { Box, Button, Grid, Stack, TextField } from "@mui/material";
+import { Box, Button, Divider, Grid, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Typography from "@mui/material/Typography";
@@ -19,8 +19,13 @@ type MeetingFormValues = {
 type Props = {
   initialData?: MeetingFormValues;
   onSubmitMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  setDrawerOpen: (open: boolean) => void;
 };
-export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
+export default function MeetingForm({
+  initialData,
+  onSubmitMeeting,
+  setDrawerOpen,
+}: Props) {
   const initialValues: MeetingFormValues = useMemo(() => {
     if (initialData) {
       return {
@@ -42,7 +47,7 @@ export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
           5,
           `Name your meeting with minimum 5 characters, so every participant can directly see what's the meeting about`,
         )
-        .required(`A meeting name is required`),
+        .required(`The meeting title must be completed`),
       startTime: Yup.date()
         .typeError("Please set a valid start time")
         .required(
@@ -112,10 +117,29 @@ export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
             setFieldTouched,
           }) => {
             return (
-              <Form noValidate>
-                <Stack spacing={3}>
+              <Form
+                noValidate
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  alignItems: "start",
+                  gap: "2rem",
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    p: 2,
+                    flex: 1,
+                    overflowY: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.5rem",
+                  }}
+                >
                   {/* Header like the screenshot */}
-                  <Box>
+                  <Box sx={{ mb: "1rem" }}>
                     <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                       Create a new meeting
                     </Typography>
@@ -167,11 +191,27 @@ export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
                           format="dd MMM. yyyy"
                           slotProps={{
                             textField: {
-                              placeholder: "18 Feb. 2025",
+                              placeholder: "DD MMMM. YYYY",
                               fullWidth: true,
+                              size: "small",
                               error:
                                 touched.startTime && Boolean(errors.startTime),
                               helperText: touched.startTime && errors.startTime,
+                              sx: {
+                                // outlined TextField root
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: 1.5, // ~12px if spacing=8
+                                },
+                                // the actual input element
+                                "& .MuiOutlinedInput-input": {
+                                  fontSize: "0.9rem",
+                                },
+                                // helper text
+                                "& .MuiFormHelperText-root": {
+                                  fontSize: "0.75rem",
+                                  mt: 0.5,
+                                },
+                              },
                             },
                           }}
                         />
@@ -189,8 +229,25 @@ export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
                             textField: {
                               placeholder: "11:15",
                               fullWidth: true,
+                              size: "small",
                               error:
                                 touched.startTime && Boolean(errors.startTime),
+                              helperText: touched.startTime && errors.startTime,
+                              sx: {
+                                // outlined TextField root
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: 1.5, // ~12px if spacing=8
+                                },
+                                // the actual input element
+                                "& .MuiOutlinedInput-input": {
+                                  fontSize: "0.9rem",
+                                },
+                                // helper text
+                                "& .MuiFormHelperText-root": {
+                                  fontSize: "0.75rem",
+                                  mt: 0.5,
+                                },
+                              },
                             },
                           }}
                         />
@@ -219,10 +276,26 @@ export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
                           minDate={values?.startTime ?? undefined}
                           slotProps={{
                             textField: {
-                              placeholder: "18 Feb. 2025",
+                              placeholder: "DD MMMM. YYYY",
                               fullWidth: true,
+                              size: "small",
                               error: touched.endTime && Boolean(errors.endTime),
                               helperText: touched.endTime && errors.endTime,
+                              sx: {
+                                // outlined TextField root
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: 1.5, // ~12px if spacing=8
+                                },
+                                // the actual input element
+                                "& .MuiOutlinedInput-input": {
+                                  fontSize: "0.9rem",
+                                },
+                                // helper text
+                                "& .MuiFormHelperText-root": {
+                                  fontSize: "0.75rem",
+                                  mt: 0.5,
+                                },
+                              },
                             },
                           }}
                         />
@@ -240,32 +313,73 @@ export default function MeetingForm({ initialData, onSubmitMeeting }: Props) {
                             textField: {
                               placeholder: "11:30",
                               fullWidth: true,
+                              size: "small",
                               error: touched.endTime && Boolean(errors.endTime),
+                              helperText: touched.endTime && errors.endTime,
+                              sx: {
+                                // outlined TextField root
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: 1.5, // ~12px if spacing=8
+                                },
+                                // the actual input element
+                                "& .MuiOutlinedInput-input": {
+                                  fontSize: "0.9rem",
+                                },
+                                // helper text
+                                "& .MuiFormHelperText-root": {
+                                  fontSize: "0.75rem",
+                                  mt: 0.5,
+                                },
+                              },
                             },
                           }}
                         />
                       </Grid>
                     </Grid>
                   </Box>
+                </Box>
+
+                <Box sx={{ width: "100%" }}>
+                  <Divider />
 
                   {/* Actions */}
-                  <Box display="flex" gap={2} mt={1}>
+                  <Box
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      bgcolor: "background.paper",
+                      position: "sticky",
+                      bottom: 0,
+                    }}
+                  >
                     <Button
-                      type="submit"
-                      variant="contained"
-                      disabled={isSubmitting || !dirty || !isValid}
-                    >
-                      {isSubmitting ? "Saving..." : "Save meeting"}
-                    </Button>
-                    <Button
-                      type="reset"
                       variant="outlined"
-                      disabled={isSubmitting}
+                      onClick={() => setDrawerOpen(false)}
                     >
-                      Reset
+                      Cancel
                     </Button>
+
+                    <Box sx={{ display: "flex", gap: 1.5 }}>
+                      <Button
+                        type="reset"
+                        variant="outlined"
+                        disabled={isSubmitting}
+                      >
+                        Reset
+                      </Button>
+
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={isSubmitting || !dirty || !isValid}
+                      >
+                        {isSubmitting ? "Saving..." : "Save"}
+                      </Button>
+                    </Box>
                   </Box>
-                </Stack>
+                </Box>
               </Form>
             );
           }}

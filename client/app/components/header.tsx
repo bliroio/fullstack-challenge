@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Drawer, Toolbar } from "@mui/material";
+import { AppBar, Button, Drawer, Toolbar } from "@mui/material";
 import React, { useState } from "react";
 import { Meeting } from "../models/Meeting";
 import MeetingForm from "@/app/components/MeetingForm";
@@ -37,17 +37,24 @@ export default function Header({ onCreateMeeting }: Props) {
       </Toolbar>
 
       <Drawer
-        anchor={"right"}
+        anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        keepMounted
+        PaperProps={{
+          sx: {
+            width: 420,
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            overflow: "hidden", // so only inner content scrolls
+          },
+        }}
       >
-        <Box
-          role="dialog"
-          aria-labelledby="side-title"
-          sx={{ width: 380, p: 2 }} // set your panel width here
-        >
-          <MeetingForm onSubmitMeeting={handleCreateMeeting} />
-        </Box>
+        <MeetingForm
+          onSubmitMeeting={handleCreateMeeting}
+          setDrawerOpen={setDrawerOpen}
+        />
       </Drawer>
     </AppBar>
   );
