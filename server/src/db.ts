@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Meeting from "./models/meeting";
+import { Meeting } from "./models/meeting";
 
 const dbUri = process.env.MONGODB_URI || "fallback_default_mongodb_uri";
 
@@ -8,7 +8,6 @@ const connectDB = async () => {
     await mongoose.connect(dbUri);
     console.log("MongoDB connected...");
 
-    // Optional: Clear existing data and insert dummy data
     await resetDatabase();
 
     console.log("Database reset completed...");
@@ -18,26 +17,24 @@ const connectDB = async () => {
   }
 };
 
-// Function to reset database
 const resetDatabase = async () => {
   console.log("Resetting database - PLEASE WAIT...");
 
-  // Example: Drop collections or specific documents
   await Meeting.deleteMany({});
 
   const meetings = [];
   const now = new Date().getTime();
+  const oneHour = 60 * 60 * 1000;
 
   for (let i = 0; i < 100; i++) {
     const randomStartDate = new Date(
-      // Random date between now and 24 hours later
-      now + Math.floor(Math.random() * 1000 * 60 * 60 * 24),
+      now + Math.floor(Math.random() * oneHour * 24)
     );
 
     meetings.push({
       title: `Dummy Meeting ${i + 1}`,
       startTime: randomStartDate,
-      endTime: new Date(randomStartDate.getTime() + 60 * 60 * 1000), // 1 hour later
+      endTime: new Date(randomStartDate.getTime() + oneHour),
     });
   }
 

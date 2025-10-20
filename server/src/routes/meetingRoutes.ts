@@ -1,7 +1,7 @@
 import express from "express";
-import meetingController from "../controllers/meetingController";
+import { listMeetings } from "../controllers/meetingController";
 
-const router = express.Router();
+export const router = express.Router();
 
 /**
  * @openapi
@@ -46,29 +46,4 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.get("/", meetingController.listMeetings);
-
-/**
- * @openapi
- * /api/meetings:
- *   post:
- *     summary: Creates a new meeting
- *     tags: [Meetings]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Meeting'
- *     responses:
- *       201:
- *         description: Meeting created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Meeting'
- *       500:
- *         description: Server error
- */
-router.post("/", meetingController.createMeeting);
-export default router;
+router.get("/", listMeetings);

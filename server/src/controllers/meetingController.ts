@@ -1,7 +1,6 @@
-import meetingService from "../services/meetingService";
-import { createMeetingSchema } from "../validators/meeting";
+import * as meetingService from "../services/meetingService";
 
-const listMeetings = async (req: any, res: any) => {
+export const listMeetings = async (req: any, res: any) => {
   try {
     const meetings = await meetingService.listMeetings(req.query);
     res.json(meetings);
@@ -9,19 +8,3 @@ const listMeetings = async (req: any, res: any) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-const createMeeting = async (req: any, res: any) => {
-  try {
-    const validatedMeetingResult = await createMeetingSchema.safeParseAsync(req.body);
-
-    if (!validatedMeetingResult.success) {
-      return res.status(400).json({ message: "Invalid meeting data" });
-    }
-    const validatedMeeting = validatedMeetingResult.data;
-    const meeting = await meetingService.createMeeting(validatedMeeting);
-    res.status(201).json(meeting);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-export default { listMeetings, createMeeting };
