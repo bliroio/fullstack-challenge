@@ -29,6 +29,7 @@ const Home: React.FC = () => {
         </Typography>
         <MeetingList meetings={meetings} />
       </Container>
+
     </>
   );
 };

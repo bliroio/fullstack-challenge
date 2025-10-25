@@ -1,9 +1,15 @@
 import { differenceInMinutes } from "date-fns";
 import { z } from "zod";
 
-const dateSchema = z.string().transform((val) => new Date(val));
+const dateSchema =
+    z.string()
+        .nonempty()
+        .transform((val) => new Date(val))
+        .refine((date) => date > new Date(), {
+            message: "Date must be in the future",
+        });
 export const createMeetingSchema = z.object({
-    title: z.string().min(1),
+    title: z.string().min(3),
     startTime: dateSchema,
     endTime: dateSchema,
 }).refine(
