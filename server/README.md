@@ -46,7 +46,7 @@ npm run dev
 
 This will start the server on the default port, usually http://localhost:3000.
 
-**Note: It might take a few seconds until the database is reset :)**
+**Note:** The database is only seeded/reset when `SEED_DATABASE=true` is set in your `.env`.
 
 ## Testing
 
