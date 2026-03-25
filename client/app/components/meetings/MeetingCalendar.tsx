@@ -29,6 +29,12 @@ type Props = {
 };
 
 const weekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const dayCellHeight = 92;
+const dayGridGapPx = 4; // gap={0.5} in MUI grid ≈ 4px
+const calendarPaddingPx = 32; // 16px top + 16px bottom (Paper padding)
+const calendarHeaderPx = 44; // month nav row
+const calendarWeekdayRowPx = 20;
+const calendarSpacingPx = 16; // small internal spacing buffer
 
 export default function MeetingCalendar({ refreshNonce }: Props) {
   const [mounted, setMounted] = useState(false);
@@ -122,12 +128,17 @@ export default function MeetingCalendar({ refreshNonce }: Props) {
   for (let d = gridStart; d <= gridEnd; d = addDays(d, 1)) {
     days.push(d);
   }
+  const weekRows = Math.ceil(days.length / 7);
+  const calendarGridHeightPx =
+    weekRows * dayCellHeight + Math.max(weekRows - 1, 0) * dayGridGapPx;
+  const calendarPanelHeightPx =
+    calendarPaddingPx + calendarHeaderPx + calendarWeekdayRowPx + calendarSpacingPx + calendarGridHeightPx;
 
   const onSelectDay = (day: Date) => setSelectedDayKey(toDayKey(day));
   const selectedDayLabel = selectedDay ? formatDayHeading(selectedDay) : "";
 
   return (
-    <Box sx={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
+    <Box sx={{ display: "flex", gap: "24px", alignItems: "stretch" }}>
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Paper
           elevation={0}
@@ -135,6 +146,7 @@ export default function MeetingCalendar({ refreshNonce }: Props) {
             padding: "16px",
             borderRadius: "12px",
             border: "1px solid #E7E8E9",
+            height: `${calendarPanelHeightPx}px`,
           }}
         >
           <Box
@@ -208,7 +220,7 @@ export default function MeetingCalendar({ refreshNonce }: Props) {
                     border: isSelected ? "1px solid #F97316" : "1px solid #E7E8E9",
                     backgroundColor: isSelected ? "#FFF7ED" : "#ffffff",
                     opacity: isCurrentMonth ? 1 : 0.45,
-                    height: "92px",
+                    height: `${dayCellHeight}px`,
                     overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
@@ -261,19 +273,37 @@ export default function MeetingCalendar({ refreshNonce }: Props) {
         </Paper>
       </Box>
 
-      <Box sx={{ width: "360px" }}>
-        <MeetingAgenda selectedDay={selectedDay} meetings={selectedMeetings} />
-        {selectedDay ? (
-          <Typography variant="caption" sx={{ color: "#9CA3AF", display: "block", mt: 1.5 }}>
-            Selected: {selectedDayLabel}
-          </Typography>
-        ) : null}
+      <Box sx={{ width: "360px", minWidth: "360px" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            height: `${calendarPanelHeightPx}px`,
+            padding: "16px",
+            borderRadius: "12px",
+            border: "1px solid #E7E8E9",
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: "white",
+          }}
+        >
+          <MeetingAgenda
+            selectedDay={selectedDay}
+            meetings={selectedMeetings}
+            isLoading={isLoading}
+            maxListHeight={calendarPanelHeightPx - 120}
+          />
 
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="caption" sx={{ color: "#9CA3AF", display: "block", mt: 1 }}>
-            {isLoading ? "Loading..." : `Showing ${meetings.length} meetings in view`}
-          </Typography>
-        </Box>
+          <Box sx={{ mt: "auto", pt: 1.5 }}>
+            {selectedDay ? (
+              <Typography variant="caption" sx={{ color: "#9CA3AF", display: "block" }}>
+                Selected: {selectedDayLabel}
+              </Typography>
+            ) : null}
+            <Typography variant="caption" sx={{ color: "#9CA3AF", display: "block", mt: 0.5 }}>
+              {isLoading ? "Loading…" : `Showing ${meetings.length} meetings in view`}
+            </Typography>
+          </Box>
+        </Paper>
       </Box>
     </Box>
   );
