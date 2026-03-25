@@ -1,16 +1,27 @@
 import mongoose from "mongoose";
 import { Meeting } from "./models/meeting";
 
-const dbUri = process.env.MONGODB_URI || "fallback_default_mongodb_uri";
+const dbUri = process.env.MONGODB_URI;
+
+if (!dbUri) {
+  // Fail fast: falling back to a dummy URI is unsafe for production.
+  console.error("MONGODB_URI is required");
+  process.exit(1);
+}
 
 const connectDB = async () => {
   try {
     await mongoose.connect(dbUri);
     console.log("MongoDB connected...");
 
-    await resetDatabase();
-
-    console.log("Database reset completed...");
+    // Seed/reset only when explicitly requested.
+    // This prevents accidental data loss in production.
+    if (process.env.SEED_DATABASE === "true") {
+      await resetDatabase();
+      console.log("Database reset completed...");
+    } else {
+      console.log("Database seeding disabled (set SEED_DATABASE=true to enable).");
+    }
   } catch (error) {
     console.error("MongoDB connection error:", error);
     process.exit(1);

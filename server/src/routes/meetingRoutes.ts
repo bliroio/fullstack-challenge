@@ -1,5 +1,5 @@
 import express from "express";
-import { listMeetings } from "../controllers/meetingController";
+import { createMeeting, listMeetings } from "../controllers/meetingController";
 
 export const router = express.Router();
 
@@ -47,3 +47,35 @@ export const router = express.Router();
  *         description: Server error
  */
 router.get("/", listMeetings);
+
+/**
+ * @openapi
+ * /api/meetings:
+ *   post:
+ *     summary: Creates a new meeting
+ *     tags: [Meetings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [title, startTime, endTime]
+ *             properties:
+ *               title:
+ *                 type: string
+ *               startTime:
+ *                 type: string
+ *                 format: date-time
+ *               endTime:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       201:
+ *         description: Created meeting
+ *       400:
+ *         description: Invalid payload
+ *       500:
+ *         description: Server error
+ */
+router.post("/", createMeeting);

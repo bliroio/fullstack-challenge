@@ -23,6 +23,7 @@ export default function Header({ onCreateMeeting }: Props) {
       setDrawerOpen(false);
     } catch (error) {
       console.error("Error creating meeting:", error);
+      throw error;
     }
   };
 

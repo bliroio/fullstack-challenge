@@ -21,3 +21,34 @@ export const listMeetings = async (
 
   return Meeting.paginate(filters, options);
 };
+
+export const createMeeting = async (payload: any): Promise<IMeeting> => {
+  const { title, startTime, endTime } = payload ?? {};
+
+  if (typeof title !== "string" || !title.trim()) {
+    throw new Error("title is required");
+  }
+
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+
+  if (Number.isNaN(start.getTime())) {
+    throw new Error("startTime is invalid");
+  }
+
+  if (Number.isNaN(end.getTime())) {
+    throw new Error("endTime is invalid");
+  }
+
+  if (end.getTime() <= start.getTime()) {
+    throw new Error("endTime must be after startTime");
+  }
+
+  const created = await Meeting.create({
+    title: title.trim(),
+    startTime: start,
+    endTime: end,
+  });
+
+  return created;
+};

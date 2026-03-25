@@ -23,7 +23,7 @@ Duplicate the .env.local.example file to a new file named .env.local, and popula
 cp .env.local.example .env.local
 ```
 
-Edit the .env.local file to include necessary environment variables such as API endpoints.
+Edit the `.env.local` file to include necessary environment variables such as `NEXT_PUBLIC_API_HOST`.
 
 ## Run the Development Server
 
