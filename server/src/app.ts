@@ -2,7 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-import express, { type RequestHandler } from "express";
+import express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./config/swaggerConfig";
@@ -18,11 +18,11 @@ connectDB();
 app.use(cors());
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
-const swaggerServeHandlers = swaggerUi.serve as unknown as RequestHandler[];
-const swaggerSetupHandler = swaggerUi.setup(
-  swaggerSpec
-) as unknown as RequestHandler;
-app.use("/api-docs", ...swaggerServeHandlers, swaggerSetupHandler);
+app.use(
+  "/api-docs",
+  swaggerUi.serve as any,
+  swaggerUi.setup(swaggerSpec) as any
+);
 
 app.use(express.json());
 app.use("/api/meetings", meetingRoutes);
