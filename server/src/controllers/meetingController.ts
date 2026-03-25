@@ -5,9 +5,9 @@ import type { IMeeting } from "../models/meeting";
 type ApiErrorResponse = { message: string };
 
 type ListMeetingsQuery = {
-  page?: string;
-  limit?: string;
   title?: string;
+  startTimeFrom?: string;
+  startTimeTo?: string;
 };
 
 type CreateMeetingBody = {

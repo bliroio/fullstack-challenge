@@ -25,16 +25,6 @@ type ApiMeetingDoc = {
 
 type PaginatedResponse = {
   docs: ApiMeetingDoc[];
-  totalDocs: number;
-  limit: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-  page: number;
-  totalPages: number;
-  offset: number;
-  prevPage: number | null;
-  nextPage: number | null;
-  pagingCounter: number;
 };
 
 const toMeeting = (doc: ApiMeetingDoc): Meeting | null => {
@@ -52,12 +42,28 @@ const toMeeting = (doc: ApiMeetingDoc): Meeting | null => {
     endTime: end.toISOString(),
   };
 };
-export const listMeetings = async (): Promise<Meeting[]> => {
+
+export type ListMeetingsParams = {
+  title?: string;
+  startTimeFrom?: string;
+  startTimeTo?: string;
+};
+
+export const listMeetings = async (params: ListMeetingsParams = {}): Promise<Meeting[]> => {
   try {
-    const response = await axios.get<PaginatedResponse>(
-      MEETINGS_API_URL + "?limit=100"
-    );
-    return response.data.docs.map(toMeeting).filter((m): m is Meeting => m !== null);
+    const response = await axios.get<ApiMeetingDoc[] | PaginatedResponse>(MEETINGS_API_URL, {
+      params: {
+        title: params.title,
+        startTimeFrom: params.startTimeFrom,
+        startTimeTo: params.startTimeTo,
+      },
+    });
+
+    const rawDocs = Array.isArray(response.data)
+      ? response.data
+      : (response.data as PaginatedResponse).docs;
+
+    return rawDocs.map(toMeeting).filter((m): m is Meeting => m !== null);
   } catch (error) {
     console.error("Error fetching meetings:", error);
     throw error;
