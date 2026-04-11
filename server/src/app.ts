@@ -8,6 +8,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./config/swaggerConfig";
 import connectDB from "./db";
 import meetingRoutes from "./routes/meetingRoutes";
+import meetingRoomRoutes from "./routes/meetingRoomRoutes";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
 app.use("/api/meetings", meetingRoutes);
+app.use("/api/rooms", meetingRoomRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

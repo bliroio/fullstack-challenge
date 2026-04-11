@@ -3,9 +3,9 @@ import path from "path";
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Meeting API",
+    title: "YouWork Meeting Room API",
     version: "1.0.0",
-    description: "A simple Express Meeting API",
+    description: "API for managing meeting room bookings",
   },
   servers: [
     {
@@ -15,27 +15,46 @@ const swaggerDefinition = {
   ],
   components: {
     schemas: {
+      MeetingRoom: {
+        type: "object",
+        properties: {
+          _id: { type: "string", description: "Room ID" },
+          name: { type: "string", description: "Room name" },
+          location: { type: "string", description: "Room location" },
+          capacity: { type: "number", description: "Max capacity" },
+          imageUrl: { type: "string", description: "Room image URL" },
+        },
+      },
       Meeting: {
         type: "object",
-        required: ["title", "startTime", "endTime"],
+        required: ["title", "startTime", "endTime", "roomId", "bookedBy"],
         properties: {
-          id: {
-            type: "string",
-            description: "The auto-generated id of the meeting",
-          },
-          title: {
-            type: "string",
-            description: "The title of the meeting",
-          },
+          _id: { type: "string", description: "Meeting ID" },
+          title: { type: "string", description: "Meeting title" },
           startTime: {
             type: "string",
             format: "date-time",
-            description: "The start time of the meeting",
+            description: "Start time",
           },
           endTime: {
             type: "string",
             format: "date-time",
-            description: "The end time of the meeting",
+            description: "End time",
+          },
+          roomId: {
+            type: "string",
+            description: "Room ID reference",
+          },
+          bookedBy: {
+            type: "object",
+            properties: {
+              name: { type: "string", description: "Booker name" },
+              email: {
+                type: "string",
+                format: "email",
+                description: "Booker email",
+              },
+            },
           },
         },
       },
@@ -45,7 +64,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [path.join(__dirname, "../routes/*.js")], // Path to the API docs in dist folder
+  apis: [path.join(__dirname, "../routes/*.js")],
 };
 
 export default options;

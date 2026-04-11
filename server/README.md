@@ -44,13 +44,13 @@ Alternatively, if you're using nodemon for development:
 npm run dev
 ```
 
-This will start the server on the default port, usually http://localhost:3000.
+This will start the server on the default port, usually [http://localhost:3000](http://localhost:3000).
 
 **Note: It might take a few seconds until the database is reset :)**
 
 ## Testing
 
-To ensure that the setup is correct and the server is running, you can test by pointing your browser to http://localhost:3000 or using a tool like Postman to make a request.
+To ensure that the setup is correct and the server is running, you can test by pointing your browser to [http://localhost:3000](http://localhost:3000) or using a tool like Postman to make a request.
 
 ## Troubleshooting
 

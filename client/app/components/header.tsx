@@ -1,20 +1,13 @@
-import { AppBar, Toolbar } from "@mui/material";
-import { useState } from "react";
-import { Meeting } from "../models/Meeting";
+import { AppBar, Button, Toolbar } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  onCreateClick?: () => void;
 };
-export default function Header({ onCreateMeeting }: Props) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const handleCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
-    try {
-      await onCreateMeeting(meeting);
-      setDrawerOpen(false);
-    } catch (error) {
-      console.error("Error creating meeting:", error);
-    }
-  };
+
+export default function Header({ onCreateClick }: Props) {
+  const router = useRouter();
+
   return (
     <AppBar position="static">
       <Toolbar
@@ -22,9 +15,20 @@ export default function Header({ onCreateMeeting }: Props) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          px: 2,
         }}
       >
-        <img src="/bliro_logo.svg" alt="Bliro Logo" style={{ height: 24 }} />
+        <img
+          src="/bliro_logo.svg"
+          alt="YouWork Logo"
+          style={{ height: 24, cursor: "pointer" }}
+          onClick={() => router.push("/")}
+        />
+        {onCreateClick && (
+          <Button variant="contained" onClick={onCreateClick}>
+            Book a Meeting
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
