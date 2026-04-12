@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { useCreateMeetingForm } from "../hooks/useCreateMeetingForm";
-import { Meeting } from "../../../models/Meeting";
+import type { Meeting } from "shared/schemas/meeting";
 
 interface CreateMeetingFormProps {
   onSubmit: (meeting: Omit<Meeting, "id">) => Promise<void>;

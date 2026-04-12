@@ -3,7 +3,7 @@
 import { Box, Drawer } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Meeting } from "../../../models/Meeting";
+import type { Meeting } from "shared/schemas/meeting";
 import { CreateMeetingForm } from "./CreateMeetingForm";
 import { CreateMeetingHeader } from "./CreateMeetingHeader";
 

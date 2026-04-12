@@ -7,7 +7,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { useState } from "react";
-import { Meeting } from "../models/Meeting";
+import type { Meeting } from "shared/schemas/meeting";
 import CreateMeetingDrawer from "./create-meeting/components/CreateMeetingDrawer";
 import SearchIcon from "@mui/icons-material/Search";
 

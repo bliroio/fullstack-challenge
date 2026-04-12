@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Meeting } from "../models/Meeting";
-import { meetingSchema } from "../../../shared/schemas/meeting";
+import type { Meeting } from "shared/schemas/meeting";
+import { meetingSchema } from "shared/schemas/meeting";
 
 const API_BASE_URL = "http://localhost:3000/api/meetings";
 
 /** Validate API response data against the shared Zod schema. */
-const parseMeeting = (data: unknown): Meeting => meetingSchema.parse(data) as unknown as Meeting;
+const parseMeeting = (data: unknown): Meeting => meetingSchema.parse(data);
 const parseMeetings = (data: unknown[]): Meeting[] => data.map(parseMeeting);
 
 type PaginatedResponse = {

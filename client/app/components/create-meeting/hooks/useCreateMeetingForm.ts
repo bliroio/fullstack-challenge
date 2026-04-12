@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Meeting } from "../../../models/Meeting";
+import type { Meeting } from "shared/schemas/meeting";
 
 interface UseCreateMeetingFormProps {
   onSubmit: (meeting: Omit<Meeting, "id">) => Promise<void>;
@@ -41,8 +41,8 @@ export const useCreateMeetingForm = ({
     try {
       await onSubmit({
         title: formData.title.trim(),
-        startTime: formData.startTime!.toISOString(),
-        endTime: formData.endTime!.toISOString(),
+        startTime: formData.startTime!,
+        endTime: formData.endTime!,
       });
       resetForm();
     } catch (error) {

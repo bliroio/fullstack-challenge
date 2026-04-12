@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
 import Header from "./components/header";
 import MeetingList from "./components/meetingList";
-import { Meeting } from "./models/Meeting";
+import type { Meeting } from "shared/schemas/meeting";
 import { createMeeting, listMeetings } from "./services/meetingService";
 
 const Home: React.FC = () => {

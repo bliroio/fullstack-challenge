@@ -3,9 +3,9 @@
 import { Card, Typography } from "@mui/material";
 import { differenceInMinutes, formatDuration } from 'date-fns';
 import React from "react";
-import { Meeting } from "../models/Meeting";
+import type { Meeting } from "shared/schemas/meeting";
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: Date | string) => {
   const date = new Date(dateString);
   const formatter = new Intl.DateTimeFormat("default", {
     dateStyle: "long",
