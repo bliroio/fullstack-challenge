@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "tsc && node dist/app.js",
+    "dev": "tsc && node dist/server.js",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest",
     "seed": "tsc && node dist/seed.js",
     "seed:clear": "tsc && node dist/seed.js --clear",
     "format": "prettier --write .",
@@ -30,9 +32,13 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.9.3",
+    "@types/supertest": "^7.2.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
+    "fast-check": "^4.6.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.3.2"
+    "supertest": "^7.2.2",
+    "typescript": "^5.3.2",
+    "vitest": "^4.1.4"
   }
 }
