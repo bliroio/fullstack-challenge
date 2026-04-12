@@ -7,7 +7,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Header from "./components/header";
 import MeetingList from "./components/meetingList";
 import type { Meeting } from "shared/schemas/meeting";
-import { createMeeting, listMeetings } from "./services/meetingService";
+import { createMeeting, deleteMeeting, listMeetings } from "./services/meetingService";
 
 const Home: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -35,6 +35,11 @@ const Home: React.FC = () => {
     fetchMeetings();
   };
 
+  const onDeleteMeeting = async (id: string) => {
+    await deleteMeeting(id);
+    fetchMeetings();
+  };
+
   const onSearch = useCallback((query: string) => {
     setSearchQuery(query);
   }, []);
@@ -50,7 +55,7 @@ const Home: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           My Meetings
         </Typography>
-        <MeetingList meetings={meetings} loading={loading} error={error} />
+        <MeetingList meetings={meetings} loading={loading} error={error} onDelete={onDeleteMeeting} />
       </Container>
     </>
   );

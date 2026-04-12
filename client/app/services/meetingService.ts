@@ -44,3 +44,12 @@ export const createMeeting = async (meeting: Omit<Meeting, "id">) => {
     throw error;
   }
 };
+
+export const deleteMeeting = async (id: string): Promise<void> => {
+  try {
+    await axios.delete(`${API_BASE_URL}/${id}`);
+  } catch (error) {
+    console.error("Error deleting meeting:", error);
+    throw error;
+  }
+};

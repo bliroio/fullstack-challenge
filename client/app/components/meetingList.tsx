@@ -1,6 +1,7 @@
 "use client";
 
-import { Alert, Box, Card, CircularProgress, Typography } from "@mui/material";
+import { Alert, Box, Card, CircularProgress, IconButton, Typography } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { differenceInMinutes, formatDuration } from "date-fns";
 import React from "react";
 import type { Meeting } from "shared/schemas/meeting";
@@ -18,9 +19,10 @@ type Props = {
   meetings: Meeting[];
   loading: boolean;
   error: string | null;
+  onDelete?: (id: string) => void;
 };
 
-const MeetingList: React.FC<Props> = ({ meetings, loading, error }) => {
+const MeetingList: React.FC<Props> = ({ meetings, loading, error, onDelete }) => {
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", padding: "48px 0" }}>
@@ -59,48 +61,59 @@ const MeetingList: React.FC<Props> = ({ meetings, loading, error }) => {
             boxShadow: "0 1px 1px 0px #131A2614",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: 600, lineHeight: "24px", fontSize: "16px" }}
-            >
-              {meeting.title}
-            </Typography>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                <img
-                  src="/calendar.svg"
-                  alt="Calendar"
-                  style={{ height: "12px", width: "12px" }}
-                />
-                <span
-                  style={{
-                    borderRight: "1px solid #D0D1D4",
-                    paddingRight: "8px",
-                    marginRight: "8px",
-                  }}
-                >
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: 600, lineHeight: "24px", fontSize: "16px" }}
+              >
+                {meeting.title}
+              </Typography>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  <img
+                    src="/calendar.svg"
+                    alt="Calendar"
+                    style={{ height: "12px", width: "12px" }}
+                  />
+                  <span
+                    style={{
+                      borderRight: "1px solid #D0D1D4",
+                      paddingRight: "8px",
+                      marginRight: "8px",
+                    }}
+                  >
+                    <Typography variant="h6">
+                      {formatDate(meeting.startTime)}
+                    </Typography>
+                  </span>
+                </span>
+                <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  <img
+                    src="/timer.svg"
+                    alt="Time"
+                    style={{ height: "12px", width: "12px" }}
+                  />
                   <Typography variant="h6">
-                    {formatDate(meeting.startTime)}
+                    {formatDuration({
+                      minutes: differenceInMinutes(
+                        new Date(meeting.endTime as unknown as string),
+                        new Date(meeting.startTime as unknown as string)
+                      ),
+                    })}
                   </Typography>
                 </span>
-              </span>
-              <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                <img
-                  src="/timer.svg"
-                  alt="Time"
-                  style={{ height: "12px", width: "12px" }}
-                />
-                <Typography variant="h6">
-                  {formatDuration({
-                    minutes: differenceInMinutes(
-                      new Date(meeting.endTime as unknown as string),
-                      new Date(meeting.startTime as unknown as string)
-                    ),
-                  })}
-                </Typography>
-              </span>
+              </div>
             </div>
+            {onDelete && (
+              <IconButton
+                aria-label="delete meeting"
+                onClick={() => onDelete(meeting.id)}
+                size="small"
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
+            )}
           </div>
         </Card>
       ))}

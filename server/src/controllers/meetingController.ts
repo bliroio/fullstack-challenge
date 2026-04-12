@@ -11,3 +11,8 @@ export const createMeeting = asyncHandler(async (req, res) => {
   const meeting = await meetingService.createMeeting(req.body);
   res.status(201).json(meeting);
 });
+
+export const deleteMeeting = asyncHandler(async (req, res) => {
+  await meetingService.deleteMeeting(req.params.id);
+  res.status(204).send();
+});
