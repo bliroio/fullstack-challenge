@@ -12,10 +12,22 @@ import { createMeeting, listMeetings } from "./services/meetingService";
 const Home: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchMeetings = useCallback(() => {
-    const params = searchQuery ? { title: searchQuery } : undefined;
-    listMeetings(params).then(setMeetings);
+  const fetchMeetings = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params = searchQuery ? { title: searchQuery } : undefined;
+      const data = await listMeetings(params);
+      setMeetings(data);
+    } catch (err) {
+      setError("Failed to load meetings. Please try again.");
+      setMeetings([]);
+    } finally {
+      setLoading(false);
+    }
   }, [searchQuery]);
 
   const onCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
@@ -38,7 +50,7 @@ const Home: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           My Meetings
         </Typography>
-        <MeetingList meetings={meetings} />
+        <MeetingList meetings={meetings} loading={loading} error={error} />
       </Container>
     </>
   );
