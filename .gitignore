@@ -131,3 +131,9 @@ dist
 
 # mac files
 .DS_Store
+
+# Claude Code tmp
+.claude/agents/*
+.claude/settings.local.json
+ACTION_PLAN.md
+PLANS/*
