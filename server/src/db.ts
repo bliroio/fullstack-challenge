@@ -11,6 +11,8 @@ const dbUri = process.env.MONGODB_URI;
 const connectDB = async () => {
   try {
     await mongoose.connect(dbUri);
+    mongoose.set("sanitizeFilter", true);
+    mongoose.set("strictQuery", true);
     console.log("MongoDB connected...");
   } catch (error) {
     console.error("MongoDB connection error:", error);

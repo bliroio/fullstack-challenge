@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { IMeeting, Meeting } from "../models/meeting";
+import { Meeting } from "../models/meeting";
 
 export const listMeetings = async (
   query: any
-): Promise<mongoose.PaginateResult<IMeeting>> => {
+): Promise<mongoose.PaginateResult<InstanceType<typeof Meeting>>> => {
   const { page = 1, limit = 10, ...filters } = query;
 
   const pageNum = parseInt(page as string, 10);
