@@ -1,11 +1,7 @@
-import { AppBar, Button, Toolbar } from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-type Props = {
-  onCreateClick?: () => void;
-};
-
-export default function Header({ onCreateClick }: Props) {
+export default function Header() {
   const router = useRouter();
 
   return (
@@ -24,11 +20,6 @@ export default function Header({ onCreateClick }: Props) {
           style={{ height: 24, cursor: "pointer" }}
           onClick={() => router.push("/")}
         />
-        {onCreateClick && (
-          <Button variant="contained" onClick={onCreateClick}>
-            Book a Meeting
-          </Button>
-        )}
       </Toolbar>
     </AppBar>
   );
