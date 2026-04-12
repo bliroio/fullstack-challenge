@@ -1,8 +1,4 @@
-## Purpose
-
-Reusable Express middleware that validates incoming request data against Zod schemas, returning structured errors on failure and parsed/coerced data on success.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Validate request data against a Zod schema
 The system SHALL provide a `validate(schema, source)` factory function that returns an Express middleware. The `source` parameter SHALL default to `"body"` and also accept `"query"`. On successful validation, the middleware SHALL replace `req[source]` with the Zod-parsed data and call `next()`. On validation failure, the middleware SHALL respond with HTTP 400 and a JSON body and SHALL NOT call `next()`. The middleware SHALL be wired to both `POST /api/meetings` (source `"body"`) and `GET /api/meetings` (source `"query"`).
@@ -22,10 +18,3 @@ The system SHALL provide a `validate(schema, source)` factory function that retu
 #### Scenario: Invalid input does not call next
 - **WHEN** the middleware responds with 400 due to a validation failure
 - **THEN** `next()` is NOT called
-
-### Requirement: Coerce and default values on success
-The system SHALL apply Zod's coercion and default transformations so that downstream handlers receive fully-typed values rather than raw strings.
-
-#### Scenario: Numeric query strings are coerced to numbers
-- **WHEN** `listQuerySchema` is used with `source="query"` and the request contains `page="5"` and `limit="20"` as strings
-- **THEN** `req.query.page` equals the number `5` and `req.query.limit` equals the number `20` after the middleware runs

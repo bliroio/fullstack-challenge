@@ -1,7 +1,7 @@
 import express from "express";
 import { listMeetings, createMeeting } from "../controllers/meetingController";
 import { validate } from "../middleware/validate";
-import { createMeetingSchema } from "shared/schemas/meeting";
+import { createMeetingSchema, listQuerySchema } from "shared/schemas/meeting";
 
 export const router = express.Router();
 
@@ -48,7 +48,7 @@ export const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.get("/", listMeetings);
+router.get("/", validate(listQuerySchema, "query"), listMeetings);
 
 /**
  * @openapi
