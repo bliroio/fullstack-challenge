@@ -11,6 +11,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./config/swaggerConfig";
 import { AppError } from "./utils/AppError";
 import { router as meetingRoutes } from "./routes/meetingRoutes";
+import { mongoSanitize } from "./middleware/sanitize";
 
 const app = express();
 
@@ -36,6 +37,7 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
+app.use(mongoSanitize());
 app.use("/api/meetings", meetingRoutes);
 
 // Global error handler — must be after all routes

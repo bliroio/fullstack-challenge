@@ -16,7 +16,7 @@ export const listMeetings = async (
   };
 
   if (filters.title) {
-    filters.title = { $regex: new RegExp(filters.title), $options: "i" };
+    filters.title = new RegExp(filters.title, "i");
   }
 
   return Meeting.paginate(filters, options);
