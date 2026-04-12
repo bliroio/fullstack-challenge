@@ -31,21 +31,38 @@ const apiLimiter = rateLimit({
 });
 app.use("/api/", apiLimiter);
 
-app.use(cors());
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:3001";
+app.use(
+  cors({
+    origin: (requestOrigin, callback) => {
+      if (!requestOrigin || requestOrigin === allowedOrigin) {
+        callback(null, requestOrigin || allowedOrigin);
+      } else {
+        callback(null, false);
+      }
+    },
+  })
+);
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(mongoSanitize());
 app.use("/api/meetings", meetingRoutes);
 
 // Global error handler — must be after all routes
 const errorHandler: ErrorRequestHandler = (err, _req, res, next) => {
   if (res.headersSent) return next(err);
-  console.error(err);
+  const httpStatus = (err as { status?: number }).status;
+  if (!httpStatus || httpStatus >= 500) console.error(err);
   if (err instanceof AppError) {
     res.status(err.statusCode).json({ message: err.message });
+    return;
+  }
+  // Pass through HTTP errors with a status code set by middleware (e.g. 413 PayloadTooLarge)
+  if (httpStatus && httpStatus >= 400 && httpStatus < 500) {
+    res.status(httpStatus).json({ message: err.message || "Request error" });
     return;
   }
   res.status(500).json({ message: "Internal server error" });
