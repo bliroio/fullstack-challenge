@@ -6,16 +6,31 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { Meeting } from "shared/schemas/meeting";
 import CreateMeetingDrawer from "./create-meeting/components/CreateMeetingDrawer";
 import SearchIcon from "@mui/icons-material/Search";
 
 type Props = {
   onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  onSearch: (query: string) => void;
 };
-export default function Header({ onCreateMeeting }: Props) {
+export default function Header({ onCreateMeeting, onSearch }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      debounceTimerRef.current = setTimeout(() => {
+        onSearch(value);
+      }, 300);
+    },
+    [onSearch]
+  );
 
   const handleCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
     try {
@@ -50,6 +65,7 @@ export default function Header({ onCreateMeeting }: Props) {
             <TextField
               placeholder="Search..."
               size="small"
+              onChange={handleSearchChange}
               sx={{
                 width: "300px",
                 "& .MuiOutlinedInput-root": {

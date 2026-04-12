@@ -3,7 +3,7 @@
 // Home.tsx
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Header from "./components/header";
 import MeetingList from "./components/meetingList";
 import type { Meeting } from "shared/schemas/meeting";
@@ -11,18 +11,29 @@ import { createMeeting, listMeetings } from "./services/meetingService";
 
 const Home: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const fetchMeetings = useCallback(() => {
+    const params = searchQuery ? { title: searchQuery } : undefined;
+    listMeetings(params).then(setMeetings);
+  }, [searchQuery]);
 
   const onCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
-    return createMeeting(meeting).then(listMeetings).then(setMeetings);
-  }
+    await createMeeting(meeting);
+    fetchMeetings();
+  };
+
+  const onSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
 
   useEffect(() => {
-    listMeetings().then(setMeetings);
-  }, []);
+    fetchMeetings();
+  }, [fetchMeetings]);
 
   return (
     <>
-      <Header onCreateMeeting={onCreateMeeting} />
+      <Header onCreateMeeting={onCreateMeeting} onSearch={onSearch} />
       <Container maxWidth="md" sx={{ paddingTop: "24px" }}>
         <Typography variant="h4" gutterBottom>
           My Meetings
