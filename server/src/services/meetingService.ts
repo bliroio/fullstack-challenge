@@ -17,7 +17,7 @@ export const listMeetings = async (
   const options = {
     page,
     limit,
-    sort: { startTime: -1 },
+    sort: { startTime: 1 },
   };
 
   const filters: Record<string, unknown> = {};
