@@ -1,22 +1,28 @@
 import mongoose from "mongoose";
 import { Meeting } from "../models/meeting";
+import { escapeRegExp } from "../utils/escapeRegExp";
+
+interface ListMeetingsQuery {
+  page: number;
+  limit: number;
+  title?: string;
+}
 
 export const listMeetings = async (
-  query: any
+  query: ListMeetingsQuery
 ): Promise<mongoose.PaginateResult<InstanceType<typeof Meeting>>> => {
-  const { page = 1, limit = 10, ...filters } = query;
-
-  const pageNum = parseInt(page as string, 10);
-  const limitNum = parseInt(limit as string, 10);
+  const { page = 1, limit = 10, title } = query;
 
   const options = {
-    page: pageNum,
-    limit: limitNum,
+    page,
+    limit,
     sort: { startTime: -1 },
   };
 
-  if (filters.title) {
-    filters.title = new RegExp(filters.title, "i");
+  const filters: Record<string, unknown> = {};
+
+  if (title) {
+    filters.title = new RegExp(escapeRegExp(title), "i");
   }
 
   return Meeting.paginate(filters, options);
