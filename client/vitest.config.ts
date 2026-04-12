@@ -8,5 +8,10 @@ export default defineConfig({
     environment: "jsdom",
     include: ["app/**/*.test.{ts,tsx}"],
     setupFiles: ["./app/__tests__/setup.ts"],
+    server: {
+      deps: {
+        inline: ["@mui/material", "@mui/x-date-pickers", "@mui/icons-material", "@emotion/react", "@emotion/styled"],
+      },
+    },
   },
 });
