@@ -3,9 +3,10 @@ import { Box, IconButton, Typography } from "@mui/material";
 
 interface DrawerHeaderProps {
   onClose: () => void;
+  isEditing?: boolean;
 }
 
-export const CreateMeetingHeader = ({ onClose }: DrawerHeaderProps) => {
+export const CreateMeetingHeader = ({ onClose, isEditing }: DrawerHeaderProps) => {
   const handleClose = () => {
     onClose();
   };
@@ -30,7 +31,7 @@ export const CreateMeetingHeader = ({ onClose }: DrawerHeaderProps) => {
             marginBottom: "8px",
           }}
         >
-          Create a new meeting
+          {isEditing ? "Edit meeting" : "Create a new meeting"}
         </Typography>
         <Typography
           variant="body2"
@@ -40,7 +41,9 @@ export const CreateMeetingHeader = ({ onClose }: DrawerHeaderProps) => {
             lineHeight: "20px",
           }}
         >
-          Complete the information below in order to create a new meeting.
+          {isEditing
+            ? "Update the meeting details below."
+            : "Complete the information below in order to create a new meeting."}
         </Typography>
       </Box>
       <IconButton

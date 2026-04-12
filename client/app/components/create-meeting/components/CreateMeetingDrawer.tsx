@@ -9,12 +9,14 @@ interface CreateMeetingDrawerProps {
   open: boolean;
   onClose: () => void;
   onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  meetingToEdit?: Meeting;
 }
 
 const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({
   open,
   onClose,
   onCreateMeeting,
+  meetingToEdit,
 }) => {
   return (
     <Drawer
@@ -37,8 +39,8 @@ const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({
           backgroundColor: "white",
         }}
       >
-        <CreateMeetingHeader onClose={onClose} />
-        <CreateMeetingForm onSubmit={onCreateMeeting} onClose={onClose} />
+        <CreateMeetingHeader onClose={onClose} isEditing={!!meetingToEdit} />
+        <CreateMeetingForm onSubmit={onCreateMeeting} onClose={onClose} meeting={meetingToEdit} />
       </Box>
     </Drawer>
   );

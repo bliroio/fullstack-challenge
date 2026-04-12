@@ -45,3 +45,24 @@ export const deleteMeeting = async (id: string): Promise<void> => {
     throw new AppError(404, "Meeting not found");
   }
 };
+
+export const updateMeeting = async (id: string, data: Partial<{ title: string; startTime: Date; endTime: Date }>) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new AppError(400, "Invalid meeting ID");
+  }
+  const meeting = await Meeting.findById(id);
+  if (!meeting) {
+    throw new AppError(404, "Meeting not found");
+  }
+  Object.assign(meeting, data);
+  try {
+    await meeting.save();
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      const messages = Object.values(error.errors).map((e) => e.message).join(", ");
+      throw new AppError(400, messages);
+    }
+    throw error;
+  }
+  return meeting;
+};

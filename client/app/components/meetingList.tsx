@@ -2,6 +2,7 @@
 
 import { Alert, Box, Card, CircularProgress, IconButton, Typography } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { differenceInMinutes, formatDuration } from "date-fns";
 import React from "react";
 import type { Meeting } from "shared/schemas/meeting";
@@ -20,9 +21,10 @@ type Props = {
   loading: boolean;
   error: string | null;
   onDelete?: (id: string) => void;
+  onEdit?: (meeting: Meeting) => void;
 };
 
-const MeetingList: React.FC<Props> = ({ meetings, loading, error, onDelete }) => {
+const MeetingList: React.FC<Props> = ({ meetings, loading, error, onDelete, onEdit }) => {
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", padding: "48px 0" }}>
@@ -105,15 +107,38 @@ const MeetingList: React.FC<Props> = ({ meetings, loading, error, onDelete }) =>
                 </span>
               </div>
             </div>
-            {onDelete && (
-              <IconButton
-                aria-label="delete meeting"
-                onClick={() => onDelete(meeting.id)}
-                size="small"
-              >
-                <DeleteOutlineIcon />
-              </IconButton>
-            )}
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {onEdit && (
+                <IconButton
+                  size="small"
+                  onClick={() => onEdit(meeting)}
+                  sx={{
+                    color: '#9CA3AF',
+                    '&:hover': {
+                      color: '#3B82F6',
+                      backgroundColor: '#EFF6FF',
+                    },
+                  }}
+                >
+                  <EditOutlinedIcon fontSize="small" />
+                </IconButton>
+              )}
+              {onDelete && (
+                <IconButton
+                  size="small"
+                  onClick={() => onDelete(meeting.id)}
+                  sx={{
+                    color: '#9CA3AF',
+                    '&:hover': {
+                      color: '#EF4444',
+                      backgroundColor: '#FEF2F2',
+                    },
+                  }}
+                >
+                  <DeleteOutlineIcon fontSize="small" />
+                </IconButton>
+              )}
+            </div>
           </div>
         </Card>
       ))}

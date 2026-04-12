@@ -16,3 +16,8 @@ export const deleteMeeting = asyncHandler(async (req, res) => {
   await meetingService.deleteMeeting(req.params.id);
   res.status(204).send();
 });
+
+export const updateMeeting = asyncHandler(async (req, res) => {
+  const meeting = await meetingService.updateMeeting(req.params.id, req.body);
+  res.json(meeting);
+});

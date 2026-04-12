@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addHours } from "date-fns";
@@ -21,9 +22,10 @@ type CreateMeetingFormData = z.infer<typeof createMeetingFormSchema>;
 interface CreateMeetingFormProps {
   onSubmit: (meeting: Omit<Meeting, "id">) => Promise<void>;
   onClose: () => void;
+  meeting?: Meeting;
 }
 
-export const CreateMeetingForm = ({ onSubmit, onClose }: CreateMeetingFormProps) => {
+export const CreateMeetingForm = ({ onSubmit, onClose, meeting }: CreateMeetingFormProps) => {
   const {
     control,
     handleSubmit,
@@ -38,6 +40,16 @@ export const CreateMeetingForm = ({ onSubmit, onClose }: CreateMeetingFormProps)
     },
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (meeting) {
+      reset({
+        title: meeting.title,
+        startTime: new Date(meeting.startTime),
+        endTime: new Date(meeting.endTime),
+      });
+    }
+  }, [meeting, reset]);
 
   const onFormSubmit = async (data: CreateMeetingFormData) => {
     // Pass Date objects directly — the shared Meeting type uses Date for startTime/endTime.

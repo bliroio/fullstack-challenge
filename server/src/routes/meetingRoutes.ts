@@ -1,5 +1,5 @@
 import express from "express";
-import { listMeetings, createMeeting, deleteMeeting } from "../controllers/meetingController";
+import { listMeetings, createMeeting, deleteMeeting, updateMeeting } from "../controllers/meetingController";
 import { validate } from "../middleware/validate";
 import { createMeetingSchema, listQuerySchema } from "shared/schemas/meeting";
 
@@ -103,3 +103,5 @@ router.get("/", validate(listQuerySchema, "query"), listMeetings);
 router.post("/", validate(createMeetingSchema), createMeeting);
 
 router.delete("/:id", deleteMeeting);
+
+router.put("/:id", validate(createMeetingSchema), updateMeeting);

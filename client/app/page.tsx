@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Header from "./components/header";
 import MeetingList from "./components/meetingList";
 import type { Meeting } from "shared/schemas/meeting";
-import { createMeeting, deleteMeeting, listMeetings } from "./services/meetingService";
+import { createMeeting, deleteMeeting, listMeetings, updateMeeting } from "./services/meetingService";
 
 const Home: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -17,6 +17,7 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
 
   const fetchMeetings = useCallback(async (pageNum: number = 1) => {
     setLoading(true);
@@ -40,9 +41,21 @@ const Home: React.FC = () => {
     fetchMeetings(value);
   };
 
-  const onCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
-    await createMeeting(meeting);
-    fetchMeetings(1);
+  const onSubmitMeeting = async (meeting: Omit<Meeting, "id">) => {
+    if (selectedMeeting) {
+      await updateMeeting(selectedMeeting.id, meeting);
+    } else {
+      await createMeeting(meeting);
+    }
+    await fetchMeetings();
+  };
+
+  const onEditMeeting = (meeting: Meeting) => {
+    setSelectedMeeting(meeting);
+  };
+
+  const onDrawerClose = () => {
+    setSelectedMeeting(null);
   };
 
   const onDeleteMeeting = async (id: string) => {
@@ -60,12 +73,17 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Header onCreateMeeting={onCreateMeeting} onSearch={onSearch} />
+      <Header
+        onCreateMeeting={onSubmitMeeting}
+        onSearch={onSearch}
+        meetingToEdit={selectedMeeting}
+        onDrawerClose={onDrawerClose}
+      />
       <Container maxWidth="md" sx={{ paddingTop: "24px" }}>
         <Typography variant="h4" gutterBottom>
           My Meetings
         </Typography>
-        <MeetingList meetings={meetings} loading={loading} error={error} onDelete={onDeleteMeeting} />
+        <MeetingList meetings={meetings} loading={loading} error={error} onDelete={onDeleteMeeting} onEdit={onEditMeeting} />
         {totalPages > 1 && (
           <Pagination
             count={totalPages}

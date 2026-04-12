@@ -6,7 +6,7 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Meeting } from "shared/schemas/meeting";
 import CreateMeetingDrawer from "./create-meeting/components/CreateMeetingDrawer";
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,9 +14,17 @@ import SearchIcon from "@mui/icons-material/Search";
 type Props = {
   onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
   onSearch: (query: string) => void;
+  meetingToEdit?: Meeting | null;
+  onDrawerClose?: () => void;
 };
-export default function Header({ onCreateMeeting, onSearch }: Props) {
+export default function Header({ onCreateMeeting, onSearch, meetingToEdit, onDrawerClose }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    if (meetingToEdit) {
+      setDrawerOpen(true);
+    }
+  }, [meetingToEdit]);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSearchChange = useCallback(
@@ -32,10 +40,15 @@ export default function Header({ onCreateMeeting, onSearch }: Props) {
     [onSearch]
   );
 
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+    onDrawerClose?.();
+  };
+
   const handleCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
     try {
       await onCreateMeeting(meeting);
-      setDrawerOpen(false);
+      handleDrawerClose();
     } catch (error) {
       console.error("Error creating meeting:", error);
     }
@@ -113,8 +126,9 @@ export default function Header({ onCreateMeeting, onSearch }: Props) {
 
       <CreateMeetingDrawer
         open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        onClose={handleDrawerClose}
         onCreateMeeting={handleCreateMeeting}
+        meetingToEdit={meetingToEdit || undefined}
       />
     </>
   );

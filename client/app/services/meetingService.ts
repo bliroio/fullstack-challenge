@@ -55,3 +55,13 @@ export const deleteMeeting = async (id: string): Promise<void> => {
     throw error;
   }
 };
+
+export const updateMeeting = async (id: string, meeting: Omit<Meeting, "id">): Promise<Meeting> => {
+  try {
+    const response = await axios.put<Meeting>(`${API_BASE_URL}/${id}`, meeting);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating meeting:", error);
+    throw error;
+  }
+};
