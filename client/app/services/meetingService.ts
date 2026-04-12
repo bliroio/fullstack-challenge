@@ -6,29 +6,31 @@ const API_BASE_URL = "http://localhost:3000/api/meetings";
 
 /** Validate API response data against the shared Zod schema. */
 const parseMeeting = (data: unknown): Meeting => meetingSchema.parse(data);
-const parseMeetings = (data: unknown[]): Meeting[] => data.map(parseMeeting);
 
-type PaginatedResponse = {
+export type PaginatedResponse = {
   docs: Meeting[];
-  totalDocs: number,
-  limit: number,
-  hasPrevPage: boolean,
-  hasNextPage: boolean,
-  page: number,
-  totalPages: number,
-  offset: number,
-  prevPage: number | null,
-  nextPage: number | null,
-  pagingCounter: number
-}
-export const listMeetings = async (params?: { title?: string }): Promise<Meeting[]> => {
+  totalDocs: number;
+  limit: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  page: number;
+  totalPages: number;
+  offset: number;
+  prevPage: number | null;
+  nextPage: number | null;
+  pagingCounter: number;
+};
+
+export const listMeetings = async (params?: { page?: number; limit?: number; title?: string }): Promise<PaginatedResponse> => {
   try {
-    let url = API_BASE_URL + "?limit=100";
-    if (params?.title) {
-      url += "&title=" + encodeURIComponent(params.title);
-    }
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.set("page", String(params.page));
+    if (params?.limit) queryParams.set("limit", String(params.limit));
+    if (params?.title) queryParams.set("title", params.title);
+    const queryString = queryParams.toString();
+    const url = `${API_BASE_URL}${queryString ? `?${queryString}` : ""}`;
     const response = await axios.get<PaginatedResponse>(url);
-    return parseMeetings(response.data.docs);
+    return response.data;
   } catch (error) {
     console.error("Error fetching meetings:", error);
     throw error;
