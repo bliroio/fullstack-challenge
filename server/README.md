@@ -46,7 +46,21 @@ npm run dev
 
 This will start the server on the default port, usually http://localhost:3000.
 
-**Note: It might take a few seconds until the database is reset :)**
+## Seeding the Database
+
+The database is **not** seeded automatically on server start. To populate it with dummy data, run:
+
+```bash
+SEED_DB=true npm run seed
+```
+
+To wipe existing data and reseed:
+
+```bash
+SEED_DB=true npm run seed:clear
+```
+
+> **Note:** Seeding requires `SEED_DB=true` and is blocked when `NODE_ENV=production`.
 
 ## Testing
 
