@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Meeting } from "../models/meeting";
+import { CreateMeetingInput } from "shared/schemas/meeting";
 import { escapeRegExp } from "../utils/escapeRegExp";
 
 interface ListMeetingsQuery {
@@ -26,4 +27,10 @@ export const listMeetings = async (
   }
 
   return Meeting.paginate(filters, options);
+};
+
+export const createMeeting = async (
+  data: CreateMeetingInput
+): Promise<InstanceType<typeof Meeting>> => {
+  return Meeting.create(data);
 };

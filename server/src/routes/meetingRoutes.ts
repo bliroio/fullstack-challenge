@@ -1,5 +1,7 @@
 import express from "express";
-import { listMeetings } from "../controllers/meetingController";
+import { listMeetings, createMeeting } from "../controllers/meetingController";
+import { validate } from "../middleware/validate";
+import { createMeetingSchema } from "shared/schemas/meeting";
 
 export const router = express.Router();
 
@@ -47,3 +49,55 @@ export const router = express.Router();
  *         description: Server error
  */
 router.get("/", listMeetings);
+
+/**
+ * @openapi
+ * /api/meetings:
+ *   post:
+ *     summary: Create a new meeting
+ *     tags: [Meetings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - startTime
+ *               - endTime
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Team Standup"
+ *               startTime:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-01-15T09:00:00Z"
+ *               endTime:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-01-15T09:30:00Z"
+ *     responses:
+ *       201:
+ *         description: The created meeting
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Meeting'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Validation failed"
+ *                 errors:
+ *                   type: object
+ *       500:
+ *         description: Server error
+ */
+router.post("/", validate(createMeetingSchema), createMeeting);
