@@ -6,7 +6,7 @@ The client has no test infrastructure, making it impossible to write component o
 
 - Install Vitest, React Testing Library, MSW, and fast-check as client dev dependencies
 - Add `test` and `test:watch` npm scripts to `client/package.json`
-- Create `client/vitest.config.ts` configured for jsdom environment with `@shared` alias
+- Create `client/vitest.config.ts` configured for jsdom environment (shared schemas resolved via npm workspaces)
 - Create a global test setup file that starts/resets/stops the MSW server lifecycle
 - Create a `TestProviders` helper wrapping MUI's ThemeProvider and LocalizationProvider
 - Create default MSW request handlers returning safe empty responses for `/api/meetings`

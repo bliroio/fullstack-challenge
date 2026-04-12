@@ -7,9 +7,9 @@ The client package SHALL have a `vitest.config.ts` that configures Vitest with `
 - **WHEN** `npm test` is run in the `client/` directory
 - **THEN** Vitest loads the configuration and exits cleanly (zero errors from config or setup imports), even when no test files are present
 
-#### Scenario: @shared alias resolves in tests
-- **WHEN** a test file imports from `@shared`
-- **THEN** the import resolves to the `../shared` directory relative to `client/`
+#### Scenario: shared workspace package resolves in tests
+- **WHEN** a test file imports from `"shared"`
+- **THEN** the import resolves to the `shared` workspace package via npm workspaces symlink
 
 ### Requirement: MSW server lifecycle managed globally
 The test setup file SHALL start the MSW server before all tests (`beforeAll`), reset handlers after each test (`afterEach`), and close the server after all tests (`afterAll`).

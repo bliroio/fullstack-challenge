@@ -14,3 +14,43 @@
 
 Please ensure that you dont exceed the given timeframe. Good luck!
 
+## Install
+
+```bash
+npm install
+```
+
+## Environment Variables
+
+```bash
+cp server/.env.example server/.env
+cp client/.env.local.example client/.env.local
+```
+
+Fill in your MongoDB connection string in `server/.env`.
+
+## Build
+
+```bash
+npm run build
+```
+
+## Run
+
+```bash
+npm run dev:server    # Express on http://localhost:3000
+npm run dev:client    # Next.js on http://localhost:3001
+```
+
+## Test
+
+```bash
+npm test
+```
+
+## Seed Database (optional)
+
+```bash
+cd server
+SEED_DB=true npm run seed
+```

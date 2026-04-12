@@ -12,7 +12,7 @@ The server-side test infrastructure (ALL-003) established Vitest as the project-
 - Set up MSW (Node adapter) for intercepting HTTP calls in tests without a live server
 - Provide a `TestProviders` wrapper for MUI-dependent components
 - Add `test` and `test:watch` npm scripts
-- Resolve the `@shared` path alias so future tests can import shared Zod schemas
+- Ensure shared Zod schemas are importable via npm workspaces (`import from "shared"`)
 
 **Non-Goals:**
 - Writing any actual component or integration tests (those are separate tasks)
@@ -33,8 +33,8 @@ Tests run in Node via Vitest; the browser service worker adapter cannot be used 
 ### Separate `vitest.config.ts` (not inside `next.config`)
 Next.js has its own compilation pipeline. A standalone `vitest.config.ts` using `@vitejs/plugin-react` is the standard pattern recommended by Vitest docs for Next.js projects. It does not interfere with the Next.js build.
 
-### `@shared` alias resolved from `__dirname`
-The shared Zod schemas live at `../shared` relative to the `client/` directory. Resolving via `path.resolve(__dirname, "../shared")` in `vitest.config.ts` makes this available inside tests without modifying `tsconfig.json`.
+### `shared` resolved via npm workspaces
+The shared Zod schemas are published as a local workspace package (`"shared": "*"` in `client/package.json`). npm symlinks `node_modules/shared` to `../../shared`, so both `vitest.config.ts` and test files can `import from "shared"` without any path alias configuration.
 
 ## Risks / Trade-offs
 

@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Meeting schema rejects endTime not after startTime
 The meeting domain SHALL enforce that `endTime` is strictly greater than `startTime` at two layers: (1) the Zod `createMeetingSchema` in `shared/schemas/meeting.ts` rejects invalid API input with an error on the `endTime` path, and (2) the Mongoose meeting schema validator rejects documents at the database layer. Both validations use the same rule: `endTime` must be strictly greater than `startTime`.

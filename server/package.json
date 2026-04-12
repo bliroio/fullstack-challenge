@@ -26,6 +26,7 @@
     "mongoose-paginate-v2": "^1.9.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "shared": "*",
     "zod": "^4.0.14"
   },
   "devDependencies": {
