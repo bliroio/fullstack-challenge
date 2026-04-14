@@ -34,6 +34,7 @@ import {
   getRoomAvailability,
   getRoomById,
 } from "../../services/meetingRoomService";
+import { bookingStorage, SavedBooking } from "../../services/bookingStorage";
 import { createMeeting } from "../../services/meetingService";
 
 const DURATIONS = [
@@ -177,6 +178,12 @@ const RoomDetailPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [myBookings, setMyBookings] = useState<SavedBooking[]>([]);
+
+  // Load saved bookings from localStorage
+  useEffect(() => {
+    setMyBookings(bookingStorage.getByRoom(roomId));
+  }, [roomId]);
 
   // Load room
   useEffect(() => {
@@ -265,6 +272,22 @@ const RoomDetailPage: React.FC = () => {
       });
 
       await fetchAvailability();
+
+      bookingStorage.save({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        roomId,
+        roomName: room!.name,
+        roomLocation: room!.location,
+        title: title.trim(),
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        date: dateStr,
+        duration,
+        bookedBy: { name: name.trim(), email: email.trim() },
+        createdAt: new Date().toISOString(),
+      });
+      setMyBookings(bookingStorage.getByRoom(roomId));
+
       setSuccess(true);
     } catch (err: any) {
       const errors = err?.response?.data?.errors;
@@ -360,6 +383,85 @@ const RoomDetailPage: React.FC = () => {
             </Box>
           </Box>
         </Box>
+
+        {/* My Bookings */}
+        {myBookings.length > 0 && (
+          <Box sx={{ mb: 3 }}>
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#131A26",
+                mb: 1.5,
+              }}
+            >
+              My Bookings
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {myBookings.map((booking) => {
+                const start = new Date(booking.startTime);
+                const end = new Date(booking.endTime);
+                const isPast = end < new Date();
+                const durationLabel = DURATIONS.find(
+                  (d) => d.value === booking.duration,
+                )?.label;
+
+                return (
+                  <Box
+                    key={booking.id}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      p: 1.5,
+                      border: "1px solid #E7E8E9",
+                      borderRadius: "8px",
+                      opacity: isPast ? 0.5 : 1,
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{ fontSize: "14px", fontWeight: 500, color: "#131A26" }}
+                      >
+                        {booking.title}
+                      </Typography>
+                      <Typography sx={{ fontSize: "12px", color: "#71767D" }}>
+                        {format(start, "EEE, MMM d")} &middot;{" "}
+                        {format(start, "HH:mm")} - {format(end, "HH:mm")}
+                        {durationLabel && ` (${durationLabel})`}
+                      </Typography>
+                    </Box>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      sx={{
+                        fontSize: "12px",
+                        borderColor: "#E7E8E9",
+                        color: "#424852",
+                        textTransform: "none",
+                        minWidth: "auto",
+                        px: 1.5,
+                      }}
+                      onClick={() => {
+                        const ics = generateICS(
+                          booking.title,
+                          start,
+                          end,
+                          `${booking.roomName} — ${booking.roomLocation}`,
+                          booking.bookedBy.name,
+                          booking.bookedBy.email,
+                        );
+                        downloadICS(ics, `${booking.title}.ics`);
+                      }}
+                    >
+                      Download .ics
+                    </Button>
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+        )}
 
         {/* Success state */}
         {success && (
