@@ -30,6 +30,19 @@ PORT=3000
 MONGODB_URI=[MY_PERSONAL_ACCESS_KEY]
 ```
 
+### Optional variables (recommended for production)
+
+```bash
+# Public base URL of the API — used in Swagger docs and the startup log.
+API_BASE_URL=https://api.example.com
+
+# Comma-separated list of allowed CORS origins.
+CORS_ORIGIN=https://app.example.com
+```
+
+If `API_BASE_URL` is unset the server falls back to `http://localhost:${PORT}`.
+If `CORS_ORIGIN` is unset CORS is open to all origins (fine for local dev).
+
 ## Start the Server
 
 To start the server, run:

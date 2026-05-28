@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Meeting } from "../models/Meeting";
 
-const API_BASE_URL = "http://localhost:3000/api/meetings";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
+const MEETINGS_URL = `${API_BASE_URL.replace(/\/$/, "")}/meetings`;
 
 type PaginatedResponse = {
   docs: Meeting[];
@@ -18,7 +20,7 @@ type PaginatedResponse = {
 }
 export const listMeetings = async (): Promise<Meeting[]> => {
   try {
-    const response = await axios.get<PaginatedResponse>(API_BASE_URL + '?limit=100');
+    const response = await axios.get<PaginatedResponse>(MEETINGS_URL + '?limit=100');
     return response.data.docs;
   } catch (error) {
     console.error("Error fetching meetings:", error);
@@ -28,7 +30,7 @@ export const listMeetings = async (): Promise<Meeting[]> => {
 
 export const createMeeting = async (meeting: Omit<Meeting, "id">) => {
   try {
-    const response = await axios.post(API_BASE_URL, meeting);
+    const response = await axios.post(MEETINGS_URL, meeting);
     return response.data;
   } catch (error) {
     console.error("Error creating meeting:", error);

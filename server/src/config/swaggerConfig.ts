@@ -1,5 +1,8 @@
 import path from "path";
 
+const port = process.env.PORT || 3000;
+const serverUrl = process.env.API_BASE_URL || `http://localhost:${port}`;
+
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
@@ -9,8 +12,8 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:3000",
-      description: "Development server",
+      url: serverUrl,
+      description: process.env.API_BASE_URL ? "Configured server" : "Development server",
     },
   ],
   components: {

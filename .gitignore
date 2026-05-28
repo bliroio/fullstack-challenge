@@ -131,3 +131,7 @@ dist
 
 # mac files
 .DS_Store
+.idea
+
+# for summary later
+CHANGES.md

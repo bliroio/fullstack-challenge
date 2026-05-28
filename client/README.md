@@ -25,6 +25,10 @@ cp .env.local.example .env.local
 
 Edit the .env.local file to include necessary environment variables such as API endpoints.
 
+| Variable                   | Required | Description                                                                                  |
+| -------------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL` | Yes      | Base URL of the API without a trailing resource path (e.g. `http://localhost:3000/api` for local dev). Resource paths like `/meetings` are appended by the client. Falls back to localhost if unset. |
+
 ## Run the Development Server
 
 To run the client in development mode with hot-reloading:
