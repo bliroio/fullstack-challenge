@@ -3,4 +3,5 @@ export interface Meeting {
   title: string;
   startTime: string;
   endTime: string;
+  roomId: string;
 }

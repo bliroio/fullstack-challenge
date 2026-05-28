@@ -10,12 +10,14 @@ interface FormData {
   title: string;
   startTime: Date | null;
   endTime: Date | null;
+  roomId: string;
 }
 
 interface FormErrors {
   title?: string;
   startTime?: string;
   endTime?: string;
+  roomId?: string;
   general?: string;
 }
 
@@ -27,6 +29,7 @@ export const useCreateMeetingForm = ({
     title: "",
     startTime: new Date(),
     endTime: new Date(),
+    roomId: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -43,6 +46,7 @@ export const useCreateMeetingForm = ({
         title: formData.title.trim(),
         startTime: formData.startTime!.toISOString(),
         endTime: formData.endTime!.toISOString(),
+        roomId: formData.roomId,
       });
       resetForm();
     } catch (error) {
@@ -60,6 +64,7 @@ export const useCreateMeetingForm = ({
       title: "",
       startTime: new Date(),
       endTime: new Date(),
+      roomId: "",
     });
     setErrors({});
   };
@@ -85,9 +90,10 @@ export const useCreateMeetingForm = ({
   };
 
   const isFormValid =
-    formData.title.trim() &&
-    formData.startTime &&
-    formData.endTime &&
+    !!formData.title.trim() &&
+    !!formData.roomId &&
+    !!formData.startTime &&
+    !!formData.endTime &&
     formData.startTime < formData.endTime;
 
   return {

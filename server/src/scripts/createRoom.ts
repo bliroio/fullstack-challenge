@@ -7,11 +7,11 @@ import { createRoom } from "../services/roomService";
 import { ValidationError } from "../services/meetingService";
 
 const printUsage = () => {
-  console.error(`Usage: npm run room:create -- <name> <capacity>
+  console.error(`Usage: npm run db:create-room -- <name> <capacity>
 
 Examples:
-  npm run room:create -- "Aurora" 4
-  npm run room:create -- "Big conference room" 20`);
+  npm run db:create-room -- "Aurora" 4
+  npm run db:create-room -- "Big conference room" 20`);
 };
 
 const run = async () => {
@@ -26,7 +26,7 @@ const run = async () => {
 
   try {
     const room = await createRoom({ name, capacity: capacityArg });
-    console.log(`Created room "${room.name}" (capacity ${room.capacity}) with id ${room.id}`);
+    console.log(`Created room "${room.name}" (capacity ${room.capacity}) with id ${room._id}`);
   } catch (error) {
     if (error instanceof ValidationError) {
       console.error(`Validation error: ${error.message}`);

@@ -8,13 +8,15 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Meeting } from "../models/Meeting";
+import { Room } from "../models/Room";
 import CreateMeetingDrawer from "./create-meeting/components/CreateMeetingDrawer";
 import SearchIcon from "@mui/icons-material/Search";
 
 type Props = {
   onCreateMeeting: (meeting: Omit<Meeting, "_id">) => Promise<void>;
+  rooms: Room[];
 };
-export default function Header({ onCreateMeeting }: Props) {
+export default function Header({ onCreateMeeting, rooms }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleCreateMeeting = async (meeting: Omit<Meeting, "_id">) => {
@@ -99,6 +101,7 @@ export default function Header({ onCreateMeeting }: Props) {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         onCreateMeeting={handleCreateMeeting}
+        rooms={rooms}
       />
     </>
   );

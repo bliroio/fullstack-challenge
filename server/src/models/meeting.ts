@@ -20,16 +20,7 @@ const meetingSchema = new mongoose.Schema(
       index: true,
     },
   },
-  {
-    toJSON: {
-      virtuals: true,
-      versionKey: false,
-      transform: (_doc, ret: Record<string, unknown>) => {
-        delete ret._id;
-        return ret;
-      },
-    },
-  }
+  { toJSON: { versionKey: false } }
 );
 
 meetingSchema.plugin(paginate);

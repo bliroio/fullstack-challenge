@@ -2,6 +2,9 @@ import {
   Alert,
   Box,
   Button,
+  FormControl,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -9,15 +12,18 @@ import {
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { useCreateMeetingForm } from "../hooks/useCreateMeetingForm";
 import { Meeting } from "../../../models/Meeting";
+import { Room } from "../../../models/Room";
 
 interface CreateMeetingFormProps {
   onSubmit: (meeting: Omit<Meeting, "_id">) => Promise<void>;
   onClose: () => void;
+  rooms: Room[];
 }
 
 export const CreateMeetingForm = ({
   onSubmit,
   onClose,
+  rooms,
 }: CreateMeetingFormProps) => {
   const {
     formData,
@@ -72,6 +78,37 @@ export const CreateMeetingForm = ({
               },
             }}
           />
+        </Box>
+
+        <Box>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 500,
+              marginBottom: "8px",
+              color: "#374151",
+            }}
+          >
+            Room *
+          </Typography>
+          <FormControl fullWidth error={!!errors.roomId}>
+            <Select
+              displayEmpty
+              value={formData.roomId}
+              onChange={(e) => updateField("roomId", e.target.value)}
+              disabled={rooms.length === 0}
+              sx={{ borderRadius: "8px" }}
+            >
+              <MenuItem value="" disabled>
+                {rooms.length === 0 ? "No rooms available" : "Select a room"}
+              </MenuItem>
+              {rooms.map((room) => (
+                <MenuItem key={room._id} value={room._id}>
+                  {room.name} (capacity {room.capacity})
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
 
         <Box>
