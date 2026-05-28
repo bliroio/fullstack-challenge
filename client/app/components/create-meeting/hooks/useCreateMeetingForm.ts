@@ -1,6 +1,18 @@
 import { useState } from "react";
 import { Meeting } from "../../../models/Meeting";
 
+const ONE_HOUR_MS = 60 * 60 * 1000;
+
+const buildInitialFormData = (): FormData => {
+  const startTime = new Date();
+  return {
+    title: "",
+    startTime,
+    endTime: new Date(startTime.getTime() + ONE_HOUR_MS),
+    roomId: "",
+  };
+};
+
 interface UseCreateMeetingFormProps {
   onSubmit: (meeting: Omit<Meeting, "_id">) => Promise<void>;
   onClose: () => void;
@@ -25,12 +37,7 @@ export const useCreateMeetingForm = ({
   onSubmit,
   onClose,
 }: UseCreateMeetingFormProps) => {
-  const [formData, setFormData] = useState<FormData>({
-    title: "",
-    startTime: new Date(),
-    endTime: new Date(),
-    roomId: "",
-  });
+  const [formData, setFormData] = useState<FormData>(buildInitialFormData);
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,12 +67,7 @@ export const useCreateMeetingForm = ({
   };
 
   const resetForm = () => {
-    setFormData({
-      title: "",
-      startTime: new Date(),
-      endTime: new Date(),
-      roomId: "",
-    });
+    setFormData(buildInitialFormData());
     setErrors({});
   };
 
@@ -75,12 +77,19 @@ export const useCreateMeetingForm = ({
   };
 
   const updateField = (field: keyof FormData, value: string | Date | null) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setFormData((prev) => {
+      const next = { ...prev, [field]: value };
+      // Keep endTime strictly after startTime when the user moves startTime.
+      if (
+        field === "startTime" &&
+        value instanceof Date &&
+        (!prev.endTime || prev.endTime <= value)
+      ) {
+        next.endTime = new Date(value.getTime() + ONE_HOUR_MS);
+      }
+      return next;
+    });
 
-    // Clear field-specific error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({
         ...prev,

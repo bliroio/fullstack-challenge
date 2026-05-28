@@ -27,9 +27,9 @@ const Home: React.FC = () => {
   return (
     <>
       <Header onCreateMeeting={onCreateMeeting} rooms={rooms} />
-      <Container maxWidth="md" sx={{ paddingTop: "24px" }}>
+      <Container maxWidth="xl" sx={{ paddingTop: "24px", paddingBottom: "24px" }}>
         <Typography variant="h4" gutterBottom>
-          My Meetings
+          Meeting rooms
         </Typography>
         <MeetingList meetings={meetings} rooms={rooms} />
       </Container>

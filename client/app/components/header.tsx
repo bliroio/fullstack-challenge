@@ -1,16 +1,8 @@
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Box,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
+import { AppBar, Toolbar, Button, Box } from "@mui/material";
 import { useState } from "react";
 import { Meeting } from "../models/Meeting";
 import { Room } from "../models/Room";
 import CreateMeetingDrawer from "./create-meeting/components/CreateMeetingDrawer";
-import SearchIcon from "@mui/icons-material/Search";
 
 type Props = {
   onCreateMeeting: (meeting: Omit<Meeting, "_id">) => Promise<void>;
@@ -48,33 +40,6 @@ export default function Header({ onCreateMeeting, rooms }: Props) {
               src="/bliro_logo.svg"
               alt="Bliro Logo"
               style={{ height: 24 }}
-            />
-            <TextField
-              placeholder="Search..."
-              size="small"
-              sx={{
-                width: "300px",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  backgroundColor: "#F9FAFB",
-                  "& fieldset": {
-                    borderColor: "#E7E8E9",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#D1D5DB",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#F97316",
-                  },
-                },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "#6B7280", fontSize: "20px" }} />
-                  </InputAdornment>
-                ),
-              }}
             />
           </Box>
           <Button
