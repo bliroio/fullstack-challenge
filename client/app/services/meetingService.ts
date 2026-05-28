@@ -20,7 +20,7 @@ type PaginatedResponse = {
 }
 export const listMeetings = async (): Promise<Meeting[]> => {
   try {
-    const response = await axios.get<PaginatedResponse>(MEETINGS_URL + '?limit=100');
+    const response = await axios.get<PaginatedResponse>(MEETINGS_URL);
     return response.data.docs;
   } catch (error) {
     console.error("Error fetching meetings:", error);

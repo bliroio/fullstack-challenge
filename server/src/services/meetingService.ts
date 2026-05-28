@@ -54,19 +54,28 @@ export const createMeeting = async (input: CreateMeetingInput): Promise<IMeeting
 export const listMeetings = async (
   query: any
 ): Promise<mongoose.PaginateResult<IMeeting>> => {
-  const { page = 1, limit = 10, ...filters } = query;
+  const { page, limit, ...filters } = query;
 
-  const pageNum = parseInt(page as string, 10);
-  const limitNum = parseInt(limit as string, 10);
-
-  const options = {
-    page: pageNum,
-    limit: limitNum,
-    sort: { startTime: -1 },
+  const options: mongoose.PaginateOptions = {
+    sort: { startTime: 1 },
   };
+
+  if (limit !== undefined) {
+    options.page = parseInt(page as string, 10) || 1;
+    options.limit = parseInt(limit as string, 10);
+  } else {
+    // No limit means: return every upcoming meeting in one response.
+    options.pagination = false;
+  }
 
   if (filters.title) {
     filters.title = { $regex: new RegExp(filters.title), $options: "i" };
+  }
+
+  // Default to upcoming meetings so the dashboard surfaces what's next and
+  // newly-created bookings aren't pushed off the page by historical entries.
+  if (filters.endTime === undefined) {
+    filters.endTime = { $gte: new Date() };
   }
 
   return Meeting.paginate(filters, options);
