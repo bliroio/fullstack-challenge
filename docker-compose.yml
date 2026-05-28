@@ -14,5 +14,35 @@ services:
       retries: 5
       start_period: 10s
 
+  server:
+    build:
+      context: ./server
+    container_name: bliro-server
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongo:27017/bliro-challenge
+      # Override these for non-local deployments:
+      # API_BASE_URL: https://api.example.com
+      # CORS_ORIGIN: https://app.example.com
+    ports:
+      - "3000:3000"
+
+  client:
+    build:
+      context: ./client
+      args:
+        # Baked into the JS bundle at build time. Override for non-local hosts.
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:3000/api
+    container_name: bliro-client
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "3001:3001"
+
 volumes:
   mongo-data:
