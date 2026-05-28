@@ -15,6 +15,25 @@ Run the following command to install the required npm packages:
 npm install
 ```
 
+## MongoDB (local via Docker)
+
+The simplest way to run a database for local development is the bundled `docker-compose.yml` at the repo root:
+
+```bash
+# from the repo root
+docker compose up -d mongo
+```
+
+This starts MongoDB 7 on `localhost:27017` with data persisted in a Docker volume. To stop it: `docker compose down`. To wipe the data: `docker compose down -v`.
+
+You can then use this connection string in `.env`:
+
+```bash
+MONGODB_URI=mongodb://localhost:27017/bliro-challenge
+```
+
+If you'd rather use a hosted MongoDB Atlas cluster, see the alternative formats documented in `.env.example`.
+
 ## Environment Variables
 
 Copy the `.env.example` file to a new file named `.env`.
@@ -23,12 +42,7 @@ Copy the `.env.example` file to a new file named `.env`.
 cp .env.example .env
 ```
 
-Then copy and paste your personal mongoDB access key as `[MY_PERSONAL_ACCESS_KEY]` into the `.env` file.
-
-```bash
-PORT=3000
-MONGODB_URI=[MY_PERSONAL_ACCESS_KEY]
-```
+The default value in `.env.example` already points at the local Docker MongoDB instance, so no further edits are required if you went the Docker route.
 
 ### Optional variables (recommended for production)
 
