@@ -73,7 +73,16 @@ npm run dev
 
 This will start the server on the default port, usually http://localhost:3000.
 
-**Note: It might take a few seconds until the database is reset :)**
+## Database scripts
+
+The server no longer wipes and reseeds the database on every startup. Use the dedicated scripts when you need to:
+
+```bash
+npm run db:seed     # inserts 100 mock meetings (only if collection is empty)
+npm run db:reset    # deletes all meetings
+```
+
+Typical "give me a clean dev DB" flow: `npm run db:reset && npm run db:seed`.
 
 ## Testing
 
