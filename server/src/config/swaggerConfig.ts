@@ -20,7 +20,7 @@ const swaggerDefinition = {
     schemas: {
       Meeting: {
         type: "object",
-        required: ["title", "startTime", "endTime"],
+        required: ["title", "startTime", "endTime", "roomId"],
         properties: {
           id: {
             type: "string",
@@ -40,6 +40,19 @@ const swaggerDefinition = {
             format: "date-time",
             description: "The end time of the meeting",
           },
+          roomId: {
+            type: "string",
+            description: "Id of the room this meeting is booked in",
+          },
+        },
+      },
+      Room: {
+        type: "object",
+        required: ["name", "capacity"],
+        properties: {
+          id: { type: "string" },
+          name: { type: "string" },
+          capacity: { type: "integer", minimum: 1 },
         },
       },
     },

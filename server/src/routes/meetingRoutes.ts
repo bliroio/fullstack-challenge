@@ -60,7 +60,7 @@ router.get("/", listMeetings);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [title, startTime, endTime]
+ *             required: [title, startTime, endTime, roomId]
  *             properties:
  *               title:
  *                 type: string
@@ -70,6 +70,8 @@ router.get("/", listMeetings);
  *               endTime:
  *                 type: string
  *                 format: date-time
+ *               roomId:
+ *                 type: string
  *     responses:
  *       201:
  *         description: The created meeting

@@ -7,8 +7,9 @@
     "start": "node dist/app.js",
     "build": "tsc",
     "dev": "tsc && node dist/app.js",
-    "db:reset": "tsc && node dist/scripts/resetDb.js",
-    "db:seed": "tsc && node dist/scripts/seedDb.js",
+    "db:reset": "node dist/scripts/resetDb.js",
+    "db:seed": "node dist/scripts/seedDb.js",
+    "db:create-room": "node dist/scripts/createRoom.js",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

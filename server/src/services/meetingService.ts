@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { IMeeting, Meeting } from "../models/meeting";
+import { roomExists } from "./roomService";
 
 export class ValidationError extends Error {
   constructor(message: string) {
@@ -12,6 +13,7 @@ export interface CreateMeetingInput {
   title?: unknown;
   startTime?: unknown;
   endTime?: unknown;
+  roomId?: unknown;
 }
 
 const parseDate = (value: unknown, field: string): Date => {
@@ -38,7 +40,15 @@ export const createMeeting = async (input: CreateMeetingInput): Promise<IMeeting
     throw new ValidationError("endTime must be after startTime");
   }
 
-  return Meeting.create({ title, startTime, endTime });
+  const roomId = input.roomId;
+  if (typeof roomId !== "string" || !mongoose.isValidObjectId(roomId)) {
+    throw new ValidationError("roomId must be a valid room id");
+  }
+  if (!(await roomExists(roomId))) {
+    throw new ValidationError(`Room ${roomId} does not exist`);
+  }
+
+  return Meeting.create({ title, startTime, endTime, roomId });
 };
 
 export const listMeetings = async (

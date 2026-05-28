@@ -4,13 +4,17 @@ dotenv.config();
 import mongoose from "mongoose";
 import connectDB from "../db";
 import { Meeting } from "../models/meeting";
+import { Room } from "../models/room";
 
 const resetDb = async () => {
   await connectDB();
 
-  console.log("Resetting database — deleting all meetings...");
-  const { deletedCount } = await Meeting.deleteMany({});
-  console.log(`Deleted ${deletedCount} meeting(s).`);
+  console.log("Resetting database — deleting all meetings and rooms...");
+  const meetingResult = await Meeting.deleteMany({});
+  const roomResult = await Room.deleteMany({});
+  console.log(
+    `Deleted ${meetingResult.deletedCount} meeting(s) and ${roomResult.deletedCount} room(s).`
+  );
 
   await mongoose.disconnect();
 };
