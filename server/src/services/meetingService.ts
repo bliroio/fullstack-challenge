@@ -1,6 +1,46 @@
 import mongoose from "mongoose";
 import { IMeeting, Meeting } from "../models/meeting";
 
+export class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
+  }
+}
+
+export interface CreateMeetingInput {
+  title?: unknown;
+  startTime?: unknown;
+  endTime?: unknown;
+}
+
+const parseDate = (value: unknown, field: string): Date => {
+  if (typeof value !== "string" && !(value instanceof Date)) {
+    throw new ValidationError(`${field} must be an ISO date string`);
+  }
+  const date = new Date(value as string | Date);
+  if (Number.isNaN(date.getTime())) {
+    throw new ValidationError(`${field} is not a valid date`);
+  }
+  return date;
+};
+
+export const createMeeting = async (input: CreateMeetingInput): Promise<IMeeting> => {
+  const title = typeof input.title === "string" ? input.title.trim() : "";
+  if (!title) {
+    throw new ValidationError("title is required");
+  }
+
+  const startTime = parseDate(input.startTime, "startTime");
+  const endTime = parseDate(input.endTime, "endTime");
+
+  if (endTime <= startTime) {
+    throw new ValidationError("endTime must be after startTime");
+  }
+
+  return Meeting.create({ title, startTime, endTime });
+};
+
 export const listMeetings = async (
   query: any
 ): Promise<mongoose.PaginateResult<IMeeting>> => {
