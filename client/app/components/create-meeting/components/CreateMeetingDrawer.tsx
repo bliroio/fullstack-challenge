@@ -10,7 +10,7 @@ import { CreateMeetingHeader } from "./CreateMeetingHeader";
 interface CreateMeetingDrawerProps {
   open: boolean;
   onClose: () => void;
-  onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  onCreateMeeting: (meeting: Omit<Meeting, "_id">) => Promise<void>;
 }
 
 const CreateMeetingDrawer: React.FC<CreateMeetingDrawerProps> = ({

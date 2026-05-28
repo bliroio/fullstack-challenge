@@ -12,7 +12,7 @@ import { createMeeting, listMeetings } from "./services/meetingService";
 const Home: React.FC = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
 
-  const onCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
+  const onCreateMeeting = async (meeting: Omit<Meeting, "_id">) => {
     return createMeeting(meeting).then(listMeetings).then(setMeetings);
   }
 

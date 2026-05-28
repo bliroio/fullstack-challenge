@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Meeting } from "../../../models/Meeting";
 
 interface UseCreateMeetingFormProps {
-  onSubmit: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  onSubmit: (meeting: Omit<Meeting, "_id">) => Promise<void>;
   onClose: () => void;
 }
 

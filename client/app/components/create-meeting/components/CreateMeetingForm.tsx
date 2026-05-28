@@ -11,7 +11,7 @@ import { useCreateMeetingForm } from "../hooks/useCreateMeetingForm";
 import { Meeting } from "../../../models/Meeting";
 
 interface CreateMeetingFormProps {
-  onSubmit: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  onSubmit: (meeting: Omit<Meeting, "_id">) => Promise<void>;
   onClose: () => void;
 }
 

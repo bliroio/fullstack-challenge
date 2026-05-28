@@ -12,12 +12,12 @@ import CreateMeetingDrawer from "./create-meeting/components/CreateMeetingDrawer
 import SearchIcon from "@mui/icons-material/Search";
 
 type Props = {
-  onCreateMeeting: (meeting: Omit<Meeting, "id">) => Promise<void>;
+  onCreateMeeting: (meeting: Omit<Meeting, "_id">) => Promise<void>;
 };
 export default function Header({ onCreateMeeting }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleCreateMeeting = async (meeting: Omit<Meeting, "id">) => {
+  const handleCreateMeeting = async (meeting: Omit<Meeting, "_id">) => {
     try {
       await onCreateMeeting(meeting);
       setDrawerOpen(false);

@@ -28,7 +28,7 @@ export const listMeetings = async (): Promise<Meeting[]> => {
   }
 };
 
-export const createMeeting = async (meeting: Omit<Meeting, "id">) => {
+export const createMeeting = async (meeting: Omit<Meeting, "_id">) => {
   try {
     const response = await axios.post(MEETINGS_URL, meeting);
     return response.data;
